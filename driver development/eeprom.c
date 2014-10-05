@@ -272,6 +272,7 @@ uint8_t eeprom_read(uint8_t address, uint8_t data[], uint8_t data_length)
                               data[index] =  i2c_get_byte(EEPROM_I2C);  /*once this data is read, the eeprom will start sending the next*/
                          }
                          i2c_send_stop( EEPROM_I2C);
+                         i2c_wait_for_byte(EEPROM_I2C);
                           data[index] = i2c_get_byte(EEPROM_I2C);  /*after reading this byte, we will not give the slave an ack, so the communication will end*/
                           wait_for_stop(EEPROM_I2C);
                           i2c_get_byte(EEPROM_I2C);  /*just in case*/

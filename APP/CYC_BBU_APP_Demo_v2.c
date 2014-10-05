@@ -155,9 +155,9 @@ main()
 
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();
-    //init_eeprom();
-    eeprom_test();
 
+    eeprom_test();
+     //mpu_test();
     while(1);
 
 

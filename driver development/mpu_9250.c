@@ -12,7 +12,7 @@ uint8_t init_mpu(void)
 {
     uint8_t result = 1;
     CYC_SYS_I2CB0_Enable();
-    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P3,GPIO_PIN0 + GPIO_PIN1);
+
 
     return result;
 }
@@ -244,7 +244,8 @@ uint8_t mpu_read(uint8_t address, uint8_t data[], uint8_t data_length)
                               data[index] =  i2c_get_byte(MPU_I2C);  /*once this data is read, the mpu will start sending the next*/
                          }
                          i2c_send_stop( MPU_I2C);
-                          data[index] = i2c_get_byte(MPU_I2C);  /*after reading this byte, we will not give the slave an ack, so the communication will end*/
+                         i2c_wait_for_byte(MPU_I2C);
+                         data[index] = i2c_get_byte(MPU_I2C);  /*after reading this byte, we will not give the slave an ack, so the communication will end*/
                           wait_for_stop(MPU_I2C);
                           i2c_get_byte(MPU_I2C);  /*just in case*/
                           state = DONE;

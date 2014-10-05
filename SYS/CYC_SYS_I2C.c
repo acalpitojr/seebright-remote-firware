@@ -92,12 +92,12 @@ typedef struct
 
 
 
-#define I2C_MODE(void)  do {P3SEL |= 0x03;} while (0)
-#define GPIO_MODE(void) do {P3SEL &= ~0x03;} while (0)
-#define SET_SCL(void)   do {P3OUT |= 0x02;} while (0)
-#define CLEAR_SCL(void) do {P3OUT &= ~0x02;} while (0)
-#define SET_SDA(void)   do {P3OUT |= 0x01;} while (0)
-#define CLEAR_SDA(void) do {P3OUT &= ~0x01;} while (0)
+#define I2C_B0_MODE(void)  do {P3SEL |= 0x03;} while (0)
+#define GPIO_B0_MODE(void) do {P3SEL &= ~0x03;} while (0)
+#define SET_B0_SCL(void)   do {P3OUT |= 0x02;} while (0)
+#define CLEAR_B0_SCL(void) do {P3OUT &= ~0x02;} while (0)
+#define SET_B0_SDA(void)   do {P3OUT |= 0x01;} while (0)
+#define CLEAR_B0_SDA(void) do {P3OUT &= ~0x01;} while (0)
 
 
 #define I2C_B1_MODE(void)  do {P4SEL |= 0x06;} while (0)
@@ -133,7 +133,7 @@ static MasterI2CInfo_t gsI2C =
  ******************************************************************************
  */
 
-STATUS CYC_SYS_I2C_Enable(void)
+STATUS CYC_SYS_I2CB0_Enable(void)
 {
     UINT32 lu32SMClk;
     UINT16 lu16BaudRate;
@@ -146,7 +146,8 @@ STATUS CYC_SYS_I2C_Enable(void)
     CTL1 |= UCSWRST;
 
     //	Select the peripheral mode working for the I2C pins
-    I2C_MODE();
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P3,GPIO_PIN1 + GPIO_PIN0);
+    //I2C_B0_MODE();
 
     //	Set to synchronous master mode
     CTL0 = UCMST + UCMODE_3 + UCSYNC;
@@ -166,16 +167,8 @@ STATUS CYC_SYS_I2C_Enable(void)
     //	Take I2C module out of reset
     CTL1 &= ~UCSWRST;
 
-    //	Enable interrupts
-    IE |= UCTXIE | UCRXIE | UCNACKIE;
 
-    //	Initialize I2C Info struct
-    gsI2C.msMasterI2CState = STATE_WAITING;
-    gsI2C.mu8SlaveRegister = 0;
-    gsI2C.mu8SlaveRegisterWritten = 0;
-    gsI2C.mpu8Data = 0;
-    gsI2C.mu16Length = 0;
-    gsI2C.mu8Enabled = 1;
+
 
     return SUCCESS;
 
@@ -192,8 +185,8 @@ STATUS CYC_SYS_I2CB1_Enable(void)
     UCB1CTL1 |= UCSWRST;
 
     //  Select the peripheral mode working for the I2C pins
-    I2C_B1_MODE();
-
+    //I2C_B1_MODE();
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4,GPIO_PIN1 + GPIO_PIN2);
     //  Set to synchronous master mode
     UCB1CTL0 = UCMST + UCMODE_3 + UCSYNC;
 
@@ -238,10 +231,10 @@ STATUS CYC_SYS_I2C_Disable(void)
     CTL1 |= UCSWRST;
 
     //	Get the I2C pins to function as GPIO
-    GPIO_MODE();
+    GPIO_B0_MODE();
     //	Set the pins to high state
-    SET_SCL();
-    SET_SDA();
+    SET_B0_SCL();
+    SET_B0_SDA();
 
     //	As a final step update the flag status
     gsI2C.mu8Enabled = 0;
@@ -308,13 +301,13 @@ STATUS CYC_SYS_I2C_Write(	UINT8 ru8SlaveAddress,
             CYC_SYS_I2C_Disable();
             //	Clear and set I2C pins to high
             CYC_SYS_TMR_DelayInMilliSeconds(1);
-            CLEAR_SCL();
-            CLEAR_SDA();
+            CLEAR_B0_SCL();
+            CLEAR_B0_SDA();
             CYC_SYS_TMR_DelayInMilliSeconds(1);
-            SET_SCL();
-            SET_SDA();
+            SET_B0_SCL();
+            SET_B0_SDA();
             //	Re-enable I2C port
-            CYC_SYS_I2C_Enable();
+            CYC_SYS_I2CB0_Enable();
             return CYC_SYS_I2C_ERRORS;
         }
     }
@@ -381,13 +374,13 @@ STATUS CYC_SYS_I2C_Read(	UINT8 ru8SlaveAddress,
             CYC_SYS_I2C_Disable();
             //	Clear and set I2C pins to high
             CYC_SYS_TMR_DelayInMilliSeconds(1);
-            CLEAR_SCL();
-            CLEAR_SDA();
+            CLEAR_B0_SCL();
+            CLEAR_B0_SDA();
             CYC_SYS_TMR_DelayInMilliSeconds(1);
-            SET_SCL();
-            SET_SDA();
+            SET_B0_SCL();
+            SET_B0_SDA();
             //	Re-enable I2C port
-            CYC_SYS_I2C_Enable();
+            CYC_SYS_I2CB1_Enable();
             return CYC_SYS_I2C_ERRORS;
         }
     }

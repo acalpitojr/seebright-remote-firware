@@ -81,7 +81,7 @@ STATUS CYC_SYS_InitializeTarget()
 	CYC_SYS_RST_StopWatchdog();
 
 	//	Reset all GPIO Ports to be output and with 0 as output
-	CYC_SYS_ResetTargetGPIOPorts();
+	//CYC_SYS_ResetTargetGPIOPorts();
 
 	//Set VCore = 3 for 12MHz clock
 	PMM_setVCore(PMM_BASE,PMM_CORE_LEVEL_3);
@@ -94,7 +94,7 @@ STATUS CYC_SYS_InitializeTarget()
 	CYC_SYS_TMR_EnableTimer1();
 
 	//	Take the PAN1721 module out of reset
-	CYC_SYS_RST_DeAssertPAN1721ResetSignal();
+	//CYC_SYS_RST_DeAssertPAN1721ResetSignal();
 	//CYC_SYS_RST_HoldPAN1721InReset();
 
 	//	Initialize the UART @57600 baudrate
@@ -102,26 +102,26 @@ STATUS CYC_SYS_InitializeTarget()
 	//CYC_SYS_UART1_Initialize();
 
 	//	Initialize LEDs
-	CYC_IO_LEDS_IntializeLEDs();
-	CYC_SYS_PWM_InitPWMTimer();
+	//CYC_IO_LEDS_IntializeLEDs();
+	//CYC_SYS_PWM_InitPWMTimer();
 
 	//	Initialize user keys
-	CYC_IO_KEYS_InitializeUserButtons();
-	CYC_IO_KEYS_InitializeTriggerButton();
-	CYC_IO_KEYS_InitializeNavButton();
+	//CYC_IO_KEYS_InitializeUserButtons();
+	//CYC_IO_KEYS_InitializeTriggerButton();
+	//CYC_IO_KEYS_InitializeNavButton();
 	//	Initialize Joystick
-	CYC_IO_JSTK_Init();
+	//CYC_IO_JSTK_Init();
 
 	//	Initialize and enable I2C port
-	CYC_SYS_I2C_Enable();
+	//CYC_SYS_I2CB0_Enable();
 	//CYC_SYS_I2CB1_Enable();
 
 
 	//	Initialize the Motion Sensor
-	CYC_IO_MOTS_Init();
+	//CYC_IO_MOTS_Init();
 
 	//	Re-initialize this as interrupts were disabled
-	CYC_IO_KEYS_InitializeUserButtons();
+	//CYC_IO_KEYS_InitializeUserButtons();
 
 	return lsReturnValue;
 

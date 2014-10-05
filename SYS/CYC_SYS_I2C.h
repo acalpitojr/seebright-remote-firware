@@ -35,8 +35,8 @@ NOTES:
 /* EXPORTED TYPE DEFINITIONS                *ttttttttt*/
 
 /* EXPORTED FUNCTIONS                       *ggggggggg*/
-STATUS CYC_SYS_I2C_Enable(void);
-
+STATUS CYC_SYS_I2CB1_Enable(void);
+STATUS CYC_SYS_I2CB0_Enable(void);
 STATUS CYC_SYS_I2C_Disable(void);
 
 STATUS CYC_SYS_I2C_Write(	UINT8 ru8SlaveAddress,
