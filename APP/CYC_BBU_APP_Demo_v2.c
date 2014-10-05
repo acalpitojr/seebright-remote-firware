@@ -156,8 +156,40 @@ main()
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();
 
-    eeprom_test();
+    //eeprom_test();
      //mpu_test();
+
+
+
+	CYC_SYS_ADC_Init();
+    volatile uint16_t adc_reading = 0x00;
+
+	while(1)
+	{
+	    adc_reading=Read_ADC_Voltage(1);
+	adc_reading=Read_ADC_Voltage(2);
+	adc_reading=Read_ADC_Voltage(6);
+	adc_reading=Read_ADC_Voltage(7);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     while(1);
 
 

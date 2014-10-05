@@ -75,11 +75,13 @@ static __IO UINT16	ADC_port[NUM_OF_PORTS];
 STATUS CYC_SYS_ADC_Init()
 {
 	//	Set the vertical and horizontal axis pins to analog input pins
-	CYC_SYS_GPIO_SetPeripheralPinAsInput (JOYSTICK_PORT, VERT_AXIS_PIN);
-	CYC_SYS_GPIO_SetPeripheralPinAsInput (JOYSTICK_PORT, HORIZ_AXIS_PIN);
-	CYC_SYS_GPIO_SetPeripheralPinAsInput (USB_PWR_DETECT_PORT, USB_PWR_DETECT_PIN);
-	CYC_SYS_GPIO_SetPeripheralPinAsInput (BAT_PWR_DETECT_PORT, BAT_PWR_DETECT_PIN);
-	CYC_SYS_GPIO_SetPeripheralPinAsInput (BT_PWR_DETECT_PORT, BT_PWR_DETECT_PIN);
+	CYC_SYS_GPIO_SetPeripheralPinAsInput (GPIO_PORT_P6, GPIO_PIN1); /*VERTICAL*/
+	CYC_SYS_GPIO_SetPeripheralPinAsInput (GPIO_PORT_P6, GPIO_PIN2); /*HORIZONTAL*/
+	CYC_SYS_GPIO_SetPeripheralPinAsInput (GPIO_PORT_P6, GPIO_PIN6); /*USBPWRDetect*/
+	CYC_SYS_GPIO_SetPeripheralPinAsInput (GPIO_PORT_P6, GPIO_PIN7); /*VBatAin*/
+
+
+
 
 	//	Initialize the 12-bit ADC module
     ADC12_A_init(ADC12_A_BASE,						//	12-bit ADC base address
@@ -111,28 +113,22 @@ STATUS CYC_SYS_ADC_Init()
 							ADC12_A_VREFPOS_AVCC,	//	Vref+ = AVcc
 							ADC12_A_VREFNEG_AVSS,	//	Vr- = AVss
 							ADC12_A_NOTENDOFSEQUENCE);//	Memory buffer 1 is not the end of a sequence
-//	Configure memory buffer 3
+//	Configure memory buffer 6
 	ADC12_A_memoryConfigure(ADC12_A_BASE,			//	Base address of the ADC12_A_A Module
-							ADC12_A_MEMORY_3,		//	Configure memory buffer 1
-							ADC12_A_INPUT_A4,		//	Map input A1 to memory buffer 1
-							ADC12_A_VREFPOS_AVCC,	//	Vref+ = AVcc
-							ADC12_A_VREFNEG_AVSS,	//	Vr- = AVss
-							ADC12_A_NOTENDOFSEQUENCE);//	Memory buffer 1 is not the end of a sequence
-//	Configure memory buffer 4
-	ADC12_A_memoryConfigure(ADC12_A_BASE,			//	Base address of the ADC12_A_A Module
-							ADC12_A_MEMORY_4,		//	Configure memory buffer 1
+							ADC12_A_MEMORY_6,		//	Configure memory buffer 1
 							ADC12_A_INPUT_A6,		//	Map input A1 to memory buffer 1
 							ADC12_A_VREFPOS_AVCC,	//	Vref+ = AVcc
 							ADC12_A_VREFNEG_AVSS,	//	Vr- = AVss
 							ADC12_A_NOTENDOFSEQUENCE);//	Memory buffer 1 is not the end of a sequence
-
-//	Configure memory buffer 5
+//	Configure memory buffer 7
 	ADC12_A_memoryConfigure(ADC12_A_BASE,			//	Base address of the ADC12_A_A Module
-							ADC12_A_MEMORY_5,		//	Configure memory buffer 1
+							ADC12_A_MEMORY_7,		//	Configure memory buffer 1
 							ADC12_A_INPUT_A7,		//	Map input A1 to memory buffer 1
 							ADC12_A_VREFPOS_AVCC,	//	Vref+ = AVcc
 							ADC12_A_VREFNEG_AVSS,	//	Vr- = AVss
-							ADC12_A_ENDOFSEQUENCE);//	Memory buffer 1 is not the end of a sequence
+							ADC12_A_ENDOFSEQUENCE);//	make this end of sequence in case we want to update all at the same time
+
+
 
 #ifdef	SIGNED_2S_COMPLIMENT
 	//	Set the format to provide a read back value in 2s compliment
@@ -149,6 +145,8 @@ STATUS CYC_SYS_ADC_Init()
 	return SUCCESS;
 }
 
+
+#if 0
 /*
 @@********************* CYC_SYS_ADC_ReadInputVoltage(UINT16 *) ***************************************
  *  Function	     :	CYC_SYS_ADC_ReadInputVoltage()
@@ -207,50 +205,69 @@ STATUS CYC_SYS_ADC_ReadInputVoltage(UINT16 *rpu16JoystickData, UINT16 *rpu16PWRD
     return SUCCESS;
 }
 
+#endif
 
-UINT16 Read_ADC_Voltage(UINT8 port)
+uint8_t ADC_DATA_READY = 0;
+
+
+UINT16 Read_ADC_Voltage(uint8_t pin)
 {
+    /*clear ALL ADC interrupts*/
+    uint16_t reading = 0x0000;
+    ADC12_A_clearInterrupt( ADC12_A_BASE,  0xFFFF);
+    uint16_t channel = 0x0000;
+    switch(pin)
+    {
+    case 0x00:
+        channel = ADC12IFG0;
+        break;
+    case 0x01:
+        channel = ADC12IFG1;
+            break;
+    case 0x02:
+        channel = ADC12IFG2;
+            break;
+    case 0x03:
+        channel = ADC12IFG3;
+            break;
+    case 0x04:
+        channel = ADC12IFG4;
+            break;
+    case 0x05:
+        channel = ADC12IFG5;
+            break;
+    case 0x06:
+        channel = ADC12IFG6;
+            break;
+    case 0x07:
+        channel = ADC12IFG7;
+            break;
+    default:
+        channel = ADC12IFG1;
+        break;
 
-	//	Enable memory buffer 2 interrupt. It assumes that both A1 and A2 would have been read
-	ADC12_A_clearInterrupt(	ADC12_A_BASE,
-							ADC12IFG2);
+    }
 
-    ADC12_A_enableInterrupt(ADC12_A_BASE,
-    						ADC12IE2);
+    ADC12_A_enableInterrupt(ADC12_A_BASE, channel);
 
     //Enable/Start sampling and conversion
-    ADC12_A_startConversion(ADC12_A_BASE,			//	Base address of ADC12_A_A Module
-							ADC12_A_MEMORY_1,		//	Starting memory buffer is 1
-							ADC12_A_SEQOFCHANNELS);	//	Complete one time sequence of reading
+    ADC_DATA_READY = 0;
+    ADC12_A_startConversion(ADC12_A_BASE,  pin,  ADC12_A_SINGLECHANNEL); /*start adc conversion of the selected pin*/
+    /*wait for conversion to complete*/
+    while(ADC_DATA_READY == 0)
+    {
+        /*wait, might want to add a timeout here*/
+    }
 
-    //	Wait until the reading has been completed
-    while(gu16DataReady == FALSE);
 
-	UINT16 returnVal = 0;
 
-	switch (port) {
-		case JOYSTICK_X:
-			returnVal = gs16HorizontalAxisVal;
-			break;
-		case JOYSTICK_Y:
-			returnVal = gs16VerticalAxisVal;
-			break;
-		case USB_PWR:
-			returnVal = gs16USBPwrVal;
-			break;
-		case BATT_PWR:
-			returnVal = gs16BatPwrVal;
-			break;
-		case BT_PWR:
-			returnVal = gs16BTPwrVal;
-			break;
-		default:
-			break;
-	}
+    ADC12_A_disableInterrupt(ADC12_A_BASE, channel);
 
-	gu16DataReady = FALSE;
-	return returnVal;
+   reading = ADC12_A_getResults( ADC12_A_BASE,  pin);
+   return  reading;
+
 }
+
 
 
 /* MODULE INTERNAL FUNCTIONS               *fffffff*/
@@ -258,50 +275,70 @@ UINT16 Read_ADC_Voltage(UINT8 port)
 __interrupt void ADC12_A_ISR (void)
 {
     switch (__even_in_range(ADC12IV,34)){
-        case  0: break;   //Vector  0:  No interrupt
-        case  2: break;   //Vector  2:  ADC overflow
-        case  4: break;   //Vector  4:  ADC timing overflow
-        case  6:          //Vector  6:  ADC12IFG0
-        case  8: break;   //Vector  8:  ADC12IFG1
-        case 10:    		//Vector 10:  ADC12IFG2
-        {
+        case  0x00: break;   //Vector  0:  No interrupt
+        case  0x02: break;   //Vector  2:  ADC overflow
+        case  0x04: break;   //Vector  4:  ADC timing overflow
+        case  0x06:          //Vector  6:  ADC12IFG0
+        /*MEM0 has an ADC READING*/
+            ADC_DATA_READY = 1;
+            break;
+        case  0x08:
+            /*MEM1 has an ADC READING*/
+            ADC_DATA_READY = 1;
+            break;   //Vector  8:  ADC12IFG1
+        case 0x0A:          //Vector 10:  ADC12IFG2
+            /*MEM2 has an ADC READING*/
+            ADC_DATA_READY = 1;
+            break;
 
-        	//	Set the flag to indicate that the data is available
-        	//gu16DataReady = TRUE;
-        }
+        case 0x0C: break;   //Vector 12:  ADC12IFG3
+        /*MEM3 has an ADC READING*/
+        ADC_DATA_READY = 1;
+
+        case 0x0E:    //Vector 14:  ADC12IFG4
+        /*MEM4 has an ADC READING*/
+            ADC_DATA_READY = 1;
+            break;
+        case 0x10:        //Vector 16:  ADC12IFG5
+            ADC_DATA_READY = 1;
         break;
-
-        case 12: break;   //Vector 12:  ADC12IFG3
-        case 14: break;	  //Vector 14:  ADC12IFG4
-        case 16: 	      //Vector 16:  ADC12IFG5
-        {
-        	gs16VerticalAxisVal = ADC12_A_getResults(	ADC12_A_BASE,
-        	                							ADC12_A_MEMORY_1);
-        	gs16HorizontalAxisVal = ADC12_A_getResults(	ADC12_A_BASE,
-        	        	                				ADC12_A_MEMORY_2);
-        	gs16USBPwrVal = ADC12_A_getResults(	ADC12_A_BASE,
-        										ADC12_A_MEMORY_3);
-        	gs16BatPwrVal = ADC12_A_getResults(	ADC12_A_BASE,
-        										ADC12_A_MEMORY_4);
-        	gs16BTPwrVal = ADC12_A_getResults(	ADC12_A_BASE,
-        										ADC12_A_MEMORY_5);
-
-        	gu16DataReady = TRUE;
-        }
-        break;
-        case 18: break;	  //Vector 18:  ADC12IFG6
-        case 20: break;	  //Vector 20:  ADC12IFG7
-        case 22: break;   //Vector 22:  ADC12IFG8
-        case 24: break;   //Vector 24:  ADC12IFG9
-        case 26: break;   //Vector 26:  ADC12IFG10
-        case 28: break;   //Vector 28:  ADC12IFG11
-        case 30: break;   //Vector 30:  ADC12IFG12
-        case 32: break;   //Vector 32:  ADC12IFG13
-        case 34: break;   //Vector 34:  ADC12IFG14
-        default: break;
+        case 0x12:
+            /*MEM6 has an ADC READING*/
+            ADC_DATA_READY = 1;
+            break;    //Vector 18:  ADC12IFG6
+        case 0x14: /*MEM7 has an ADC READING*/
+            ADC_DATA_READY = 1;
+            break;      //Vector 20:  ADC12IFG7
+        case 0x16:
+            ADC_DATA_READY = 1;
+            /*MEM8 has an ADC READING*/break;   //Vector 22:  ADC12IFG8
+        case 0x18:
+            ADC_DATA_READY = 1;
+            /*MEM9 has an ADC READING*/break;   //Vector 24:  ADC12IFG9
+        case 0x1A:
+            ADC_DATA_READY = 1;
+            /*MEM10has an ADC READING*/ break;   //Vector 26:  ADC12IFG10
+        case 0x1C:
+            ADC_DATA_READY = 1;
+            /*MEM11has an ADC READING*/ break;   //Vector 28:  ADC12IFG11
+        case 0x1E:
+            ADC_DATA_READY = 1;
+            /*MEM12has an ADC READING*/ break;   //Vector 30:  ADC12IFG12
+        case 0x20:
+            ADC_DATA_READY = 1;
+            /*MEM13has an ADC READING*/ break;   //Vector 32:  ADC12IFG13
+        case 0x22:
+            ADC_DATA_READY = 1;
+            /*MEM14 has an ADC READING*/ break;   //Vector 34:  ADC12IFG14
+        case 0x24:
+            ADC_DATA_READY = 1;
+            /*MEM15 has an ADC READING*/ break;   //Vector 34:  ADC12IFG14
+        default:
+            break;
     }
-}
 
+    ADC12_A_clearInterrupt( ADC12_A_BASE,  0xFFFF);
+}
 
 
 /*-----------------------------EOF-------------------------------------------*/

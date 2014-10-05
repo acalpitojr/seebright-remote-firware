@@ -766,8 +766,9 @@ void ADC12_A_disableConversions (uint32_t baseAddress, unsigned short preempt)
 int ADC12_A_getResults (uint32_t baseAddress, uint8_t memoryBufferIndex)
 {
     assert(memoryBufferIndex <= ADC12_A_MEMORY_15);
-
-    return ( HWREG16(baseAddress + (0x20 + (memoryBufferIndex * 2))) );
+    uint16_t value = 0x00;
+    value = ( HWREG16(baseAddress + (0x20 + (memoryBufferIndex * 2))) );
+    return value;
     //(0x20 + (memoryBufferIndex * 2)) == offset of ADC12MEMx
 }
 
