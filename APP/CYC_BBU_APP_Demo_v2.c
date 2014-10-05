@@ -155,8 +155,14 @@ main()
 
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();
+    //init_eeprom();
+    eeprom_test();
 
-	for(lu16TempCount=0;lu16TempCount<10;lu16TempCount++)
+    while(1);
+
+
+
+    for(lu16TempCount=0;lu16TempCount<10;lu16TempCount++)
 	{
 		CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, lu8BlueLEDDutyCycle);
 		CYC_SYS_TMR_DelayInMilliSeconds(200);

@@ -1,0 +1,5 @@
+# FIXED
+
+SYS/CYC_SYS_GPIO.obj: ../SYS/CYC_SYS_GPIO.c
+
+../SYS/CYC_SYS_GPIO.c: 

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2012, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,1251 +31,1546 @@
  * --/COPYRIGHT--*/
 //*****************************************************************************
 //
-//usci_b_i2c.c - Driver for the I2C Module.
+// usci_b_i2c.c - Driver for the usci_b_i2c Module.
 //
 //*****************************************************************************
-#include "inc/hw_regaccess.h"
-#include "assert.h"
-#include "usci_b_i2c.h"
-#ifdef  __IAR_SYSTEMS_ICC__
-#include "deprecated/IAR/msp430xgeneric.h"
-#else
-#include "deprecated/CCS/msp430xgeneric.h"
-#endif
 
 //*****************************************************************************
 //
-//! Initializes the I2C Master block.
+//! \addtogroup usci_b_i2c_api
+//! @{
+//
+//*****************************************************************************
+
+#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
+
+//#ifdef __MSP430_HAS_USCI_Bx__
+#include "usci_b_i2c.h"
+#include "msp430f5xx_6xxgeneric.h"
+#include <assert.h>
+
+//*****************************************************************************
+//
+//! \brief DEPRECATED - Initializes the I2C Master block.
+//!
+//! This function initializes operation of the I2C Master block. Upon
+//! successful initialization of the I2C block, this function will have set the
+//! bus speed for the master; however I2C module is still disabled till
+//! USCI_B_I2C_enable is invoked. If the parameter \e dataRate is
+//! USCI_B_I2C_SET_DATA_RATE_400KBPS, then the master block will be set up to
+//! transfer data at 400 kbps; otherwise, it will be set up to transfer data at
+//! 100 kbps.
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //! \param selectClockSource is the clocksource.
-//!         Valid values are
-//!         \b USCI_B_I2C_CLOCKSOURCE_ACLK
-//!         \b USCI_B_I2C_CLOCKSOURCE_SMCLK
+//!        Valid values are:
+//!        - \b USCI_B_I2C_CLOCKSOURCE_ACLK
+//!        - \b USCI_B_I2C_CLOCKSOURCE_SMCLK
 //! \param i2cClk is the rate of the clock supplied to the I2C module.
 //! \param dataRate set up for selecting data transfer rate.
-//!         Valid values are
-//!         \b USCI_B_I2C_SET_DATA_RATE_400KBPS
-//!         \b USCI_B_I2C_SET_DATA_RATE_100KBPS
+//!        Valid values are:
+//!        - \b USCI_B_I2C_SET_DATA_RATE_400KBPS
+//!        - \b USCI_B_I2C_SET_DATA_RATE_100KBPS
 //!
-//! This function initializes operation of the I2C Master block.  Upon
-//! successful initialization of the I2C block, this function will have set the
-//! bus speed for the master; however I2C module is still disabled till
-//! USCI_B_I2C_enable is invoked
+//! Modified bits are \b UCBxBR0 of \b UCBxBR1 register; bits \b UCSSELx and \b
+//! UCSWRST of \b UCBxCTL1 register; bits \b UCMST, \b UCMODE_3 and \b UCSYNC
+//! of \b UCBxCTL0 register.
 //!
-//! If the parameter \e dataRate is USCI_B_I2C_SET_DATA_RATE_400KBPS, then the master
-//! block will be set up to transfer data at 400 kbps; otherwise, it will be
-//! set up to transfer data at 100 kbps.
-//!
-//! Modified bits are \b UCMST,UCMODE_3,\b UCSYNC of \b UCBxCTL0 register
-//!                   \b UCSSELx, \b UCSWRST, of \b UCBxCTL1 register
-//!                   \b UCBxBR0 and \b UCBxBR1 regsiters
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterInit (uint32_t baseAddress,
-    uint8_t selectClockSource,
-    uint32_t i2cClk,
-    uint32_t dataRate)
+/************************************************************
+* USCI Bx
+************************************************************/
+
+
+
+
+
+void USCI_B_I2C_masterInit(uint16_t baseAddress,
+                           uint8_t selectClockSource,
+                           uint32_t i2cClk,
+                           uint32_t dataRate)
 {
-    uint16_t preScalarValue;
+        USCI_B_I2C_initMasterParam param = { 0 };
 
-    assert((USCI_B_I2C_CLOCKSOURCE_ACLK == selectClockSource) ||
-        (USCI_B_I2C_CLOCKSOURCE_SMCLK == selectClockSource)
-        );
+        param.selectClockSource = selectClockSource;
+        param.i2cClk = i2cClk;
+        param.dataRate = dataRate;
 
-    assert((USCI_B_I2C_SET_DATA_RATE_400KBPS == dataRate) ||
-        (USCI_B_I2C_SET_DATA_RATE_100KBPS == dataRate)
-        );
-
-    //Disable the USCI module and clears the other bits of control register
-    HWREG8(baseAddress + OFS_UCBxCTL1) = UCSWRST;
-
-    /*
-     * Configure as I2C master mode.
-     * UCMST = Master mode
-     * UCMODE_3 = I2C mode
-     * UCSYNC = Synchronous mode
-     */
-    HWREG8(baseAddress + OFS_UCBxCTL0) = UCMST + UCMODE_3 + UCSYNC;
-
-    //Configure I2C clock source
-    HWREG8(baseAddress + OFS_UCBxCTL1) = (selectClockSource + UCSWRST );
-
-    /*
-     * Compute the clock divider that achieves the fastest speed less than or
-     * equal to the desired speed.  The numerator is biased to favor a larger
-     * clock divider so that the resulting clock is always less than or equal
-     * to the desired clock, never greater.
-     */
-    preScalarValue = (unsigned short)(i2cClk / dataRate);
-    HWREG16(baseAddress + OFS_UCBxBRW) = preScalarValue;
+        USCI_B_I2C_initMaster(baseAddress, &param);
 }
 
 //*****************************************************************************
 //
-//! Initializes the I2C Slave block.
+//! \brief Initializes the I2C Master block.
+//!
+//! This function initializes operation of the I2C Master block. Upon
+//! successful initialization of the I2C block, this function will have set the
+//! bus speed for the master; however I2C module is still disabled till
+//! USCI_B_I2C_enable is invoked. If the parameter \e dataRate is
+//! USCI_B_I2C_SET_DATA_RATE_400KBPS, then the master block will be set up to
+//! transfer data at 400 kbps; otherwise, it will be set up to transfer data at
+//! 100 kbps.
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param param is the pointe to struct for master initialization.
+//!
+//! Modified bits are \b UCBxBR0 of \b UCBxBR1 register; bits \b UCSSELx and \b
+//! UCSWRST of \b UCBxCTL1 register; bits \b UCMST, \b UCMODE_3 and \b UCSYNC
+//! of \b UCBxCTL0 register.
+//!
+//! \return None
+//
+//*****************************************************************************
+void USCI_B_I2C_initMaster(uint16_t baseAddress, USCI_B_I2C_initMasterParam *param)
+{
+        uint16_t preScalarValue;
+
+        assert(param != 0);
+
+        assert((USCI_B_I2C_CLOCKSOURCE_ACLK == param->selectClockSource) ||
+               (USCI_B_I2C_CLOCKSOURCE_SMCLK == param->selectClockSource)
+               );
+
+        assert((USCI_B_I2C_SET_DATA_RATE_400KBPS == param->dataRate) ||
+               (USCI_B_I2C_SET_DATA_RATE_100KBPS == param->dataRate)
+               );
+
+        //Disable the USCI module and clears the other bits of control register
+        HWREG8(baseAddress + OFS_UCBxCTL1) = UCSWRST;
+
+        /*
+         * Configure as I2C master mode.
+         * UCMST = Master mode
+         * UCMODE_3 = I2C mode
+         * UCSYNC = Synchronous mode
+         */
+        HWREG8(baseAddress + OFS_UCBxCTL0) = UCMST + UCMODE_3 + UCSYNC;
+
+        //Configure I2C clock source
+        HWREG8(baseAddress + OFS_UCBxCTL1) = (param->selectClockSource + UCSWRST );
+
+        /*
+         * Compute the clock divider that achieves the fastest speed less than or
+         * equal to the desired speed.  The numerator is biased to favor a larger
+         * clock divider so that the resulting clock is always less than or equal
+         * to the desired clock, never greater.
+         */
+
+        preScalarValue = (unsigned short)(param->i2cClk / param->dataRate);
+        HWREG16(baseAddress + OFS_UCBxBRW) = preScalarValue;
+} //*****************************************************************************
+//
+//! \brief Initializes the I2C Slave block.
+//!
+//! This function initializes operation of the I2C as a Slave mode. Upon
+//! successful initialization of the I2C blocks, this function will have set
+//! the slave address but the I2C module is still disabled till
+//! USCI_B_I2C_enable is invoked.
 //!
 //! \param baseAddress is the base address of the I2C Slave module.
 //! \param slaveAddress 7-bit slave address
 //!
-//! This function initializes operation of the I2C as a Slave mode.  Upon
-//! successful initialization of the I2C blocks, this function will have set
-//! the slave address but the I2C module is still disabled till USCI_B_I2C_enable
-//! is invoked.
+//! Modified bits of \b UCBxI2COA register; bits \b UCSWRST of \b UCBxCTL1
+//! register; bits \b UCMODE_3 and \b UCSYNC of \b UCBxCTL0 register.
 //!
-//! The parameter slaveAddress is the value that will be compared against the
-//! slave address sent by an I2C master.
-//! Modified buts are \b UCMODE_3, \b UCSYNC of \b UCBxCTL0 register
-//!                   \b UCSWRST of \b UCBxCTL1 register
-//!                   \b UCBxI2COA register
-//!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_slaveInit (uint32_t baseAddress,
-    uint8_t slaveAddress
-    )
+void USCI_B_I2C_slaveInit(uint16_t baseAddress,
+                          uint8_t slaveAddress
+                          )
 {
-    //Disable the USCI module
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCSWRST;
+        //Disable the USCI module
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCSWRST;
 
-    //Confiugre I2C as Slave and Synchronous mode
-    HWREG8(baseAddress + OFS_UCBxCTL0) = UCMODE_3 + UCSYNC;
+        //Clear USCI master mode
+        HWREG8(baseAddress + OFS_UCBxCTL0) &= ~UCMST;
 
-    //Set up the slave address.
-    HWREG16(baseAddress + OFS_UCBxI2COA) = slaveAddress;
+        //Confiugre I2C as Slave and Synchronous mode
+        HWREG8(baseAddress + OFS_UCBxCTL0) = UCMODE_3 + UCSYNC;
+
+        //Set up the slave address.
+        HWREG16(baseAddress + OFS_UCBxI2COA) = slaveAddress;
 }
 
 //*****************************************************************************
 //
-//! Enables the I2C block.
-//!
-//! \param baseAddress is the base address of the USCI I2C module.
+//! \brief Enables the I2C block.
 //!
 //! This will enable operation of the I2C block.
-//! Modified bits are \b UCSWRST of \b UCBxCTL1 register.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void USCI_B_I2C_enable (uint32_t baseAddress)
-{
-    //Reset the UCSWRST bit to enable the USCI Module
-    HWREG8(baseAddress + OFS_UCBxCTL1) &= ~(UCSWRST);
-}
-
-//*****************************************************************************
-//
-//! Disables the I2C block.
 //!
 //! \param baseAddress is the base address of the USCI I2C module.
 //!
-//! This will disable operation of the I2C block.
 //! Modified bits are \b UCSWRST of \b UCBxCTL1 register.
 //!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_disable (uint32_t baseAddress)
+void USCI_B_I2C_enable(uint16_t baseAddress)
 {
-    //Set the UCSWRST bit to disable the USCI Module
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCSWRST;
+        //Reset the UCSWRST bit to enable the USCI Module
+        HWREG8(baseAddress + OFS_UCBxCTL1) &= ~(UCSWRST);
 }
 
 //*****************************************************************************
 //
-//! Sets the address that the I2C Master will place on the bus.
+//! \brief Disables the I2C block.
+//!
+//! This will disable operation of the I2C block.
+//!
+//! \param baseAddress is the base address of the USCI I2C module.
+//!
+//! Modified bits are \b UCSWRST of \b UCBxCTL1 register.
+//!
+//! \return None
+//
+//*****************************************************************************
+void USCI_B_I2C_disable(uint16_t baseAddress)
+{
+        //Set the UCSWRST bit to disable the USCI Module
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCSWRST;
+}
+
+//*****************************************************************************
+//
+//! \brief Sets the address that the I2C Master will place on the bus.
+//!
+//! This function will set the address that the I2C Master will place on the
+//! bus when initiating a transaction.
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //! \param slaveAddress 7-bit slave address
 //!
-//! This function will set the address that the I2C Master will place on the
-//! bus when initiating a transaction.
-//! Modified bits are \b UCSWRST of \b UCBxCTL1 register
-//!                   \b UCBxI2CSA register
+//! Modified bits of \b UCBxI2CSA register; bits \b UCSWRST of \b UCBxCTL1
+//! register.
 //!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_setSlaveAddress (uint32_t baseAddress,
-    uint8_t slaveAddress
-    )
+void USCI_B_I2C_setSlaveAddress(uint16_t baseAddress,
+                                uint8_t slaveAddress
+                                )
 {
-    //Set the address of the slave with which the master will communicate.
-    HWREG16(baseAddress + OFS_UCBxI2CSA) = (slaveAddress);
+        //Set the address of the slave with which the master will communicate.
+        HWREG16(baseAddress + OFS_UCBxI2CSA) = (slaveAddress);
 }
 
 //*****************************************************************************
 //
-//! Sets the mode of the I2C device
+//! \brief Sets the mode of the I2C device
+//!
+//! When the receive parameter is set to USCI_B_I2C_TRANSMIT_MODE, the address
+//! will indicate that the I2C module is in receive mode; otherwise, the I2C
+//! module is in send mode.
 //!
 //! \param baseAddress is the base address of the I2C Master module.
-//! \param receive indicates whether module is in transmit/receive mode
+//! \param mode indicates whether module is in transmit/receive mode
+//!        Valid values are:
+//!        - \b USCI_B_I2C_TRANSMIT_MODE
+//!        - \b USCI_B_I2C_RECEIVE_MODE [Default]
 //!
-//! When the receive parameter is set to USCI_B_I2C_TRANSMIT_MODE, the address will
-//! indicate that the I2C module is in receive mode; otherwise, the I2C module
-//! is in send mode. Valid values are
-//!     \b USCI_B_I2C_TRANSMIT_MODE
-//!     \b USCI_B_I2C_RECEIVE_MODE [Default value]
-//! Modified bits are \b UCTR of \b UCBxCTL1 register
-//!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_setMode (uint32_t baseAddress,
-    uint8_t mode
-    )
+void USCI_B_I2C_setMode(uint16_t baseAddress,
+                        uint8_t mode
+                        )
 {
-    assert((USCI_B_I2C_TRANSMIT_MODE == mode) ||
-        (USCI_B_I2C_RECEIVE_MODE == mode)
-        );
+        assert((USCI_B_I2C_TRANSMIT_MODE == mode) ||
+               (USCI_B_I2C_RECEIVE_MODE == mode)
+               );
 
-    HWREG8(baseAddress + OFS_UCBxCTL1) &= ~USCI_B_I2C_TRANSMIT_MODE;
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= mode;
+        HWREG8(baseAddress + OFS_UCBxCTL1) &= ~USCI_B_I2C_TRANSMIT_MODE;
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= mode;
 }
 
 //*****************************************************************************
 //
-//! Transmits a byte from the I2C Module.
+//! \brief Transmits a byte from the I2C Module.
+//!
+//! This function will place the supplied data into I2C transmit data register
+//! to start transmission Modified bit is UCBxTXBUF register
 //!
 //! \param baseAddress is the base address of the I2C module.
 //! \param transmitData data to be transmitted from the I2C module
 //!
-//! This function will place the supplied data into I2C trasmit data register
-//! to start transmission
-//! Modified bit is \b UCBxTXBUF register
+//! Modified bits of \b UCBxTXBUF register.
 //!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_slaveDataPut (uint32_t baseAddress,
-    uint8_t transmitData
-    )
+void USCI_B_I2C_slaveDataPut(uint16_t baseAddress,
+                             uint8_t transmitData
+                             )
 {
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = transmitData;
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = transmitData;
 }
 
 //*****************************************************************************
 //
-//! Receives a byte that has been sent to the I2C Module.
-//!
-//! \param baseAddress is the base address of the I2C module.
+//! \brief Receives a byte that has been sent to the I2C Module.
 //!
 //! This function reads a byte of data from the I2C receive data Register.
 //!
+//! \param baseAddress is the base address of the I2C module.
+//!
 //! \return Returns the byte received from by the I2C module, cast as an
-//! uint8_t.
-//! Modified bit is \b UCBxRXBUF register
+//!         uint8_t.
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_slaveDataGet (uint32_t baseAddress)
+uint8_t USCI_B_I2C_slaveDataGet(uint16_t baseAddress)
 {
-    //Read a byte.
-    return (HWREG8(baseAddress + OFS_UCBxRXBUF));
+        //Read a byte.
+        return HWREG8(baseAddress + OFS_UCBxRXBUF);
 }
 
 //*****************************************************************************
 //
-//! Indicates whether or not the I2C bus is busy.
-//!
-//! \param baseAddress is the base address of the I2C module.
+//! \brief Indicates whether or not the I2C bus is busy.
 //!
 //! This function returns an indication of whether or not the I2C bus is
-//! busy.This function checks the status of the bus via UCBBUSY bit in
-//! UCBxSTAT register.
+//! busy.This function checks the status of the bus via UCBBUSY bit in UCBxSTAT
+//! register.
 //!
-//! \return Returns USCI_B_I2C_BUS_BUSY if the I2C Master is busy; otherwise, returns
-//! USCI_B_I2C_BUS_NOT_BUSY.
+//! \param baseAddress is the base address of the I2C module.
+//!
+//! \return Returns USCI_B_I2C_BUS_BUSY if the I2C Master is busy; otherwise,
+//!         returns USCI_B_I2C_BUS_NOT_BUSY.
+//!         Return one of the following:
+//!         - \b USCI_B_I2C_BUS_BUSY
+//!         - \b USCI_B_I2C_BUS_NOT_BUSY
+//!         \n indicating if the USCI_B_I2C is busy
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_isBusBusy (uint32_t baseAddress)
+uint8_t USCI_B_I2C_isBusBusy(uint16_t baseAddress)
 {
-    //Return the bus busy status.
-    return (HWREG8(baseAddress + OFS_UCBxSTAT) & UCBBUSY);
+        //Return the bus busy status.
+        return HWREG8(baseAddress + OFS_UCBxSTAT) & UCBBUSY;
 }
 
 //*****************************************************************************
 //
-//! DEPRECATED - Function may be removed in future release. 
-//! Indicates whether or not the I2C module is busy.
-//!
-//! \param baseAddress is the base address of the I2C module.
+//! \brief DEPRECATED - Function may be removed in future release. Indicates
+//! whether or not the I2C module is busy.
 //!
 //! This function returns an indication of whether or not the I2C module is
 //! busy transmitting or receiving data. This function checks if the Transmit
 //! or receive flag is set.
 //!
-//! \return Returns USCI_B_I2C_BUS_BUSY if the I2C module is busy; otherwise, returns
-//! USCI_B_I2C_BUS_NOT_BUSY.
+//! \param baseAddress is the base address of the I2C module.
+//!
+//! \return Returns USCI_B_I2C_BUS_BUSY if the I2C module is busy; otherwise,
+//!         returns USCI_B_I2C_BUS_NOT_BUSY.
+//!         Return one of the following:
+//!         - \b USCI_B_I2C_BUS_BUSY
+//!         - \b USCI_B_I2C_BUS_NOT_BUSY
+//!         \n indicating if the USCI_B_I2C is busy
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_isBusy (uint32_t baseAddress)
+uint8_t USCI_B_I2C_isBusy(uint16_t baseAddress)
 {
-    //Return the busy status.
-    if ((HWREG8(baseAddress + OFS_UCBxIFG) & (UCTXIFG + UCRXIFG))){
-        return (USCI_B_I2C_BUS_BUSY);
-    } else   {
-        return (USCI_B_I2C_BUS_NOT_BUSY);
-    }
+        //Return the busy status.
+        if ((HWREG8(baseAddress + OFS_UCBxIFG) & (UCTXIFG + UCRXIFG)))
+                return USCI_B_I2C_BUS_BUSY;
+        else
+                return USCI_B_I2C_BUS_NOT_BUSY;
 }
 
 //*****************************************************************************
 //
-//! Indicates whether STOP got sent.
+//! \brief Indicates whether STOP got sent.
+//!
+//! This function returns an indication of whether or not STOP got sent This
+//! function checks the status of the bus via UCTXSTP bit in UCBxCTL1 register.
 //!
 //! \param baseAddress is the base address of the I2C module.
 //!
-//! This function returns an indication of whether or not STOP got sent
-//! This function checks the status of the bus via UCTXSTP bit in
-//! UCBxCTL1 register.
-//!
-//! \return Returns USCI_B_I2C_STOP_SEND_COMPLETE if the I2C Master
-//!			finished sending STOP; 
-//!			otherwise, returns  USCI_B_I2C_SENDING_STOP.
+//! \return Returns USCI_B_I2C_STOP_SEND_COMPLETE if the I2C Master finished
+//!         sending STOP; otherwise, returns USCI_B_I2C_SENDING_STOP.
+//!         Return one of the following:
+//!         - \b USCI_B_I2C_SENDING_STOP
+//!         - \b USCI_B_I2C_STOP_SEND_COMPLETE
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_masterIsStopSent (uint32_t baseAddress)
+uint8_t USCI_B_I2C_masterIsStopSent(uint16_t baseAddress)
 {
-    //Return the bus busy status.
-    return (HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP);
+        //Return the bus busy status.
+        return HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP;
 }
+
 //*****************************************************************************
 //
-//! Indicates whether START got sent.
+//! \brief Indicates whether START got sent.
+//!
+//! This function returns an indication of whether or not START got sent This
+//! function checks the status of the bus via UCTXSTT bit in UCBxCTL1 register.
 //!
 //! \param baseAddress is the base address of the I2C module.
 //!
-//! This function returns an indication of whether or not START got sent
-//! This function checks the status of the bus via UCTXSTT bit in
-//! UCBxCTL1 register.
-//!
-//! \return Returns USCI_B_I2C_START_SEND_COMPLETE if the I2C Master
-//!			finished sending START; otherwise, returns 
-//!			USCI_B_I2C_SENDING_START.
+//! \return Returns USCI_B_I2C_START_SEND_COMPLETE if the I2C Master finished
+//!         sending START; otherwise, returns USCI_B_I2C_SENDING_START.
+//!         Return one of the following:
+//!         - \b USCI_B_I2C_SENDING_START
+//!         - \b USCI_B_I2C_START_SEND_COMPLETE
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_masterIsStartSent (uint32_t baseAddress)
+uint8_t USCI_B_I2C_masterIsStartSent(uint16_t baseAddress)
 {
-    //Return if master has sent start
-    return (HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTT);
+        //Return if master has sent start
+        return HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTT;
 }
+
 //*****************************************************************************
 //
-//! This function is used by the Master module to initiate START
-//!
-//! \param baseAddress is the base address of the I2C Master module.
+//! \brief This function is used by the Master module to initiate START
 //!
 //! This function is used by the Master module to initiate STOP
 //!
-//! Modified bits are UCTXSTT bit of UCBxCTL1.
+//! \param baseAddress is the base address of the I2C Master module.
 //!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterSendStart (uint32_t baseAddress)
+void USCI_B_I2C_masterSendStart(uint16_t baseAddress)
 {
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
 }
+
 //*****************************************************************************
 //
-//! Enables individual I2C interrupt sources.
+//! \brief Enables individual I2C interrupt sources.
+//!
+//! Enables the indicated I2C interrupt sources.  Only the sources that are
+//! enabled can be reflected to the processor interrupt; disabled sources have
+//! no effect on the processor. Does not clear interrupt flags.
 //!
 //! \param baseAddress is the base address of the I2C module.
-//! \param interruptFlags is the bit mask of the interrupt sources to be enabled.
+//! \param mask is the bit mask of the interrupt sources to be enabled.
+//!        Mask value is the logical OR of any of the following:
+//!        - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
+//!        - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
+//!        - \b USCI_B_I2C_RECEIVE_INTERRUPT - Receive interrupt
+//!        - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
+//!        - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
+//!        - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost
+//!           interrupt
 //!
-//! Enables the indicated I2C interrupt sources.  Only the sources that
-//! are enabled can be reflected to the processor interrupt; disabled sources
-//! have no effect on the processor. <b>Does not clear interrupt flags.</b>
+//! Modified bits of \b UCBxIE register.
 //!
-//! The mask parameter is the logical OR of any of the following:
-//!
-//! - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
-//! - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
-//! - \b USCI_B_I2C_RECEIVE_INTERRUPT -Receive interrupt
-//! - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
-//! - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
-//! - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost interrupt
-//!
-//! Modified registers are UCBxIFG and OFS_UCBxIE.
-//!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_enableInterrupt (uint32_t baseAddress,
-    uint8_t mask
-    )
+void USCI_B_I2C_enableInterrupt(uint16_t baseAddress,
+                                uint8_t mask
+                                )
 {
-    assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
-                               USCI_B_I2C_START_INTERRUPT +
-                               USCI_B_I2C_RECEIVE_INTERRUPT +
-                               USCI_B_I2C_TRANSMIT_INTERRUPT +
-                               USCI_B_I2C_NAK_INTERRUPT +
-                               USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
-        );
+        assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
+                                   USCI_B_I2C_START_INTERRUPT +
+                                   USCI_B_I2C_RECEIVE_INTERRUPT +
+                                   USCI_B_I2C_TRANSMIT_INTERRUPT +
+                                   USCI_B_I2C_NAK_INTERRUPT +
+                                   USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
+                );
 
-    //Enable the interrupt masked bit
-    HWREG16(baseAddress + OFS_UCBxIE) |= mask;
+        //Enable the interrupt masked bit
+        HWREG8(baseAddress + OFS_UCBxIE) |= mask;
 }
 
 //*****************************************************************************
 //
-//! Disables individual I2C interrupt sources.
+//! \brief Disables individual I2C interrupt sources.
+//!
+//! Disables the indicated I2C interrupt sources. Only the sources that are
+//! enabled can be reflected to the processor interrupt; disabled sources have
+//! no effect on the processor.
 //!
 //! \param baseAddress is the base address of the I2C module.
-//! \param mask is the bit mask of the interrupt sources to be
-//! disabled.
+//! \param mask is the bit mask of the interrupt sources to be disabled.
+//!        Mask value is the logical OR of any of the following:
+//!        - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
+//!        - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
+//!        - \b USCI_B_I2C_RECEIVE_INTERRUPT - Receive interrupt
+//!        - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
+//!        - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
+//!        - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost
+//!           interrupt
 //!
-//! Disables the indicated I2C interrupt sources.  Only the sources that
-//! are enabled can be reflected to the processor interrupt; disabled sources
-//! have no effect on the processor.
+//! Modified bits of \b UCBxIE register.
 //!
-//! The mask parameter is the logical OR of any of the following:
-//!
-//! - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
-//! - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
-//! - \b USCI_B_I2C_RECEIVE_INTERRUPT -Receive interrupt
-//! - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
-//! - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
-//! - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost interrupt
-//!
-//! Modified register is \b UCBxIE.
-//!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_disableInterrupt (uint32_t baseAddress,
-    uint8_t mask
-    )
+void USCI_B_I2C_disableInterrupt(uint16_t baseAddress,
+                                 uint8_t mask
+                                 )
 {
-    assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
-                               USCI_B_I2C_START_INTERRUPT +
-                               USCI_B_I2C_RECEIVE_INTERRUPT +
-                               USCI_B_I2C_TRANSMIT_INTERRUPT +
-                               USCI_B_I2C_NAK_INTERRUPT +
-                               USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
-        );
+        assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
+                                   USCI_B_I2C_START_INTERRUPT +
+                                   USCI_B_I2C_RECEIVE_INTERRUPT +
+                                   USCI_B_I2C_TRANSMIT_INTERRUPT +
+                                   USCI_B_I2C_NAK_INTERRUPT +
+                                   USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
+                );
 
-    //Disable the interrupt masked bit
-    HWREG8(baseAddress + OFS_UCBxIE) &= ~(mask);
+        //Disable the interrupt masked bit
+        HWREG8(baseAddress + OFS_UCBxIE) &= ~(mask);
 }
 
 //*****************************************************************************
 //
-//! Clears I2C interrupt sources.
+//! \brief Clears I2C interrupt sources.
+//!
+//! The I2C interrupt source is cleared, so that it no longer asserts. The
+//! highest interrupt flag is automatically cleared when an interrupt vector
+//! generator is used.
 //!
 //! \param baseAddress is the base address of the I2C Slave module.
 //! \param mask is a bit mask of the interrupt sources to be cleared.
+//!        Mask value is the logical OR of any of the following:
+//!        - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
+//!        - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
+//!        - \b USCI_B_I2C_RECEIVE_INTERRUPT - Receive interrupt
+//!        - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
+//!        - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
+//!        - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost
+//!           interrupt
 //!
-//! The I2C interrupt source is cleared, so that it no longer asserts.
-//! The highest interrupt flag is automatically cleared when an interrupt vector
-//! generator is used.
+//! Modified bits of \b UCBxIFG register.
 //!
-//! The mask parameter has the same definition as the mask
-//! parameter to USCI_B_I2C_enableInterrupt().
-//!
-//! Modified register is \b UCBxIFG.
-//!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_clearInterruptFlag (uint32_t baseAddress,
-    uint8_t mask
-    )
+void USCI_B_I2C_clearInterruptFlag(uint16_t baseAddress,
+                                   uint8_t mask
+                                   )
 {
-    assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
-                               USCI_B_I2C_START_INTERRUPT +
-                               USCI_B_I2C_RECEIVE_INTERRUPT +
-                               USCI_B_I2C_TRANSMIT_INTERRUPT +
-                               USCI_B_I2C_NAK_INTERRUPT +
-                               USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
-        );
-    //Clear the I2C interrupt source.
-    HWREG8(baseAddress + OFS_UCBxIFG) &= ~(mask);
+        assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
+                                   USCI_B_I2C_START_INTERRUPT +
+                                   USCI_B_I2C_RECEIVE_INTERRUPT +
+                                   USCI_B_I2C_TRANSMIT_INTERRUPT +
+                                   USCI_B_I2C_NAK_INTERRUPT +
+                                   USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
+                );
+        //Clear the I2C interrupt source.
+        HWREG8(baseAddress + OFS_UCBxIFG) &= ~(mask);
 }
 
 //*****************************************************************************
 //
-//! Gets the current I2C interrupt status.
+//! \brief Gets the current I2C interrupt status.
+//!
+//! This returns the interrupt status for the I2C module based on which flag is
+//! passed. mask parameter can be logic OR of any of the following selection.
 //!
 //! \param baseAddress is the base address of the I2C module.
 //! \param mask is the masked interrupt flag status to be returned.
+//!        Mask value is the logical OR of any of the following:
+//!        - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
+//!        - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
+//!        - \b USCI_B_I2C_RECEIVE_INTERRUPT - Receive interrupt
+//!        - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
+//!        - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
+//!        - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost
+//!           interrupt
 //!
-//! This returns the interrupt status for the I2C  module based on which
-//! flag is passed. mask parameter can be either any of the following
-//! selection.
-//!
-//! - \b USCI_B_I2C_STOP_INTERRUPT - STOP condition interrupt
-//! - \b USCI_B_I2C_START_INTERRUPT - START condition interrupt
-//! - \b USCI_B_I2C_RECEIVE_INTERRUPT -Receive interrupt
-//! - \b USCI_B_I2C_TRANSMIT_INTERRUPT - Transmit interrupt
-//! - \b USCI_B_I2C_NAK_INTERRUPT - Not-acknowledge interrupt
-//! - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT - Arbitration lost interrupt
-//!
-//! Modified register is \b UCBxIFG.
-//!
-//! \returns the masked status of the interrupt flag
+//! \return the masked status of the interrupt flag
+//!         Return Logical OR of any of the following:
+//!         - \b USCI_B_I2C_STOP_INTERRUPT STOP condition interrupt
+//!         - \b USCI_B_I2C_START_INTERRUPT START condition interrupt
+//!         - \b USCI_B_I2C_RECEIVE_INTERRUPT Receive interrupt
+//!         - \b USCI_B_I2C_TRANSMIT_INTERRUPT Transmit interrupt
+//!         - \b USCI_B_I2C_NAK_INTERRUPT Not-acknowledge interrupt
+//!         - \b USCI_B_I2C_ARBITRATIONLOST_INTERRUPT Arbitration lost
+//!         interrupt
+//!         \n indicating the status of the masked interrupts
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_getInterruptStatus (uint32_t baseAddress,
-    uint8_t mask
-    )
+uint8_t USCI_B_I2C_getInterruptStatus(uint16_t baseAddress,
+                                      uint8_t mask
+                                      )
 {
-    assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
-                               USCI_B_I2C_START_INTERRUPT +
-                               USCI_B_I2C_RECEIVE_INTERRUPT +
-                               USCI_B_I2C_TRANSMIT_INTERRUPT +
-                               USCI_B_I2C_NAK_INTERRUPT +
-                               USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
-        );
-    //Return the interrupt status of the request masked bit.
-    return (HWREG8(baseAddress + OFS_UCBxIFG) & mask);
+        assert( 0x00 == ( mask & ~(USCI_B_I2C_STOP_INTERRUPT +
+                                   USCI_B_I2C_START_INTERRUPT +
+                                   USCI_B_I2C_RECEIVE_INTERRUPT +
+                                   USCI_B_I2C_TRANSMIT_INTERRUPT +
+                                   USCI_B_I2C_NAK_INTERRUPT +
+                                   USCI_B_I2C_ARBITRATIONLOST_INTERRUPT))
+                );
+        //Return the interrupt status of the request masked bit.
+        return HWREG8(baseAddress + OFS_UCBxIFG) & mask;
 }
 
 //*****************************************************************************
 //
-//! Does single byte transmission from Master to Slave
+//! \brief Does single byte transmission from Master to Slave
+//!
+//! This function is used by the Master module to send a single byte.This
+//! function does the following: - Sends START; - Transmits the byte to the
+//! Slave; - Sends STOP
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //! \param txData is the data byte to be transmitted
 //!
-//! This function is used by the Master module to send a single byte.
-//! This function
-//! - Sends START
-//! - Transmits the byte to the Slave
-//! - Sends STOP
+//! Modified bits of \b UCBxTXBUF register, bits of \b UCBxIFG register, bits
+//! of \b UCBxCTL1 register and bits of \b UCBxIE register.
 //!
-//! Modified registers are \b UCBxIE, \b UCBxCTL1, \b UCBxIFG, \b UCBxTXBUF,
-//! \b UCBxIE
-//!
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterSendSingleByte (uint32_t baseAddress,
-    uint8_t txData
-    )
+void USCI_B_I2C_masterSendSingleByte(uint16_t baseAddress,
+                                     uint8_t txData
+                                     )
 {
-    //Store current TXIE status
-    uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
+        //Store current TXIE status
+        uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
 
-    //Disable transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
+        //Disable transmit interrupt enable
+        HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
 
-    //Send start condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR + UCTXSTT;
+        //Send start condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR + UCTXSTT;
 
-    //Poll for transmit interrupt flag.
-    while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+        //Poll for transmit interrupt flag.
+        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
 
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
 
-    //Poll for transmit interrupt flag.
-    while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+        //Poll for transmit interrupt flag.
+        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
 
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
 
-    //Clear transmit interrupt flag before enabling interrupt again
-    HWREG8(baseAddress + OFS_UCBxIFG) &= ~(UCTXIFG);
+        //Clear transmit interrupt flag before enabling interrupt again
+        HWREG8(baseAddress + OFS_UCBxIFG) &= ~(UCTXIFG);
 
-    //Reinstate transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
+        //Reinstate transmit interrupt enable
+        HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
 }
 
 //*****************************************************************************
 //
-//! Does single byte transmission from Master to Slave with timeout
+//! \brief Does single byte transmission from Master to Slave with timeout
+//!
+//! This function is used by the Master module to send a single byte. This
+//! function does the following: - Sends START; - Transmits the byte to the
+//! Slave; - Sends STOP
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //! \param txData is the data byte to be transmitted
 //! \param timeout is the amount of time to wait until giving up
 //!
-//! This function is used by the Master module to send a single byte.
-//! This function
-//! - Sends START
-//! - Transmits the byte to the Slave
-//! - Sends STOP
-//!
-//! Modified registers are \b UCBxIE, \b UCBxCTL1, \b UCBxIFG, \b UCBxTXBUF,
-//! \b UCBxIE
+//! Modified bits of \b UCBxTXBUF register, bits of \b UCBxIFG register, bits
+//! of \b UCBxCTL1 register and bits of \b UCBxIE register.
 //!
 //! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
 //
 //*****************************************************************************
-unsigned short USCI_B_I2C_masterSendSingleByteWithTimeout (uint32_t baseAddress,
-    uint8_t txData,
-    uint32_t timeout
-    )
+uint8_t USCI_B_I2C_masterSendSingleByteWithTimeout(uint16_t baseAddress,
+                                                uint8_t txData,
+                                                uint32_t timeout
+                                                )
 {
-	// Creating variable for second timeout scenario
-	uint32_t timeout2 = timeout;
-	
-	assert(timeout > 0);
-		
-    //Store current TXIE status
-    uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
+        assert(timeout > 0);
 
-    //Disable transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
+        // Creating variable for second timeout scenario
+        uint32_t timeout2 = timeout;
 
-    //Send start condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR + UCTXSTT;
+        assert(timeout > 0);
 
-    //Poll for transmit interrupt flag.
-    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout--) ;
-    
-    //Check if transfer timed out
-    if (timeout == 0){
-    	return (STATUS_FAIL);
-    }
+        //Store current TXIE status
+        uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
 
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+        //Disable transmit interrupt enable
+        HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
 
-   	//Poll for transmit interrupt flag.
-    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout2--) ;
-    
-    //Check if transfer timed out
-    if (timeout2 == 0){
-    	return (STATUS_FAIL);
-    }
-    
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Send start condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR + UCTXSTT;
 
-    //Clear transmit interrupt flag before enabling interrupt again
-    HWREG8(baseAddress + OFS_UCBxIFG) &= ~(UCTXIFG);
-
-    //Reinstate transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
-    
-    return (STATUS_SUCCESS);
-}
-
-//*****************************************************************************
-//
-//! Starts multi-byte transmission from Master to Slave
-//!
-//! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is the first data byte to be transmitted
-//!
-//! This function is used by the Master module to send a single byte.
-//! This function
-//! - Sends START
-//! - Transmits the first data byte of a multi-byte transmission to the Slave
-//!
-//! Modified registers are \b UCBxIE, \b UCBxCTL1, \b UCBxIFG, \b UCBxTXBUF,
-//! \b UCBxIE
-//!
-//! \return None.
-//
-//*****************************************************************************
-void USCI_B_I2C_masterMultiByteSendStart (uint32_t baseAddress,
-    uint8_t txData
-    )
-{
-    //Store current transmit interrupt enable
-    uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
-
-
-    //Disable transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
-
-    //Send start condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR +  UCTXSTT;
-
-    //Poll for transmit interrupt flag.
-    while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
-
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
-
-    //Reinstate transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
-}
-
-//*****************************************************************************
-//
-//! Starts multi-byte transmission from Master to Slave with timeout
-//!
-//! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is the first data byte to be transmitted
-//! \param timeout is the amount of time to wait until giving up
-//!
-//! This function is used by the Master module to send a single byte.
-//! This function
-//! - Sends START
-//! - Transmits the first data byte of a multi-byte transmission to the Slave
-//!
-//! Modified registers are \b UCBxIE, \b UCBxCTL1, \b UCBxIFG, \b UCBxTXBUF,
-//! \b UCBxIE
-//!
-//! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
-//
-//*****************************************************************************
-unsigned short USCI_B_I2C_masterMultiByteSendStartWithTimeout (uint32_t baseAddress,
-    uint8_t txData, 
-    uint32_t timeout
-    )
-{
-	assert(timeout == 0);
-	
-    //Store current transmit interrupt enable
-    uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
-
-    //Disable transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
-
-    //Send start condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR +  UCTXSTT;
-
-    //Poll for transmit interrupt flag.
-    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout--) ;
-
-	//Check if transfer timed out
-    if (timeout == 0){
-    	return (STATUS_FAIL);
-    }
-
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
-
-    //Reinstate transmit interrupt enable
-    HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
-
-    return(STATUS_SUCCESS);
-}
-
-//*****************************************************************************
-//
-//! Continues multi-byte transmission from Master to Slave
-//!
-//! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is the next data byte to be transmitted
-//! \param timeout is the amount of time to wait until giving up
-//!
-//! This function is used by the Master module continue each byte of a
-//! multi-byte trasmission. This function
-//! - Transmits each data byte of a multi-byte transmission to the Slave
-//!
-//! Modified registers are \b UCBxTXBUF
-//!
-//! \return None.
-//
-//*****************************************************************************
-void USCI_B_I2C_masterMultiByteSendNext (uint32_t baseAddress,
-    uint8_t txData
-    )
-{
-    //If interrupts are not used, poll for flags
-    if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)){
         //Poll for transmit interrupt flag.
-        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
-    }
+        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout) ;
 
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
-}
-
-//*****************************************************************************
-//
-//! Continues multi-byte transmission from Master to Slave with timeout
-//!
-//! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is the next data byte to be transmitted
-//! \param timeout is the amount of time to wait until giving up
-//!
-//! This function is used by the Master module continue each byte of a
-//! multi-byte trasmission. This function
-//! - Transmits each data byte of a multi-byte transmission to the Slave
-//!
-//! Modified registers are \b UCBxTXBUF
-//!
-//! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
-//
-//*****************************************************************************
-unsigned short USCI_B_I2C_masterMultiByteSendNextWithTimeout (uint32_t baseAddress,
-    uint8_t txData, 
-    uint32_t timeout
-    )
-{
-	assert(timeout == 0);
-		
-    //If interrupts are not used, poll for flags
-    if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)){
-        //Poll for transmit interrupt flag.
-    	while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout--);
-
-		//Check if transfer timed out
-        if (timeout == 0){
-        	return (STATUS_FAIL);
-        }
-    }
-
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
-
-    return(STATUS_SUCCESS);
-}
-
-//*****************************************************************************
-//
-//! Finishes multi-byte transmission from Master to Slave
-//!
-//! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is the last data byte to be transmitted in a multi-byte
-//! tramsission
-//!
-//! This function is used by the Master module to send the last byte and STOP.
-//! This function
-//! - Transmits the last data byte of a multi-byte transmission to the Slave
-//! - Sends STOP
-//!
-//! Modified registers are \b UCBxTXBUF and \b UCBxCTL1.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void USCI_B_I2C_masterMultiByteSendFinish (uint32_t baseAddress,
-    uint8_t txData
-    )
-{
-    //If interrupts are not used, poll for flags
-    if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)){
-        //Poll for transmit interrupt flag.
-        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
-    }
-
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
-
-    //Poll for transmit interrupt flag.
-    while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
-
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
-}
-
-//*****************************************************************************
-//
-//! Finishes multi-byte transmission from Master to Slave with timeout
-//!
-//! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is the last data byte to be transmitted in a multi-byte
-//! tramsission
-//! \param timeout is the amount of time to wait until giving up
-//!
-//! This function is used by the Master module to send the last byte and STOP.
-//! This function
-//! - Transmits the last data byte of a multi-byte transmission to the Slave
-//! - Sends STOP
-//!
-//! Modified registers are \b UCBxTXBUF and \b UCBxCTL1.
-//!
-//! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
-//
-//*****************************************************************************
-unsigned short USCI_B_I2C_masterMultiByteSendFinishWithTimeout (uint32_t baseAddress,
-    uint8_t txData,
-    uint32_t timeout
-    )
-{
-	uint32_t timeout2 = timeout;
-	
-	assert(timeout == 0);
-	
-    //If interrupts are not used, poll for flags
-    if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)){
-        //Poll for transmit interrupt flag.
-        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout--) ;
-        
         //Check if transfer timed out
-        if (timeout == 0){
-        	return (STATUS_FAIL);
-        }
-    }
+        if (timeout == 0)
+                return STATUS_FAIL;
 
-    //Send single byte data.
-    HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
 
-    //Poll for transmit interrupt flag.
-    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout2--) ;
+        //Poll for transmit interrupt flag.
+        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout2) ;
 
-	//Check if transfer timed out
-    if (timeout2 == 0){
-    	return (STATUS_FAIL);
-    }
+        //Check if transfer timed out
+        if (timeout2 == 0)
+                return STATUS_FAIL;
 
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
-    
-    return(STATUS_SUCCESS);
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+        //Clear transmit interrupt flag before enabling interrupt again
+        HWREG8(baseAddress + OFS_UCBxIFG) &= ~(UCTXIFG);
+
+        //Reinstate transmit interrupt enable
+        HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
+
+        return STATUS_SUCCESS;
 }
 
 //*****************************************************************************
 //
-//! Send STOP byte at the end of a multi-byte transmission from Master to Slave
+//! \brief Starts multi-byte transmission from Master to Slave
+//!
+//! This function is used by the Master module to send a single byte. This
+//! function does the following: - Sends START; - Transmits the first data byte
+//! of a multi-byte transmission to the Slave
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param txData is the first data byte to be transmitted
+//!
+//! Modified bits of \b UCBxTXBUF register, bits of \b UCBxIFG register, bits
+//! of \b UCBxCTL1 register and bits of \b UCBxIE register.
+//!
+//! \return None
+//
+//*****************************************************************************
+void USCI_B_I2C_masterMultiByteSendStart(uint16_t baseAddress,
+                                         uint8_t txData
+                                         )
+{
+        //Store current transmit interrupt enable
+        //uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
+
+        //Disable transmit interrupt enable
+       // HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
+
+        //Send start condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR +  UCTXSTT;
+
+        //Poll for transmit interrupt flag.
+        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+
+        //Poll for transmit interrupt flag.
+        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+
+        //Reinstate transmit interrupt enable
+        //HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
+}
+
+//*****************************************************************************
+//
+//! \brief Starts multi-byte transmission from Master to Slave with timeout
+//!
+//! This function is used by the Master module to send a single byte. This
+//! function does the following: - Sends START; - Transmits the first data byte
+//! of a multi-byte transmission to the Slave
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param txData is the first data byte to be transmitted
+//! \param timeout is the amount of time to wait until giving up
+//!
+//! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
+//
+//*****************************************************************************
+uint8_t USCI_B_I2C_masterMultiByteSendStartWithTimeout(uint16_t baseAddress,
+                                                    uint8_t txData,
+                                                    uint32_t timeout
+                                                    )
+{
+        assert(timeout > 0);
+
+        //Store current transmit interrupt enable
+        uint8_t txieStatus = HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE;
+
+        //Disable transmit interrupt enable
+        HWREG8(baseAddress + OFS_UCBxIE) &= ~(UCTXIE);
+
+        //Send start condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTR +  UCTXSTT;
+
+        //Poll for transmit interrupt flag.
+        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout) ;
+
+        //Check if transfer timed out
+        if (timeout == 0)
+                return STATUS_FAIL;
+
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+
+        //Reinstate transmit interrupt enable
+        HWREG8(baseAddress + OFS_UCBxIE) |= txieStatus;
+
+        return STATUS_SUCCESS;
+}
+
+//*****************************************************************************
+//
+//! \brief Continues multi-byte transmission from Master to Slave
+//!
+//! This function is used by the Master module continue each byte of a multi-
+//! byte transmission. This function does the following: -Transmits each data
+//! byte of a multi-byte transmission to the Slave
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param txData is the next data byte to be transmitted
+//!
+//! Modified bits of \b UCBxTXBUF register.
+//!
+//! \return None
+//
+//*****************************************************************************
+void USCI_B_I2C_masterMultiByteSendNext(uint16_t baseAddress,
+                                        uint8_t txData
+                                        )
+{
+        //If interrupts are not used, poll for flags
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE))
+                //Poll for transmit interrupt flag.
+                while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+}
+
+//*****************************************************************************
+//
+//! \brief Continues multi-byte transmission from Master to Slave with timeout
+//!
+//! This function is used by the Master module continue each byte of a multi-
+//! byte transmission. This function does the following: -Transmits each data
+//! byte of a multi-byte transmission to the Slave
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param txData is the next data byte to be transmitted
+//! \param timeout is the amount of time to wait until giving up
+//!
+//! Modified bits of \b UCBxTXBUF register.
+//!
+//! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
+//
+//*****************************************************************************
+uint8_t USCI_B_I2C_masterMultiByteSendNextWithTimeout(uint16_t baseAddress,
+                                                   uint8_t txData,
+                                                   uint32_t timeout
+                                                   )
+{
+        assert(timeout > 0);
+
+        //If interrupts are not used, poll for flags
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)) {
+                //Poll for transmit interrupt flag.
+                while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout) ;
+
+                //Check if transfer timed out
+                if (timeout == 0)
+                        return STATUS_FAIL;
+        }
+
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+
+        return STATUS_SUCCESS;
+}
+
+//*****************************************************************************
+//
+//! \brief Finishes multi-byte transmission from Master to Slave
+//!
+//! This function is used by the Master module to send the last byte and STOP.
+//! This function does the following: - Transmits the last data byte of a
+//! multi-byte transmission to the Slave; - Sends STOP
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param txData is the last data byte to be transmitted in a multi-byte
+//!        transmission
+//!
+//! Modified bits of \b UCBxTXBUF register and bits of \b UCBxCTL1 register.
+//!
+//! \return None
+//
+//*****************************************************************************
+void USCI_B_I2C_masterMultiByteSendFinish(uint16_t baseAddress,
+                                          uint8_t txData
+                                          )
+{
+        //If interrupts are not used, poll for flags
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE))
+                //Poll for transmit interrupt flag.
+                while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+
+        //Poll for transmit interrupt flag.
+        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
+
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+}
+
+//*****************************************************************************
+//
+//! \brief Finishes multi-byte transmission from Master to Slave with timeout
+//!
+//! This function is used by the Master module to send the last byte and STOP.
+//! This function does the following: - Transmits the last data byte of a
+//! multi-byte transmission to the Slave; - Sends STOP
+//!
+//! \param baseAddress is the base address of the I2C Master module.
+//! \param txData is the last data byte to be transmitted in a multi-byte
+//!        transmission
+//! \param timeout is the amount of time to wait until giving up
+//!
+//! Modified bits of \b UCBxTXBUF register and bits of \b UCBxCTL1 register.
+//!
+//! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
+//
+//*****************************************************************************
+uint8_t USCI_B_I2C_masterMultiByteSendFinishWithTimeout(uint16_t baseAddress,
+                                                     uint8_t txData,
+                                                     uint32_t timeout
+                                                     )
+{
+        assert(timeout > 0);
+
+        uint32_t timeout2 = timeout;
+
+        //If interrupts are not used, poll for flags
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)) {
+                //Poll for transmit interrupt flag.
+                while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout) ;
+
+                //Check if transfer timed out
+                if (timeout == 0)
+                        return STATUS_FAIL;
+        }
+
+        //Send single byte data.
+        HWREG8(baseAddress + OFS_UCBxTXBUF) = txData;
+
+        //Poll for transmit interrupt flag.
+        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout2) ;
+
+        //Check if transfer timed out
+        if (timeout2 == 0)
+                return STATUS_FAIL;
+
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+        return STATUS_SUCCESS;
+}
+
+//*****************************************************************************
+//
+//! \brief Send STOP byte at the end of a multi-byte transmission from Master
+//! to Slave
+//!
+//! This function is used by the Master module send STOP at the end of a multi-
+//! byte transmission. This function does the following: - Sends a STOP after
+//! current transmission is complete
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //!
-//! This function is used by the Master module send STOP at the end of a
-//! multi-byte trasmission
+//! Modified bits are \b UCTXSTP of \b UCBxCTL1 register.
 //!
-//! This function
-//! - Send a STOP after current transmission is complete
-//!
-//! Modified bits are \b UCTXSTP bit of \b UCBxCTL1.
-//! \return None.
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterMultiByteSendStop (uint32_t baseAddress)
+void USCI_B_I2C_masterMultiByteSendStop(uint16_t baseAddress)
 {
-    //If interrupts are not used, poll for flags
-    if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)){
-        //Poll for transmit interrupt flag.
-        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
-    }
+        //If interrupts are not used, poll for flags
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE))
+                //Poll for transmit interrupt flag.
+                while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) ;
 
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
 }
 
 //*****************************************************************************
 //
-//! Send STOP byte at the end of a multi-byte transmission from Master to Slave 
-//! with timeout
+//! \brief Send STOP byte at the end of a multi-byte transmission from Master
+//! to Slave with timeout
+//!
+//! This function is used by the Master module send STOP at the end of a multi-
+//! byte transmission. This function does the following: - Sends a STOP after
+//! current transmission is complete
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //! \param timeout is the amount of time to wait until giving up
 //!
-//! This function is used by the Master module send STOP at the end of a
-//! multi-byte trasmission
+//! Modified bits are \b UCTXSTP of \b UCBxCTL1 register.
 //!
-//! This function
-//! - Send a STOP after current transmission is complete
-//!
-//! Modified bits are \b UCTXSTP bit of \b UCBxCTL1.
 //! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
 //
 //*****************************************************************************
-unsigned short USCI_B_I2C_masterMultiByteSendStopWithTimeout (uint32_t baseAddress, 
-	uint32_t timeout)
+uint8_t USCI_B_I2C_masterMultiByteSendStopWithTimeout(uint16_t baseAddress,
+                                                   uint32_t timeout)
 {
-	
-	assert(timeout == 0);
-	
-    //If interrupts are not used, poll for flags
-    if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)){
-        //Poll for transmit interrupt flag.
-    	while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && timeout--) ;
 
-		//Check if transfer timed out
-        if (timeout == 0){
-        	return (STATUS_FAIL);
+        assert(timeout > 0);
+
+        //If interrupts are not used, poll for flags
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCTXIE)) {
+                //Poll for transmit interrupt flag.
+                while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXIFG)) && --timeout) ;
+
+                //Check if transfer timed out
+                if (timeout == 0)
+                        return STATUS_FAIL;
         }
-    }
 
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
 
-    return (STATUS_SUCCESS);
+        return STATUS_SUCCESS;
 }
 
 //*****************************************************************************
 //
-//! Starts multi-byte reception at the Master end
-//!
-//! \param baseAddress is the base address of the I2C Master module.
+//! \brief Starts multi-byte reception at the Master end
 //!
 //! This function is used by the Master module initiate reception of a single
-//! byte. This function
-//! - Sends START
+//! byte. This function does the following: - Sends START
 //!
-//! Modified bits are \b UCTXSTT bit of \b UCBxCTL1.
-//! \return None.
+//! \param baseAddress is the base address of the I2C Master module.
+//!
+//! Modified bits are \b UCTXSTT of \b UCBxCTL1 register.
+//!
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterMultiByteReceiveStart (uint32_t baseAddress)
+void USCI_B_I2C_masterMultiByteReceiveStart(uint16_t baseAddress)
 {
-    //Set USCI in Receive mode
-    HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
-    //Send start
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
+        //Set USCI in Receive mode
+        HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
+        //Send start
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
 }
 
 //*****************************************************************************
 //
-//! Starts multi-byte reception at the Master end one byte at a time
+//! \brief Starts multi-byte reception at the Master end one byte at a time
+//!
+//! This function is used by the Master module to receive each byte of a multi-
+//! byte reception. This function reads currently received byte
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //!
-//! This function is used by the Master module to receive each byte of a
-//! multi-byte reception
-//! This function reads currently received byte
-//!
-//! Modified register is \b UCBxRXBUF.
 //! \return Received byte at Master end.
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_masterMultiByteReceiveNext (uint32_t baseAddress)
-{
-    return (HWREG8(baseAddress + OFS_UCBxRXBUF));
+uint8_t USCI_B_I2C_masterMultiByteReceiveNext(uint16_t baseAddress)
+{      while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG) ) ;
+        return HWREG8(baseAddress + OFS_UCBxRXBUF);
 }
 
 //*****************************************************************************
 //
-//! Finishes multi-byte reception at the Master end
-//!
-//! \param baseAddress is the base address of the I2C Master module.
+//! \brief Finishes multi-byte reception at the Master end
 //!
 //! This function is used by the Master module to initiate completion of a
-//! multi-byte reception
-//! This function
-//! - Receives the current byte and initiates the STOP from Master to Slave
+//! multi-byte reception. This function does the following: - Receives the
+//! current byte and initiates the STOP from Master to Slave
 //!
-//! Modified bits are \b UCTXSTP bit of \b UCBxCTL1.
+//! \param baseAddress is the base address of the I2C Master module.
+//!
+//! Modified bits are \b UCTXSTP of \b UCBxCTL1 register.
 //!
 //! \return Received byte at Master end.
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_masterMultiByteReceiveFinish (uint32_t baseAddress)
+uint8_t USCI_B_I2C_masterMultiByteReceiveFinish(uint16_t baseAddress)
 {
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        uint8_t receiveData;
 
-    //Wait for Stop to finish
-    while (HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP)
+        //Send stop condition.
 
-    // Wait for RX buffer
-    while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG)) ;
 
-    //Capture data from receive buffer after setting stop bit due to
-    //MSP430 I2C critical timing.
-    return (HWREG8(baseAddress + OFS_UCBxRXBUF));
+        //Capture data from receive buffer after setting stop bit due to
+        //MSP430 I2C critical timing.
+        //Wait for RX buffer
+        while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG) ) ;
+        receiveData = HWREG8(baseAddress + OFS_UCBxRXBUF);
+
+
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+
+
+
+                             //Wait for Stop to finish
+
+
+
+
+               while (HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP) ;
+
+
+        return receiveData;
 }
 
 //*****************************************************************************
 //
-//! Finishes multi-byte reception at the Master end with timeout
+//! \brief Finishes multi-byte reception at the Master end with timeout
+//!
+//! This function is used by the Master module to initiate completion of a
+//! multi-byte reception. This function does the following: - Receives the
+//! current byte and initiates the STOP from Master to Slave
 //!
 //! \param baseAddress is the base address of the I2C Master module.
-//! \param txData is a pointer to the location to store the recieved byte at 
-//!      master end
+//! \param rxData is a pointer to the location to store the received byte at
+//!        master end
 //! \param timeout is the amount of time to wait until giving up
 //!
-//! This function is used by the Master module to initiate completion of a
-//! multi-byte reception
-//! This function
-//! - Receives the current byte and initiates the STOP from Master to Slave
-//!
-//! Modified bits are \b UCTXSTP bit of \b UCBxCTL1.
+//! Modified bits are \b UCTXSTP of \b UCBxCTL1 register.
 //!
 //! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
 //
 //*****************************************************************************
-unsigned short USCI_B_I2C_masterMultiByteReceiveFinishWithTimeout (uint32_t baseAddress,
-	uint8_t *txData,
-    uint32_t timeout
-    )
+uint8_t USCI_B_I2C_masterMultiByteReceiveFinishWithTimeout(uint16_t baseAddress,
+                                                        uint8_t *rxData,
+                                                        uint32_t timeout
+                                                        )
 {
-	uint32_t timeout2 = timeout;
-	
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        assert(timeout > 0);
 
-    //Wait for Stop to finish
-    while ((HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP) && timeout--);
-    
-    //Check if transfer timed out
-    if (timeout == 0){
-    	return (STATUS_FAIL);
-    }
-    
-    // Wait for RX buffer
-    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG)) && timeout2--) ;
+        uint32_t timeout2 = timeout;
 
-    //Check if transfer timed out
-    if (timeout2 == 0){
-    	return (STATUS_FAIL);
-    }
-    
-    //Capture data from receive buffer after setting stop bit due to
-    //MSP430 I2C critical timing.
-    *txData = (HWREG8(baseAddress + OFS_UCBxRXBUF));
-    
-    return (STATUS_SUCCESS);
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+        //Capture data from receive buffer after setting stop bit due to
+        //MSP430 I2C critical timing.
+        *rxData = (HWREG8(baseAddress + OFS_UCBxRXBUF));
+
+        //Wait for Stop to finish
+        while ((HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP) && --timeout) ;
+
+        //Check if transfer timed out
+        if (timeout == 0)
+                return STATUS_FAIL;
+
+        // Wait for RX buffer
+        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG)) && --timeout2) ;
+
+        //Check if transfer timed out
+        if (timeout2 == 0)
+                return STATUS_FAIL;
+
+        return STATUS_SUCCESS;
 }
 
 //*****************************************************************************
 //
-//! Sends the STOP at the end of a multi-byte reception at the Master end
-//!
-//! \param baseAddress is the base address of the I2C Master module.
+//! \brief Sends the STOP at the end of a multi-byte reception at the Master
+//! end
 //!
 //! This function is used by the Master module to initiate STOP
 //!
-//! Modified bits are UCTXSTP bit of UCBxCTL1.
+//! \param baseAddress is the base address of the I2C Master module.
 //!
-//! \return None.
+//! Modified bits are \b UCTXSTP of \b UCBxCTL1 register.
+//!
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterMultiByteReceiveStop (uint32_t baseAddress)
+void USCI_B_I2C_masterMultiByteReceiveStop(uint16_t baseAddress)
 {
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
 }
 
 //*****************************************************************************
 //
-//! Initiates a single byte Reception at the Master End
-//!
-//! \param baseAddress is the base address of the I2C Master module.
+//! \brief Initiates a single byte Reception at the Master End
 //!
 //! This function sends a START and STOP immediately to indicate Single byte
 //! reception
 //!
-//! Modified bits are \b UCTXSTT and \b UCTXSTP of \b UCBxCTL1, GIE
+//! \param baseAddress is the base address of the I2C Master module.
 //!
-//! \return None.
+//! Modified bits are \b GIE of \b SR register; bits \b UCTXSTT and \b UCTXSTP
+//! of \b UCBxCTL1 register.
+//!
+//! \return None
 //
 //*****************************************************************************
-void USCI_B_I2C_masterSingleReceiveStart (uint32_t baseAddress)
+void USCI_B_I2C_masterSingleReceiveStart(uint16_t baseAddress)
 {
-    //local variable to store GIE status
-    uint16_t gieStatus;
+        //local variable to store GIE status
+        uint16_t gieStatus;
 
-    //Store current SR register
-    gieStatus = __get_SR_register() & GIE;
+        //Store current SR register
+        gieStatus = __get_SR_register() & GIE;
 
-    //Disable global interrupt
-    __disable_interrupt();
+        //Disable global interrupt
+        __disable_interrupt();
 
-	//Set USCI in Receive mode
-    HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
- 
-    //Send start condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
+        //Set USCI in Receive mode
+        HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
 
-    //Poll for Start bit to complete
-    while (HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTT) ;
+        //Send start condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
 
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Poll for Start bit to complete
+        while (HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTT) ;
 
-    //Reinstate SR register
-    __bis_SR_register(gieStatus);
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+        //Reinstate SR register
+        __bis_SR_register(gieStatus);
 }
 
 //*****************************************************************************
 //
-//! Initiates a single byte Reception at the Master End with timeout
+//! \brief Initiates a single byte Reception at the Master End with timeout
+//!
+//! This function sends a START and STOP immediately to indicate Single byte
+//! reception
 //!
 //! \param baseAddress is the base address of the I2C Master module.
 //! \param timeout is the amount of time to wait until giving up
 //!
-//! This function sends a START and STOP immediately to indicate Single byte
-//! reception
-//!
-//! Modified bits are \b UCTXSTT and \b UCTXSTP of \b UCBxCTL1, GIE
+//! Modified bits are \b GIE of \b SR register; bits \b UCTXSTT and \b UCTXSTP
+//! of \b UCBxCTL1 register.
 //!
 //! \return STATUS_SUCCESS or STATUS_FAILURE of the transmission process.
 //
 //*****************************************************************************
-unsigned short USCI_B_I2C_masterSingleReceiveStartWithTimeout (uint32_t baseAddress,
-	uint32_t timeout
-	)
+uint8_t USCI_B_I2C_masterSingleReceiveStartWithTimeout(uint16_t baseAddress,
+                                                    uint32_t timeout
+                                                    )
 {
-    //local variable to store GIE status
-    uint16_t gieStatus;
-    
-    assert(timeout == 0);
+        //local variable to store GIE status
+        uint16_t gieStatus;
 
-    //Store current SR register
-    gieStatus = __get_SR_register() & GIE;
+        assert(timeout > 0);
 
-    //Disable global interrupt
-    __disable_interrupt();
+        //Store current SR register
+        gieStatus = __get_SR_register() & GIE;
 
-	//Set USCI in Receive mode
-    HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
- 
-    //Send start condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
+        //Disable global interrupt
+        __disable_interrupt();
 
-    //Poll for Start bit to complete
-    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXSTT)) && timeout--) ;
-    
-    //Check if transfer timed out
-    if (timeout == 0){
-    	return (STATUS_FAIL);
-    }
+        //Set USCI in Receive mode
+        HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
 
-    //Send stop condition.
-    HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+        //Send start condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
 
-    //Reinstate SR register
-    __bis_SR_register(gieStatus);
-    
-    return (STATUS_SUCCESS);
+        //Poll for Start bit to complete
+        while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXSTT)) && --timeout) ;
+
+        //Check if transfer timed out
+        if (timeout == 0)
+                return STATUS_FAIL;
+
+        //Send stop condition.
+        HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+        //Reinstate SR register
+        __bis_SR_register(gieStatus);
+
+        return STATUS_SUCCESS;
 }
 
 //*****************************************************************************
 //
-//! Receives a byte that has been sent to the I2C Master Module.
-//!
-//! \param baseAddress is the base address of the I2C module.
+//! \brief Receives a byte that has been sent to the I2C Master Module.
 //!
 //! This function reads a byte of data from the I2C receive data Register.
 //!
+//! \param baseAddress is the base address of the I2C module.
+//!
 //! \return Returns the byte received from by the I2C module, cast as an
-//! uint8_t.
+//!         uint8_t.
 //
 //*****************************************************************************
-uint8_t USCI_B_I2C_masterSingleReceive (uint32_t baseAddress)
+uint8_t USCI_B_I2C_masterSingleReceive(uint16_t baseAddress)
 {
-    //Read a byte.
-    return (HWREG8(baseAddress + OFS_UCBxRXBUF));
+        //Polling RXIFG0 if RXIE is not enabled
+        if (!(HWREG8(baseAddress + OFS_UCBxIE) & UCRXIE))
+                while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG)) ;
+
+        //Read a byte.
+        return HWREG8(baseAddress + OFS_UCBxRXBUF);
 }
 
 //*****************************************************************************
 //
-//! Returns the address of the RX Buffer of the I2C for the DMA module.
-//!
-//! \param baseAddress is the base address of the I2C module.
+//! \brief Returns the address of the RX Buffer of the I2C for the DMA module.
 //!
 //! Returns the address of the I2C RX Buffer. This can be used in conjunction
 //! with the DMA to store the received data directly to memory.
 //!
-//! \return NONE
+//! \param baseAddress is the base address of the I2C module.
+//!
+//! \return the address of the RX Buffer
 //
 //*****************************************************************************
-uint32_t USCI_B_I2C_getReceiveBufferAddressForDMA (uint32_t baseAddress)
+uint32_t USCI_B_I2C_getReceiveBufferAddressForDMA(uint16_t baseAddress)
 {
-    return ( baseAddress + OFS_UCBxRXBUF );
+        return baseAddress + OFS_UCBxRXBUF;
 }
 
 //*****************************************************************************
 //
-//! Returns the address of the TX Buffer of the I2C for the DMA module.
-//!
-//! \param baseAddress is the base address of the I2C module.
+//! \brief Returns the address of the TX Buffer of the I2C for the DMA module.
 //!
 //! Returns the address of the I2C TX Buffer. This can be used in conjunction
 //! with the DMA to obtain transmitted data directly from memory.
 //!
-//! \return NONE
+//! \param baseAddress is the base address of the I2C module.
+//!
+//! \return the address of the TX Buffer
 //
 //*****************************************************************************
-uint32_t USCI_B_I2C_getTransmitBufferAddressForDMA (uint32_t baseAddress)
+uint32_t USCI_B_I2C_getTransmitBufferAddressForDMA(uint16_t baseAddress)
 {
-    return ( baseAddress + OFS_UCBxTXBUF );
+        return baseAddress + OFS_UCBxTXBUF;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*AYANTRA CODE----------------------------------------------------------------------*/
+
+
+
+
+
+
+
+/***********************************************************************
+  Routine     :   i2c_set_slave_address
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+void i2c_set_slave_address( uint16_t baseAddress, uint8_t slave_address)
+{
+	USCI_B_I2C_setSlaveAddress(baseAddress,slave_address);
+}
+
+/***********************************************************************
+  Routine     :   i2c_start
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t i2c_start( uint16_t baseAddress)
+{
+	HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
+	return 1;
+}
+
+
+
+/***********************************************************************
+  Routine     :   i2c_send_byte
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+void i2c_send_byte(uint16_t baseAddress,uint8_t data)
+{
+	//Send single byte data.
+	HWREG8(baseAddress + OFS_UCBxTXBUF) = data;
+}
+
+
+/***********************************************************************
+  Routine     :    i2c_send_stop
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t i2c_send_stop(uint16_t baseAddress)
+{
+	uint8_t result = 0;
+	HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTP;
+
+
+return 1;
+}
+
+/***********************************************************************
+  Routine     :   wait_for_ack
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t wait_for_txempty(uint16_t baseAddress)
+{
+	//Poll for transmit interrupt flag.
+
+	uint8_t result = 0;
+    uint32_t timeout=  0;
+
+   for( timeout = 0; timeout<0xFFFF; timeout++)
+   {
+      if( (HWREG8(baseAddress + OFS_UCBxIFG)) & (UCTXIFG) )
+      {
+          result=1;
+          break;
+      }
+      else
+          if( (HWREG8(baseAddress + OFS_UCBxIFG)) & (UCNACKIFG) )
+          {
+             result = 0;
+             break;
+          }
+   }
+
+
+return result;
+}
+
+/***********************************************************************
+  Routine     :    i2c_wait_for_byte
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t i2c_wait_for_byte(uint16_t baseAddress)
+{
+	uint8_t result = 0;
+	uint32_t timeout=0xffff;
+
+	while (!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG) && (--timeout) );
+
+	if(timeout == 0)
+	{
+		result = 0;
+	}
+	else
+	{
+		result = 1;
+	}
+
+
+   return result;
+
+}
+
+/***********************************************************************
+  Routine     :   i2c_get_byte
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t i2c_get_byte(uint16_t baseAddress)
+{
+	uint8_t value = HWREG8(baseAddress + OFS_UCBxRXBUF);
+    return value;
+}
+
+
+
+/***********************************************************************
+  Routine     :    i2c_receive_mode
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t i2c_receive_mode(uint16_t baseAddress)
+{
+    HWREG8(baseAddress + OFS_UCBxCTL1) &= ~UCTR;
+    return 1;
+}
+
+/***********************************************************************
+  Routine     :    i2c_transmit_mode
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t i2c_transmit_mode(uint16_t baseAddress)
+{
+    HWREG8(baseAddress + OFS_UCBxCTL1) |= USCI_B_I2C_TRANSMIT_MODE;
+    return 1;
+}
+
+/***********************************************************************
+  Routine     :    wait_for_stop
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t wait_for_stop(uint16_t baseAddress)
+{
+    uint8_t result = 0;
+    uint32_t timeout = 0xffff;
+
+    while ((HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTP) && --timeout) ;
+
+
+    if (timeout == 0)
+    {
+        result = 0;
+    }
+    else
+    {
+        result = 1;
+    }
+
+    return result;
+
+}
+/***********************************************************************
+  Routine     :   wait_for_rx_complete
+  DESCRIPTION :
+  Arguments   :
+  Returns     :
+**********************************************************************/
+uint8_t wait_for_rx_complete(uint16_t baseAddress)
+{
+    uint8_t result = 0;
+    uint32_t timeout = 0xffff;
+
+    while ((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCRXIFG)) && --timeout);
+
+    if (timeout == 0)
+    {
+        result = 0;
+    }
+    else
+    {
+        result = 1;
+    }
+    return result;
+}
+
+
+
+
+
+
+//#endif
 //*****************************************************************************
 //
-//Close the Doxygen group.
+//! Close the doxygen group for usci_b_i2c_api
 //! @}
 //
 //*****************************************************************************

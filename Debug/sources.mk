@@ -98,6 +98,7 @@ S64_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+driver\ development \
 SYS \
 SYS/MSP430Ware \
 IO/eMPL \

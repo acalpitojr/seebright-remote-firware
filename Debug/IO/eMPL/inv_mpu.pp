@@ -1,6 +1,9 @@
 # FIXED
 
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/inv_mpu.c
+IO/eMPL/inv_mpu.obj: C:/ti/ccsv6/ccs_base/msp430/include/msp430f5xx_6xxgeneric.h
+IO/eMPL/inv_mpu.obj: C:/ti/ccsv6/ccs_base/msp430/include/in430.h
+IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h
 IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdio.h
 IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/linkage.h
 IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdarg.h
@@ -17,7 +20,6 @@ IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../Common/CYC_Config.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/CYC_SYS_Common.h
 IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/ccs_base/msp430/include/msp430.h
 IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/ccs_base/msp430/include/msp430f5328.h
-IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/ccs_base/msp430/include/in430.h
 IO/eMPL/inv_mpu.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/CYC_SYS_TargetConfig.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/MSP430Ware/gpio.h
@@ -29,6 +31,9 @@ IO/eMPL/inv_mpu.obj: ../IO/eMPL/inv_mpu.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../IO/CYC_IO_MOTS.h
 
 ../IO/eMPL/inv_mpu.c: 
+C:/ti/ccsv6/ccs_base/msp430/include/msp430f5xx_6xxgeneric.h: 
+C:/ti/ccsv6/ccs_base/msp430/include/in430.h: 
+c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h: 
 c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdio.h: 
 c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/linkage.h: 
 c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdarg.h: 
@@ -45,7 +50,6 @@ c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/float.h:
 ../IO/eMPL/../../SYS/CYC_SYS_Common.h: 
 c:/ti/ccsv6/ccs_base/msp430/include/msp430.h: 
 c:/ti/ccsv6/ccs_base/msp430/include/msp430f5328.h: 
-c:/ti/ccsv6/ccs_base/msp430/include/in430.h: 
 c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h: 
 ../IO/eMPL/../../SYS/CYC_SYS_TargetConfig.h: 
 ../IO/eMPL/../../SYS/MSP430Ware/gpio.h: 

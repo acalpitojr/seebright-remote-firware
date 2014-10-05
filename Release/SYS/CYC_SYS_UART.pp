@@ -1,0 +1,5 @@
+# FIXED
+
+SYS/CYC_SYS_UART.obj: ../SYS/CYC_SYS_UART.c
+
+../SYS/CYC_SYS_UART.c: 

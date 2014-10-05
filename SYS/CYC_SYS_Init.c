@@ -98,8 +98,8 @@ STATUS CYC_SYS_InitializeTarget()
 	//CYC_SYS_RST_HoldPAN1721InReset();
 
 	//	Initialize the UART @57600 baudrate
-	CYC_SYS_UART0_Initialize();
-	CYC_SYS_UART1_Initialize();
+	//CYC_SYS_UART0_Initialize();
+	//CYC_SYS_UART1_Initialize();
 
 	//	Initialize LEDs
 	CYC_IO_LEDS_IntializeLEDs();
@@ -114,6 +114,8 @@ STATUS CYC_SYS_InitializeTarget()
 
 	//	Initialize and enable I2C port
 	CYC_SYS_I2C_Enable();
+	//CYC_SYS_I2CB1_Enable();
+
 
 	//	Initialize the Motion Sensor
 	CYC_IO_MOTS_Init();

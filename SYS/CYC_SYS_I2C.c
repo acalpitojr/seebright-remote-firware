@@ -90,39 +90,24 @@ typedef struct
 #error  Define either I2C_B0 or I2C_B1 in your configuration.
 #endif
 
-#if defined __MSP430F5438A__
-#if defined I2C_B0
-#define I2C_MODE(void)  do {P3SEL |= 0x06;} while (0)
-#define GPIO_MODE(void) do {P3SEL &= ~0x06;} while (0)
-#define SET_SCL(void)   do {P3OUT |= 0x04;} while (0)
-#define CLEAR_SCL(void) do {P3OUT &= ~0x04;} while (0)
-#define SET_SDA(void)   do {P3OUT |= 0x02;} while (0)
-#define CLEAR_SDA(void) do {P3OUT &= ~0x02;} while (0)
-#else
-#define I2C_MODE(void)  do {P5SEL |= 0x10; P3SEL |= 0x80;} while (0)
-#define GPIO_MODE(void) do {P5SEL &= ~0x10; P3SEL &= ~0x80;} while (0)
-#define SET_SCL(void)   do {P5OUT |= 0x10;} while (0)
-#define CLEAR_SCL(void) do {P5OUT &= ~0x10;} while (0)
-#define SET_SDA(void)   do {P3OUT |= 0x80;} while (0)
-#define CLEAR_SDA(void) do {P3OUT &= ~0x80;} while (0)
-#endif
-#else
-#if defined I2C_B0
+
+
 #define I2C_MODE(void)  do {P3SEL |= 0x03;} while (0)
 #define GPIO_MODE(void) do {P3SEL &= ~0x03;} while (0)
 #define SET_SCL(void)   do {P3OUT |= 0x02;} while (0)
 #define CLEAR_SCL(void) do {P3OUT &= ~0x02;} while (0)
 #define SET_SDA(void)   do {P3OUT |= 0x01;} while (0)
 #define CLEAR_SDA(void) do {P3OUT &= ~0x01;} while (0)
-#else
-#define I2C_MODE(void)  do {P4SEL |= 0x06;} while (0)
-#define GPIO_MODE(void) do {P4SEL &= ~0x06;} while (0)
-#define SET_SCL(void)   do {P4OUT |= 0x04;} while (0)
-#define CLEAR_SCL(void) do {P4OUT &= ~0x04;} while (0)
-#define SET_SDA(void)   do {P4OUT |= 0x02;} while (0)
-#define CLEAR_SDA(void) do {P4OUT &= ~0x02;} while (0)
-#endif
-#endif
+
+
+#define I2C_B1_MODE(void)  do {P4SEL |= 0x06;} while (0)
+#define I2C_B1_GPIO_MODE(void) do {P4SEL &= ~0x06;} while (0)
+#define I2C_B1_SET_SCL(void)   do {P4OUT |= 0x04;} while (0)
+#define I2C_B1_CLEAR_SCL(void) do {P4OUT &= ~0x04;} while (0)
+#define I2C_B1_SET_SDA(void)   do {P4OUT |= 0x02;} while (0)
+#define I2C_B1_CLEAR_SDA(void) do {P4OUT &= ~0x02;} while (0)
+
+
 
 
 
@@ -196,6 +181,43 @@ STATUS CYC_SYS_I2C_Enable(void)
 
 }
 
+STATUS CYC_SYS_I2CB1_Enable(void)
+{
+    UINT32 lu32SMClk;
+    UINT16 lu16BaudRate;
+
+
+
+    //  Put the I2C module in RESET state
+    UCB1CTL1 |= UCSWRST;
+
+    //  Select the peripheral mode working for the I2C pins
+    I2C_B1_MODE();
+
+    //  Set to synchronous master mode
+    UCB1CTL0 = UCMST + UCMODE_3 + UCSYNC;
+
+    //  Use sub-master clock
+    UCB1CTL1 = UCSSEL_2 + UCSWRST;
+
+    //  Set slave clock frequency to 400kHz
+    //  Get the SMCLK frequency
+    lu32SMClk = UCS_getSMCLK(UCS_BASE);
+    //  Divide the source clock frequency by 400 KHz to get the baudrate factor
+    lu16BaudRate = lu32SMClk / 400000L;
+    //  Assign LSB and MSB values for the baud rate register
+    UCB1BR0 = (unsigned char)(lu16BaudRate & 0xFF);
+    UCB1BR1 = (unsigned char)((lu16BaudRate >> 8) & 0xFF);
+
+    //  Take I2C module out of reset
+    UCB1CTL1 &= ~UCSWRST;
+
+
+
+
+    return SUCCESS;
+
+}
 /*
 @@********************* CYC_SYS_I2C_Disable ***************************************
  *  Function	     :
