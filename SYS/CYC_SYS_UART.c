@@ -46,10 +46,11 @@ NOTES:
 //	the value is INT(12000000/57600) = 208
 //#define		BAUDRATE_CLK_PRESCALER				208
 //#define		BAUDRATE_CLK_PRESCALER				26
-#define		BAUDRATE_CLK_PRESCALER				13
+//#define		BAUDRATE_CLK_PRESCALER				13
+#define     BAUDRATE_CLK_PRESCALER              6  /*NEED TO FIX THIS SO WE CAN SELECT ANY BAUD RATE WE WANT*/
 //	Modulator value is computed as follows:
 //	round((208.333 - 208) x 16)
-#define	 	FIRST_STAGE_MODULATOR_VALUE		0
+#define	 	FIRST_STAGE_MODULATOR_VALUE		8
 
 #define		SECOND_STAGE_MODULATOR_VALUE	0
 
@@ -65,8 +66,8 @@ UINT8 gu8RxData = 0x00;
 UINT8 gu8RxDataCount = 0x00;
 
 /* MODULE INTERNAL FUNCTIONS               *fffffff*/
-UINT8 gu8Rx0Buffer[RX_BUFFER_SIZE];
-UINT8 gu8Rx1Buffer[RX_BUFFER_SIZE];
+volatile UINT8 gu8Rx0Buffer[RX_BUFFER_SIZE];
+volatile UINT8 gu8Rx1Buffer[RX_BUFFER_SIZE];
 
 /*
 @@********************* CYC_SYS_UART_Initialize ***************************************
@@ -127,6 +128,8 @@ STATUS CYC_SYS_UART0_Initialize()
     	7. No Parity bits
 
      */
+
+    /*CHANGE THIS SO WE CAN SET ANY BAUD RATE WE WANT, DATA SHEET PG 907*/
     USCI_UART_initAdvance ( UART_PORT_0_BASE_ADDRESS,
     						USCI_UART_CLOCKSOURCE_SMCLK,
     						BAUDRATE_CLK_PRESCALER,
