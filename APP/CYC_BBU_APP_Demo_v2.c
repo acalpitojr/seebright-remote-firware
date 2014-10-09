@@ -166,7 +166,7 @@ main()
 
 	//eeprom_test();
      //mpu_test();
-
+    //fuel_gauge_test();
 
 
 	//CYC_SYS_ADC_Init();
