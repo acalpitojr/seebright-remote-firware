@@ -319,7 +319,8 @@ STATUS CYC_SYS_I2CB0_Write(	UINT8 ru8SlaveAddress,
 	UCB0I2CSA = ru8SlaveAddress;
 
     //	Begin transmitting
-    UCB0CTL1 |= UCTR | UCTXSTT;
+	UCB0CTL1 |= UCTR;
+    UCB0CTL1 |= UCTXSTT;
 
     //	Get the current time stamp, in order to track timeout
     CYC_SYS_TMR_GetClockMs(&lu32StartTimeStamp);
@@ -339,7 +340,7 @@ STATUS CYC_SYS_I2CB0_Write(	UINT8 ru8SlaveAddress,
         	//	Reset I2C to waiting state
             gsI2CB0.msMasterI2CState = STATE_WAITING;
             //	Disable and re-enable the I2C port, sending an error
-            CYC_SYS_I2C_Disable();
+            CYC_SYS_I2CB0_Disable();
             //	Clear and set I2C pins to high
             CYC_SYS_TMR_DelayInMilliSeconds(1);
             CLEAR_B0_SCL();
@@ -391,7 +392,8 @@ STATUS CYC_SYS_I2CB0_Read(	UINT8 ru8SlaveAddress,
 	UCB0I2CSA = ru8SlaveAddress;
 
     //	Begin transmitting
-    UCB0CTL1 |= UCTR | UCTXSTT;
+	UCB0CTL1 |= UCTR;
+    UCB0CTL1 |= UCTXSTT;
 
     //	Get the current time stamp, in order to track timeout
     CYC_SYS_TMR_GetClockMs(&lu32StartTimeStamp);
