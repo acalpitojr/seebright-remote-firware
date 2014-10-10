@@ -47,8 +47,8 @@
  */
 #if defined	TARGET_CYCLOPS_GAME | defined TARGET_MSP430F5438A_EXPERIMENTER_BOARD | defined REMOTE_V1_2
 
-#define i2c_write   CYC_SYS_I2C_Write
-#define i2c_read    CYC_SYS_I2C_Read
+#define i2c_write   CYC_SYS_I2CB0_Write
+#define i2c_read    CYC_SYS_I2CB0_Read
 #define delay_ms    CYC_SYS_TMR_DelayInMilliSeconds
 #define get_ms      CYC_SYS_TMR_GetClockMs
 static inline int reg_int_cb(struct int_param_s *int_param)

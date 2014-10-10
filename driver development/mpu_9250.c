@@ -279,13 +279,21 @@ void mpu_test(void)
    uint8_t write_data[4] = {1,2,3,4};
 
 
+        /*THIS IS POLLING METHOD.  ONLY USE IF ISR IS DISABLED FROM INIT*/
+        //mpu_write(0x00, (uint8_t*)&write_data, 4 );  /*write to eeprom address 0x00, 4 bytes of data*/
 
-        mpu_write(0x00, (uint8_t*)&write_data, 4 );  /*write to eeprom address 0x00, 4 bytes of data*/
+          CYC_SYS_I2CB0_Write(   MPU_SLAVE_ADDRESS,0x00,4,&write_data);  /*function is based off of ISR, and mpu protocol*/
+
+
         __delay_cycles(0xffff);
 
          memset( read_data,  0x00, sizeof(read_data)) ;  /*clear data before we fill it with what is stored in eeprom*/
 
-        mpu_read(0x00, (uint8_t*)&read_data,4  );  /*read from eeprom address 0x00, 4 bytes of data*/
+
+         /*THIS IS POLLING METHOD.  ONLY USE IF ISR IS DISABLED FROM INIT*/
+        //mpu_read(0x00, (uint8_t*)&read_data,4  );  /*read from eeprom address 0x00, 4 bytes of data*/
+
+         CYC_SYS_I2CB0_Read(   MPU_SLAVE_ADDRESS,0x00,4,&read_data);  /*function is based off of ISR, and mpu protocol*/
        __delay_cycles(0xffff);
 
 

@@ -156,16 +156,16 @@ main()
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();
 
-	init_bluetooth();
-	__delay_cycles(0xfffff);
-	while(1)
-	{
-	  CYC_SYS_UART_TransmitData(SERIAL_UART_PORT, "Seebright\r\n", sizeof("Seebright\r\n"));
-	 __delay_cycles(0xfffff);
-	}
+	//init_bluetooth();
+	//__delay_cycles(0xfffff);
+	//while(1)
+	//{
+	//  CYC_SYS_UART_TransmitData(SERIAL_UART_PORT, "Seebright\r\n", sizeof("Seebright\r\n"));
+	// __delay_cycles(0xfffff);
+	//}
 
 	//eeprom_test();
-     //mpu_test();
+     mpu_test();
     //fuel_gauge_test();
 
 
@@ -180,13 +180,7 @@ main()
 	//adc_reading=Read_ADC_Voltage(7);
 //	}
 
-	init_bluetooth();
 
-	//CYC_SYS_GPIO_SetAsOutputPin(GPIO_PORT_P1, GPIO_PIN5);
-
-	//GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN5);
-
-	//GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN5);
 
 
 

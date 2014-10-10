@@ -62,6 +62,7 @@ typedef struct
 /* MODULE INTERNAL MACRO DEFINITIONS       *mmmmmmm*/
 #define I2C_TIMEOUT_MS  (2500)				//	2500 ms
 
+#if 0
 #if defined I2C_B0
 #define CTL0    UCB0CTL0
 #define CTL1    UCB0CTL1
@@ -89,7 +90,7 @@ typedef struct
 #else
 #error  Define either I2C_B0 or I2C_B1 in your configuration.
 #endif
-
+#endif
 
 
 #define I2C_B0_MODE(void)  do {P3SEL |= 0x03;} while (0)
@@ -114,7 +115,13 @@ typedef struct
 /* MODULE INTERNAL FUNCTION PROTOTYPES     *fffffff*/
 
 /* MODULE INTERNAL DATA DEFINITIONS        *ddddddd*/
-static MasterI2CInfo_t gsI2C =
+static MasterI2CInfo_t gsI2CB0 =
+{
+    .mu8Enabled = 0
+};
+
+
+static MasterI2CInfo_t gsI2CB1 =
 {
     .mu8Enabled = 0
 };
@@ -130,30 +137,33 @@ static MasterI2CInfo_t gsI2C =
  *  Output parameters:
  *  Return      	 :
  *  Note         	 :
- ******************************************************************************
- */
+ ******************************************************************************/
+
+
+
 
 STATUS CYC_SYS_I2CB0_Enable(void)
 {
+
     UINT32 lu32SMClk;
     UINT16 lu16BaudRate;
 
     //	If I2C is already enabled, return SUCCESS code and no need to do anything
-    if (gsI2C.mu8Enabled)
+    if (gsI2CB0.mu8Enabled)
         return SUCCESS;
 
     //	Put the I2C module in RESET state
-    CTL1 |= UCSWRST;
+    UCB0CTL1 |= UCSWRST;
 
     //	Select the peripheral mode working for the I2C pins
     GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P3,GPIO_PIN1 + GPIO_PIN0);
     //I2C_B0_MODE();
 
     //	Set to synchronous master mode
-    CTL0 = UCMST + UCMODE_3 + UCSYNC;
+    UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC;
 
     //	Use sub-master clock
-    CTL1 = UCSSEL_2 + UCSWRST;
+    UCB0CTL1 = UCSSEL_2 + UCSWRST;
 
     //	Set slave clock frequency to 400kHz
     //	Get the SMCLK frequency
@@ -161,14 +171,22 @@ STATUS CYC_SYS_I2CB0_Enable(void)
     //	Divide the source clock frequency by 400 KHz to get the baudrate factor
     lu16BaudRate = lu32SMClk / 400000L;
     //	Assign LSB and MSB values for the baud rate register
-    BR0 = (unsigned char)(lu16BaudRate & 0xFF);
-    BR1 = (unsigned char)((lu16BaudRate >> 8) & 0xFF);
+    UCB0BR0 = (unsigned char)(lu16BaudRate & 0xFF);
+    UCB0BR1 = (unsigned char)((lu16BaudRate >> 8) & 0xFF);
 
     //	Take I2C module out of reset
-    CTL1 &= ~UCSWRST;
+    UCB0CTL1 &= ~UCSWRST;
 
+    // Enable interrupts
+    UCB0IE |= UCTXIE | UCRXIE | UCNACKIE;
 
-
+       //  Initialize I2C Info struct
+       gsI2CB0.msMasterI2CState = STATE_WAITING;
+       gsI2CB0.mu8SlaveRegister = 0;
+       gsI2CB0.mu8SlaveRegisterWritten = 0;
+       gsI2CB0.mpu8Data = 0;
+       gsI2CB0.mu16Length = 0;
+       gsI2CB0.mu8Enabled = 1;
 
     return SUCCESS;
 
@@ -221,14 +239,14 @@ STATUS CYC_SYS_I2CB1_Enable(void)
  *  Note         	 :
  ******************************************************************************
  */
-STATUS CYC_SYS_I2C_Disable(void)
+STATUS CYC_SYS_I2CB0_Disable(void)
 {
 	//	If I2C module is already disabled, nothing to do
-    if (!gsI2C.mu8Enabled)
+    if (!gsI2CB0.mu8Enabled)
         return SUCCESS;
 
     //	Reset the I2C Module
-    CTL1 |= UCSWRST;
+    UCB0CTL1 |= UCSWRST;
 
     //	Get the I2C pins to function as GPIO
     GPIO_B0_MODE();
@@ -237,10 +255,34 @@ STATUS CYC_SYS_I2C_Disable(void)
     SET_B0_SDA();
 
     //	As a final step update the flag status
-    gsI2C.mu8Enabled = 0;
+    gsI2CB0.mu8Enabled = 0;
     return 0;
 
 }
+
+
+
+STATUS CYC_SYS_I2CB1_Disable(void)
+{
+    //  If I2C module is already disabled, nothing to do
+    if (!gsI2CB1.mu8Enabled)
+        return SUCCESS;
+
+    //  Reset the I2C Module
+    UCB1CTL1 |= UCSWRST;
+
+    //  Get the I2C pins to function as GPIO
+    GPIO_B1_MODE();
+    //  Set the pins to high state
+    SET_B1_SCL();
+    SET_B1_SDA();
+
+    //  As a final step update the flag status
+    gsI2CB1.mu8Enabled = 0;
+    return 0;
+
+}
+
 
 /*
 @@********************* CYC_SYS_I2C_Write ***************************************
@@ -252,7 +294,7 @@ STATUS CYC_SYS_I2C_Disable(void)
  *  Note         	 :
  ******************************************************************************
  */
-STATUS CYC_SYS_I2C_Write(	UINT8 ru8SlaveAddress,
+STATUS CYC_SYS_I2CB0_Write(	UINT8 ru8SlaveAddress,
 							UINT8 ru8RegisterAddress,
 							UINT8 ru8Length,
 							UINT8 *rpu8Data)
@@ -260,32 +302,31 @@ STATUS CYC_SYS_I2C_Write(	UINT8 ru8SlaveAddress,
 	UINT32 lu32StartTimeStamp, lu32CurrentTimeStamp;
 
 	//	Return FAILURE if
-	if (!gsI2C.mu8Enabled)
+	if (!gsI2CB0.mu8Enabled)
 		return CYC_SYS_I2C_ERRORS;
 	//	If length is 0, it is successful anyways!
 	if (!ru8Length)
 		return SUCCESS;
 
     //	Gather the information into  I2C info structure
-	gsI2C.msMasterI2CState = STATE_WRITING;
-	gsI2C.mu8SlaveRegister = ru8RegisterAddress;
-	gsI2C.mu8SlaveRegisterWritten = 0;
-	gsI2C.mpu8Data = rpu8Data;
-	gsI2C.mu16Length = ru8Length;
+	gsI2CB0.msMasterI2CState = STATE_WRITING;
+	gsI2CB0.mu8SlaveRegister = ru8RegisterAddress;
+	gsI2CB0.mu8SlaveRegisterWritten = 0;
+	gsI2CB0.mpu8Data = rpu8Data;
+	gsI2CB0.mu16Length = ru8Length;
 
 	//	Assign the slave address
-    I2CSA = ru8SlaveAddress;
+	UCB0I2CSA = ru8SlaveAddress;
 
     //	Begin transmitting
-    CTL1 |= UCTR | UCTXSTT;
+    UCB0CTL1 |= UCTR | UCTXSTT;
 
     //	Get the current time stamp, in order to track timeout
     CYC_SYS_TMR_GetClockMs(&lu32StartTimeStamp);
 
-    while(gsI2C.msMasterI2CState != STATE_WAITING)
+    while(gsI2CB0.msMasterI2CState != STATE_WAITING)   /*HERE WE WAIT UNTIL I2C WRITE PROCESS IS COMPLETE THROUGH ISR*/
     {
-        //	Enter into low power mode until the interrupt is raised
-    	__bis_SR_register(LPM0_bits + GIE);
+
 
     	//	Get current time stamp to see if write operation timed out
     	CYC_SYS_TMR_GetClockMs(&lu32CurrentTimeStamp);
@@ -294,9 +335,9 @@ STATUS CYC_SYS_I2C_Write(	UINT8 ru8SlaveAddress,
         if (lu32CurrentTimeStamp >= (lu32StartTimeStamp + I2C_TIMEOUT_MS))
         {
             //	Stop transmission
-        	CTL1 |= UCTXSTP;
+            UCB0CTL1 |= UCTXSTP;
         	//	Reset I2C to waiting state
-            gsI2C.msMasterI2CState = STATE_WAITING;
+            gsI2CB0.msMasterI2CState = STATE_WAITING;
             //	Disable and re-enable the I2C port, sending an error
             CYC_SYS_I2C_Disable();
             //	Clear and set I2C pins to high
@@ -325,7 +366,7 @@ STATUS CYC_SYS_I2C_Write(	UINT8 ru8SlaveAddress,
  *  Note         	 :
  ******************************************************************************
  */
-STATUS CYC_SYS_I2C_Read(	UINT8 ru8SlaveAddress,
+STATUS CYC_SYS_I2CB0_Read(	UINT8 ru8SlaveAddress,
 							UINT8 ru8RegisterAddress,
 							UINT8 ru8Length,
 							UINT8 *rpu8Data)
@@ -333,32 +374,32 @@ STATUS CYC_SYS_I2C_Read(	UINT8 ru8SlaveAddress,
 	UINT32 lu32StartTimeStamp, lu32CurrentTimeStamp;
 
 	//	Return FAILURE if
-	if (!gsI2C.mu8Enabled)
+	if (!gsI2CB0.mu8Enabled)
 		return CYC_SYS_I2C_ERRORS;
 	//	If length is 0, it is successful anyways!
 	if (!ru8Length)
 		return SUCCESS;
 
     //	Gather the information into  I2C info structure
-	gsI2C.msMasterI2CState = STATE_READING;
-	gsI2C.mu8SlaveRegister = ru8RegisterAddress;
-	gsI2C.mu8SlaveRegisterWritten = 0;
-	gsI2C.mpu8Data = rpu8Data;
-	gsI2C.mu16Length = ru8Length;
+	gsI2CB0.msMasterI2CState = STATE_READING;
+	gsI2CB0.mu8SlaveRegister = ru8RegisterAddress;
+	gsI2CB0.mu8SlaveRegisterWritten = 0;
+	gsI2CB0.mpu8Data = rpu8Data;
+	gsI2CB0.mu16Length = ru8Length;
 
 	//	Assign the slave address
-    I2CSA = ru8SlaveAddress;
+	UCB0I2CSA = ru8SlaveAddress;
 
     //	Begin transmitting
-    CTL1 |= UCTR | UCTXSTT;
+    UCB0CTL1 |= UCTR | UCTXSTT;
 
     //	Get the current time stamp, in order to track timeout
     CYC_SYS_TMR_GetClockMs(&lu32StartTimeStamp);
 
-    while(gsI2C.msMasterI2CState != STATE_WAITING)
+    while(gsI2CB0.msMasterI2CState != STATE_WAITING)
     {
-        //	Enter into low power mode until the interrupt is raised
-    	__bis_SR_register(LPM0_bits + GIE);
+        //	Enter into low power mode until the interrupt is raised  DO NOT WANT TO DO THIS
+    	//__bis_SR_register(LPM0_bits + GIE);
 
     	//	Get current time stamp to see if write operation timed out
     	CYC_SYS_TMR_GetClockMs(&lu32CurrentTimeStamp);
@@ -367,11 +408,11 @@ STATUS CYC_SYS_I2C_Read(	UINT8 ru8SlaveAddress,
         if (lu32CurrentTimeStamp >= (lu32StartTimeStamp + I2C_TIMEOUT_MS))
         {
             //	Stop transmission
-        	CTL1 |= UCTXSTP;
+            UCB0CTL1 |= UCTXSTP;
         	//	Reset I2C to waiting state
-            gsI2C.msMasterI2CState = STATE_WAITING;
+            gsI2CB0.msMasterI2CState = STATE_WAITING;
             //	Disable and re-enable the I2C port, sending an error
-            CYC_SYS_I2C_Disable();
+            CYC_SYS_I2CB0_Disable();
             //	Clear and set I2C pins to high
             CYC_SYS_TMR_DelayInMilliSeconds(1);
             CLEAR_B0_SCL();
@@ -380,7 +421,7 @@ STATUS CYC_SYS_I2C_Read(	UINT8 ru8SlaveAddress,
             SET_B0_SCL();
             SET_B0_SDA();
             //	Re-enable I2C port
-            CYC_SYS_I2CB1_Enable();
+            CYC_SYS_I2CB0_Enable();
             return CYC_SYS_I2C_ERRORS;
         }
     }
@@ -390,16 +431,16 @@ STATUS CYC_SYS_I2C_Read(	UINT8 ru8SlaveAddress,
 }
 
 /* MODULE INTERNAL FUNCTIONS               *fffffff*/
-#pragma vector = I2C_VEC
-__interrupt void I2C_ISR(void)
+#pragma vector = USCI_B0_VECTOR
+__interrupt void I2CB0_ISR(void)
 {
-    switch(__even_in_range(IV,12))
+    switch(__even_in_range(UCB0IV,12))
     {
     	//	No ACK (NAK) interrupt
         case 4:
         {
-        	gsI2C.msMasterI2CState = STATE_WAITING;	//	Reset the state
-            CTL1 |= UCTXSTP;
+        	gsI2CB0.msMasterI2CState = STATE_WAITING;	//	Reset the state
+        	UCB0CTL1 |= UCTXSTP;
             break;
         }
 
@@ -407,28 +448,28 @@ __interrupt void I2C_ISR(void)
         case 10:
         {
         	//	Reset RX Flag
-            IFG &= ~UCRXIFG;
+            UCB0IFG &= ~UCRXIFG;
 
 
-            gsI2C.mu16Length--;
+            gsI2CB0.mu16Length--;
             //	If length is non zero, then keep receiving
-            if (gsI2C.mu16Length)
+            if (gsI2CB0.mu16Length)
             {
                 //	If only one byte left, prepare stop signal
-                if (gsI2C.mu16Length == 1)
-                    CTL1 |= UCTXSTP;
+                if (gsI2CB0.mu16Length == 1)
+                    UCB0CTL1 |= UCTXSTP;
             }
             else
             {
             	//	If length is 0, then next state is waiting
-            	gsI2C.msMasterI2CState = STATE_WAITING;
+            	gsI2CB0.msMasterI2CState = STATE_WAITING;
             }
             /* Read RXBUF last because we don't want to release SCL until we're
              * sure we're ready.
              */
-            *(gsI2C.mpu8Data) = RXBUF;
+            *(gsI2CB0.mpu8Data) = UCB0RXBUF;
             //	Make the pointer to point to next empty location
-            gsI2C.mpu8Data++;
+            gsI2CB0.mpu8Data++;
 
             break;
 
@@ -438,34 +479,34 @@ __interrupt void I2C_ISR(void)
         case 12:
         {
         	//	Reset the TX Interrupt flag
-            IFG &= ~UCTXIFG;
+            UCB0IFG &= ~UCTXIFG;
 
             //	Handle the case according to the current state
-            switch (gsI2C.msMasterI2CState)
+            switch (gsI2CB0.msMasterI2CState)
             {
             	case STATE_WRITING:
             	{
             		//	If slave reigster is not yet written, write it
-            		if (!gsI2C.mu8SlaveRegisterWritten)
+            		if (!gsI2CB0.mu8SlaveRegisterWritten)
             		{
-            			gsI2C.mu8SlaveRegisterWritten = 1;
-            			TXBUF = gsI2C.mu8SlaveRegister;
+            			gsI2CB0.mu8SlaveRegisterWritten = 1;
+            			UCB0TXBUF = gsI2CB0.mu8SlaveRegister;
             		}
-            		else if (gsI2C.mu16Length)	//	If length is non-zero then there are bytes to be transmitted
+            		else if (gsI2CB0.mu16Length)	//	If length is non-zero then there are bytes to be transmitted
             		{
             			//	Send next byte, increment pointer
-            			UINT8 next = gsI2C.mpu8Data[0];
+            			UINT8 next = gsI2CB0.mpu8Data[0];
             			//	Buffer book keeping
-            			gsI2C.mpu8Data++;
-            			gsI2C.mu16Length--;
+            			gsI2CB0.mpu8Data++;
+            			gsI2CB0.mu16Length--;
 
 						/* Writing to TXBUF must always be the final operation. */
-						TXBUF = next;
+            			UCB0TXBUF = next;
             		}
             		else		//	If length is zero, then stop
             		{
-						gsI2C.msMasterI2CState = STATE_WAITING;
-						CTL1 |= UCTXSTP;
+						gsI2CB0.msMasterI2CState = STATE_WAITING;
+						UCB0CTL1 |= UCTXSTP;
             		}
 
             	}//	End of case STATE_WRITING
@@ -474,25 +515,25 @@ __interrupt void I2C_ISR(void)
             	case STATE_READING:
             	{
             		//	If slave reigster is not yet written, write it
-            		if (!gsI2C.mu8SlaveRegisterWritten)
+            		if (!gsI2CB0.mu8SlaveRegisterWritten)
             		{
-            			gsI2C.mu8SlaveRegisterWritten = 1;
-            			TXBUF = gsI2C.mu8SlaveRegister;
+            			gsI2CB0.mu8SlaveRegisterWritten = 1;
+            			UCB0TXBUF = gsI2CB0.mu8SlaveRegister;
             		}
             		else
             		{
             			//	Repeated start, switch to RX mode
-            			CTL1 &= ~UCTR;
-            			CTL1 |= UCTXSTT;
+            		    UCB0CTL1 &= ~UCTR;
+            		    UCB0CTL1 |= UCTXSTT;
 
             			/* If single byte, prepare stop signal immediately. */
-            			if (gsI2C.mu16Length == 1)
+            			if (gsI2CB0.mu16Length == 1)
             			{
 							/* Well, not IMMEDIATELY. First we need to make sure
 							 * the start signal got sent.
 							 */
-							while (CTL1 & UCTXSTT);
-							CTL1 |= UCTXSTP;
+							while (UCB0CTL1 & UCTXSTT);
+							UCB0CTL1 |= UCTXSTP;
             			}
             		}
 
@@ -505,7 +546,7 @@ __interrupt void I2C_ISR(void)
             			break;
             	}
 
-            }//	End of switch (gsI2C.msMasterI2CState)
+            }//	End of switch (gsI2CB0.msMasterI2CState)
 
         }//	End of case 12
 
@@ -516,7 +557,7 @@ __interrupt void I2C_ISR(void)
         default:
             break;
     }
-    __bic_SR_register_on_exit(LPM0_bits);
+    //__bic_SR_register_on_exit(LPM0_bits);  /*EXIT LOW POWER MODE?*/
 }
 
 

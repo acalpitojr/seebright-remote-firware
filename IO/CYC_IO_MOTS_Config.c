@@ -118,10 +118,7 @@ STATUS CYC_IO_MOTS_Init()
      * in inv_mpu.h.
      */
     int_param.cb = gyro_data_ready_cb;
-#ifdef TARGET_MSP430F5438A_EXPERIMENTER_BOARD
-    //	PORT 1, pin number 7 is where interrupt signal is connected. INT_PIN_P17
-    int_param.pin = INT_PIN_P17;
-#endif
+
 
 #if defined TARGET_CYCLOPS_GAME | defined REMOTE_V1_2
     //	PORT 2, pin number 7 is where interrupt signal is connected. INT_PIN_P27
