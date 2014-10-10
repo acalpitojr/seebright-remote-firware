@@ -81,7 +81,7 @@ STATUS CYC_SYS_InitializeTarget()
 	CYC_SYS_RST_StopWatchdog();
 
 	//	Reset all GPIO Ports to be output and with 0 as output
-	CYC_SYS_ResetTargetGPIOPorts();
+	//CYC_SYS_ResetTargetGPIOPorts();
 
 	//Set VCore = 3 for 12MHz clock
 	PMM_setVCore(PMM_BASE,PMM_CORE_LEVEL_3);
