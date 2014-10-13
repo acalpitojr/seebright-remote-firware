@@ -156,7 +156,21 @@ STATUS CYC_SYS_I2CB0_Enable(void)
     UCB0CTL1 |= UCSWRST;
 
     //	Select the peripheral mode working for the I2C pins
+    GPIO_setAsOutputPin(GPIO_PORT_P3,GPIO_PIN1 + GPIO_PIN0);
+
+    /*IF MPU IS HOLDING SDA LOW, ONLY WAY OUT IS TO PHYSICALLY TOUCH SDA TO 3.3V FOR SOME REASON*/
+    /*SCL HIGH, SDA LOW*/
+    GPIO_setOutputHighOnPin(GPIO_PORT_P3,GPIO_PIN1 );
+    GPIO_setOutputLowOnPin(GPIO_PORT_P3,GPIO_PIN0 );
+    __delay_cycles(0xfff);
+    GPIO_setOutputHighOnPin(GPIO_PORT_P3,GPIO_PIN0 );
+    __delay_cycles(0xfff);
+
+
+
     GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P3,GPIO_PIN1 + GPIO_PIN0);
+
+
     //I2C_B0_MODE();
 
     //	Set to synchronous master mode
@@ -179,6 +193,8 @@ STATUS CYC_SYS_I2CB0_Enable(void)
 
     // Enable interrupts
     UCB0IE |= UCTXIE | UCRXIE | UCNACKIE;
+
+
 
        //  Initialize I2C Info struct
        gsI2CB0.msMasterI2CState = STATE_WAITING;
@@ -324,16 +340,17 @@ STATUS CYC_SYS_I2CB0_Write(	UINT8 ru8SlaveAddress,
 
     //	Get the current time stamp, in order to track timeout
     CYC_SYS_TMR_GetClockMs(&lu32StartTimeStamp);
-
+    uint32_t timeout = 0;
     while(gsI2CB0.msMasterI2CState != STATE_WAITING)   /*HERE WE WAIT UNTIL I2C WRITE PROCESS IS COMPLETE THROUGH ISR*/
     {
 
-
+        /*THIS IS NOT RUNNING THE TIMER FOR SOME REASON*/
     	//	Get current time stamp to see if write operation timed out
-    	CYC_SYS_TMR_GetClockMs(&lu32CurrentTimeStamp);
+    	//CYC_SYS_TMR_GetClockMs(&lu32CurrentTimeStamp);
+        //	If timeout has occurred, then reset I2C state and return an error
+        //if (lu32CurrentTimeStamp >= (lu32StartTimeStamp + I2C_TIMEOUT_MS))
 
-    	//	If timeout has occurred, then reset I2C state and return an error
-        if (lu32CurrentTimeStamp >= (lu32StartTimeStamp + I2C_TIMEOUT_MS))
+        if( timeout++ >= 0xffff )
         {
             //	Stop transmission
             UCB0CTL1 |= UCTXSTP;
@@ -342,10 +359,12 @@ STATUS CYC_SYS_I2CB0_Write(	UINT8 ru8SlaveAddress,
             //	Disable and re-enable the I2C port, sending an error
             CYC_SYS_I2CB0_Disable();
             //	Clear and set I2C pins to high
-            CYC_SYS_TMR_DelayInMilliSeconds(1);
+            //CYC_SYS_TMR_DelayInMilliSeconds(1);
+            __delay_cycles(0xffff);
             CLEAR_B0_SCL();
             CLEAR_B0_SDA();
-            CYC_SYS_TMR_DelayInMilliSeconds(1);
+            //CYC_SYS_TMR_DelayInMilliSeconds(1);
+            __delay_cycles(0xffff);
             SET_B0_SCL();
             SET_B0_SDA();
             //	Re-enable I2C port
@@ -397,17 +416,19 @@ STATUS CYC_SYS_I2CB0_Read(	UINT8 ru8SlaveAddress,
 
     //	Get the current time stamp, in order to track timeout
     CYC_SYS_TMR_GetClockMs(&lu32StartTimeStamp);
-
+    uint32_t timeout = 0;
     while(gsI2CB0.msMasterI2CState != STATE_WAITING)
     {
         //	Enter into low power mode until the interrupt is raised  DO NOT WANT TO DO THIS
     	//__bis_SR_register(LPM0_bits + GIE);
 
-    	//	Get current time stamp to see if write operation timed out
-    	CYC_SYS_TMR_GetClockMs(&lu32CurrentTimeStamp);
+    	/*THIS CODE IS NOT WORKING*/
+        //	Get current time stamp to see if write operation timed out
+    	    //CYC_SYS_TMR_GetClockMs(&lu32CurrentTimeStamp);
+            //	If timeout has occurred, then reset I2C state and return an error
+            //if (lu32CurrentTimeStamp >= (lu32StartTimeStamp + I2C_TIMEOUT_MS))
 
-    	//	If timeout has occurred, then reset I2C state and return an error
-        if (lu32CurrentTimeStamp >= (lu32StartTimeStamp + I2C_TIMEOUT_MS))
+        if( timeout++ >= 0xffff )  /*hack code*/
         {
             //	Stop transmission
             UCB0CTL1 |= UCTXSTP;
@@ -416,10 +437,12 @@ STATUS CYC_SYS_I2CB0_Read(	UINT8 ru8SlaveAddress,
             //	Disable and re-enable the I2C port, sending an error
             CYC_SYS_I2CB0_Disable();
             //	Clear and set I2C pins to high
-            CYC_SYS_TMR_DelayInMilliSeconds(1);
+            //CYC_SYS_TMR_DelayInMilliSeconds(1);
+            __delay_cycles(0xffff);
             CLEAR_B0_SCL();
             CLEAR_B0_SDA();
-            CYC_SYS_TMR_DelayInMilliSeconds(1);
+            //CYC_SYS_TMR_DelayInMilliSeconds(1);
+            __delay_cycles(0xffff);
             SET_B0_SCL();
             SET_B0_SDA();
             //	Re-enable I2C port

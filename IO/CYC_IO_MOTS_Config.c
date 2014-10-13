@@ -110,8 +110,10 @@ STATUS CYC_IO_MOTS_Init()
     unsigned short gyro_rate, gyro_fsr;
     struct int_param_s int_param;
 
-    //	Enable the interrupt pin from MPU-9250
-    msp430_int_init();
+
+    CYC_SYS_I2CB0_Enable();
+
+
 
     /* Set up gyro.
      * Every function preceded by mpu_ is a driver function and can be found
@@ -120,10 +122,10 @@ STATUS CYC_IO_MOTS_Init()
     int_param.cb = gyro_data_ready_cb;
 
 
-#if defined TARGET_CYCLOPS_GAME | defined REMOTE_V1_2
+
     //	PORT 2, pin number 7 is where interrupt signal is connected. INT_PIN_P27
     int_param.pin = INT_PIN_P17;
-#endif
+
 
     //int_param.lp_exit = INT_EXIT_LPM0;
     int_param.lp_exit = INT_EXIT_NONE;
@@ -136,20 +138,27 @@ STATUS CYC_IO_MOTS_Init()
 		return CYC_IO_MOTS_ERRORS;
 	}
 
-    /* Get/set hardware configuration. Start gyro. */
+
+
+	/* Get/set hardware configuration. Start gyro. */
     //	Wake up all sensors
     mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+
+    //  Set default sampling rate
+        mpu_set_sample_rate(DEFAULT_MPU_HZ);
+
+
+
 
     //	Push both gyro and accel data into the FIFO
     mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
 
-    //	Set default sampling rate
-    mpu_set_sample_rate(DEFAULT_MPU_HZ);
+
 
     //	Read back configuration in case it was set improperly
-    mpu_get_sample_rate(&gyro_rate);
-    mpu_get_gyro_fsr(&gyro_fsr);
-    mpu_get_accel_fsr(&accel_fsr);
+   // mpu_get_sample_rate(&gyro_rate);
+    //mpu_get_gyro_fsr(&gyro_fsr);
+    //mpu_get_accel_fsr(&accel_fsr);
 
     //	Initialize HAL state variables
     memset(&hal, 0, sizeof(hal));
@@ -188,8 +197,16 @@ STATUS CYC_IO_MOTS_Init()
     dmp_set_fifo_rate(DEFAULT_MPU_HZ);
     //	Turn on DMP
     mpu_set_dmp_state(1);
+
+    /*DOES THE MPU STILL RESPOND AT THIS POINT? YES IT DOES*/
+   // uint8_t read_data = 0x00;
+     // CYC_SYS_I2CB0_Read(0x68,0x01,1,&read_data);  /*function is based off of ISR, and mpu protocol*/
+
+
     hal.dmp_on = 1;
 
+    // Enable the interrupt pin from MPU-9250
+    msp430_int_enable();
     __enable_interrupt();
 
     return SUCCESS;
@@ -227,13 +244,14 @@ STATUS CYC_IO_MOTS_GetQuaternionData(INT32 *rpu32QuatData)
             hal.motion_int_mode = 0;
         }
 
-        if (!hal.sensors || !hal.new_gyro)
+        while(!hal.sensors || !hal.new_gyro)
+        //if (!hal.sensors || !hal.new_gyro)
         {
             /* Put the MSP430 to sleep until a timer interrupt or data ready
              * interrupt is detected.
              */
-            __bis_SR_register(LPM0_bits + GIE);
-            continue;
+            //__bis_SR_register(LPM0_bits + GIE);
+            //continue;
         }
 
         //	If data is available and DMP is on, read the values
@@ -403,21 +421,70 @@ static void android_orient_cb(unsigned char orientation)
     //send_packet(PACKET_TYPE_ANDROID_ORIENT, &orientation);
 }
 
+
+
+
+
+/*holds all of the data from the MPU.  This is only updated when the MPU gives an interrupt, and the callback reads the data in.*/
+static volatile mpu_data_STRUCT   mpu_data;
+static volatile MPU_HAS_DATA = 0;
+
 /* Every time new gyro data is available, this function is called in an
  * ISR context. In this example, it sets a flag protecting the FIFO read
  * function.
  */
 static void gyro_data_ready_cb(void)
 {
-    hal.new_gyro = 1;
+      hal.new_gyro = 1;
+
+      uint32_t sensor_timestamp;
+      uint8_t sensors;
+      uint8_t more;
+
+
+
+      dmp_read_fifo(mpu_data.gyro_data, mpu_data.accel_data, mpu_data.quat_data, &sensor_timestamp, &sensors,&more);
+      MPU_HAS_DATA = 1;
 }
 
 
+
+uint8_t get_accel_data(uint8_t* data_buf)
+{
+   memcpy(data_buf, mpu_data.accel_data, sizeof(mpu_data.accel_data) );
+   return 1;
+}
+
+uint8_t get_gyro_data(uint8_t* data_buf)
+{
+    memcpy(data_buf, mpu_data.gyro_data, sizeof(mpu_data.gyro_data) );
+    return 1;
+}
+
+uint8_t get_quat_data(uint8_t* data_buf)
+{
+    memcpy(data_buf, mpu_data.quat_data, sizeof(mpu_data.quat_data) );
+    return 1;
+}
 /*-----------------------------EOF-------------------------------------------*/
 
 
 
+mpu_data_STRUCT   get_mpu_data(void)
+{
+   mpu_data_STRUCT value = {0x00};
+   if(MPU_HAS_DATA)
+   {
+       MPU_HAS_DATA = 0;
+       value = mpu_data;
+   }
+   else
+   {
+       /*value is all 0x00 if no data ready*/
+   }
+   return value;  /*returns a stuct of all 0x00 if mpu data is not available*/
 
+}
 
     
     

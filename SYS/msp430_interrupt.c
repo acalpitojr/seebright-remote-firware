@@ -291,7 +291,7 @@ int msp430_reg_int_cb(void (*cb)(void), unsigned short pin,
             P1REN |= bit;
             /* Enable interrupt, clear flag. */
             P1IFG &= ~bit;
-            P1IE |= bit;
+           // P1IE |= bit;  /*HE SHOULD NOT BE DOING THIS HERE.  THE APPLICATION IS NOT EVEN READY TO HANDLE INTERRUPTS FROM THIS PIN*/
             msp_int.p1_exit[index] = lp_exit;
         }
     } else if (pin & INT_PORT_P2) {

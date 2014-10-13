@@ -33,10 +33,22 @@ NOTES:
 /* EXPORTED MACRO DEFINITIONS               *mmmmmmmmm*/
 
 /* EXPORTED TYPE DEFINITIONS                *ttttttttt*/
-
+typedef struct{
+                    uint8_t accel_data[3];
+                    uint8_t gyro_data[3];
+                    uint8_t mag_data[3];
+                    uint32_t quat_data;
+}mpu_data_STRUCT;
 /* EXPORTED FUNCTIONS                       *ggggggggg*/
 STATUS CYC_IO_MOTS_Init();
 STATUS CYC_IO_MOTS_GetQuaternionData(INT32 *rpu32QuatData);
+
+uint8_t get_accel_data(uint8_t* data_buf);
+uint8_t get_gyro_data(uint8_t* data_buf);
+uint8_t get_quat_data(uint8_t* data_buf);
+
+mpu_data_STRUCT   get_mpu_data(void);
+
 
 /* EXPORTED DATA DEFINITIONS/DECLARATIONS   ddddddd*/
 

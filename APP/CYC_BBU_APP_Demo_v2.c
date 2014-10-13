@@ -156,6 +156,22 @@ main()
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();
 
+	GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN2);
+	GPIO_setOutputLowOnPin(GPIO_PORT_P5,GPIO_PIN2 );
+	GPIO_setOutputHighOnPin(GPIO_PORT_P5,GPIO_PIN2 );
+
+	CYC_IO_MOTS_Init();
+    //mpu_test();
+
+
+
+	//while(1)
+	//{
+	  //  CYC_IO_MOTS_GetQuaternionData(&quat_data);
+	   // __delay_cycles(0xfffff);
+	//}
+
+
 	//init_bluetooth();
 	//__delay_cycles(0xfffff);
 	//while(1)
@@ -165,7 +181,7 @@ main()
 	//}
 
 	//eeprom_test();
-     mpu_test();
+
     //fuel_gauge_test();
 
 
