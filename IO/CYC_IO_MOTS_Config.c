@@ -437,13 +437,11 @@ static void gyro_data_ready_cb(void)
 {
       hal.new_gyro = 1;
 
-      uint32_t sensor_timestamp;
-      uint8_t sensors;
-      uint8_t more;
 
 
 
-      dmp_read_fifo(mpu_data.gyro_data, mpu_data.accel_data, mpu_data.quat_data, &sensor_timestamp, &sensors,&more);
+
+
       MPU_HAS_DATA = 1;
 }
 
@@ -473,9 +471,14 @@ uint8_t get_quat_data(uint8_t* data_buf)
 mpu_data_STRUCT   get_mpu_data(void)
 {
    mpu_data_STRUCT value = {0x00};
+   uint32_t sensor_timestamp;
+    uint8_t sensors;
+    uint8_t more;
+
    if(MPU_HAS_DATA)
    {
        MPU_HAS_DATA = 0;
+       dmp_read_fifo(mpu_data.gyro_data, mpu_data.accel_data, mpu_data.quat_data, &sensor_timestamp, &sensors,&more);
        value = mpu_data;
    }
    else

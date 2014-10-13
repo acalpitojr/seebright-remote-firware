@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v4.3.3                      
 ******************************************************************************
->> Linked Mon Oct 13 15:59:41 2014
+>> Linked Mon Oct 13 16:32:17 2014
 
 OUTPUT FILE NAME:   <Demo_KEY_LED_BLE.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00005476
+ENTRY POINT SYMBOL: "_c_int00"  address: 00005484
 
 
 MEMORY CONFIGURATION
@@ -19,7 +19,7 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   RAM                   00001c00   00002800  0000024c  000025b4  RWIX
-  FLASH                 00004400   0000bb80  0000467a  00007506  RWIX
+  FLASH                 00004400   0000bb80  000046e2  0000749e  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -128,157 +128,159 @@ section   page    origin      length       input sections
                   00004360    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
                   00004364    0000009c     --HOLE--
 
-.const     0    00004400    00000c8e     
+.const     0    00004400    00000c9c     
                   00004400    00000bf6     inv_mpu_dmp_motion_driver.obj (.const:.string:dmp_memory)
                   00004ff6    00000066     inv_mpu.obj (.const)
-                  0000505c    0000000c     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T4$5)
-                  00005068    00000009     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T5$6)
-                  00005071    00000001     --HOLE-- [fill = 0]
-                  00005072    00000009     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T6$7)
-                  0000507b    00000001     --HOLE-- [fill = 0]
-                  0000507c    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T0$1)
+                  0000505c    0000000e     CYC_IO_MOTS_Config.obj (.const)
+                  0000506a    0000000c     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T4$5)
+                  00005076    00000009     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T5$6)
                   0000507f    00000001     --HOLE-- [fill = 0]
-                  00005080    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T1$2)
-                  00005083    00000001     --HOLE-- [fill = 0]
-                  00005084    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T2$3)
-                  00005087    00000001     --HOLE-- [fill = 0]
-                  00005088    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T3$4)
-                  0000508b    00000001     --HOLE-- [fill = 0]
-                  0000508c    00000002     inv_mpu_dmp_motion_driver.obj (.const)
+                  00005080    00000009     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T6$7)
+                  00005089    00000001     --HOLE-- [fill = 0]
+                  0000508a    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T0$1)
+                  0000508d    00000001     --HOLE-- [fill = 0]
+                  0000508e    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T1$2)
+                  00005091    00000001     --HOLE-- [fill = 0]
+                  00005092    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T2$3)
+                  00005095    00000001     --HOLE-- [fill = 0]
+                  00005096    00000003     inv_mpu_dmp_motion_driver.obj (.const:.string:$P$T3$4)
+                  00005099    00000001     --HOLE-- [fill = 0]
+                  0000509a    00000002     inv_mpu_dmp_motion_driver.obj (.const)
 
 .text:_isr 
-*          0    0000508e    00000404     
-                  0000508e    000000c6     CYC_SYS_I2C.obj (.text:_isr:I2CB0_ISR)
-                  00005154    000000ba     msp430_interrupt.obj (.text:_isr:P2_ISR)
-                  0000520e    000000b8     CYC_SYS_ADC.obj (.text:_isr:ADC12_A_ISR)
-                  000052c6    0000009c     CYC_SYS_Timer.obj (.text:_isr:CYC_SYS_TMR_Timer1ISR)
-                  00005362    0000007a     msp430_interrupt.obj (.text:_isr:P1_ISR)
-                  000053dc    0000003a     CYC_SYS_UART.obj (.text:_isr:USCI_A0_ISR)
-                  00005416    0000003a     CYC_SYS_UART.obj (.text:_isr:USCI_A1_ISR)
-                  00005450    00000026     CYC_SYS_Clock.obj (.text:_isr:NMI_ISR)
-                  00005476    0000001a     rts430x_lc_rd_eabi.lib : boot.obj (.text:_isr:_c_int00_noexit)
-                  00005490    00000002     CYC_SYS_PWM.obj (.text:_isr:CYC_SYS_PWM_PWMTimer)
+*          0    0000509c    00000404     
+                  0000509c    000000c6     CYC_SYS_I2C.obj (.text:_isr:I2CB0_ISR)
+                  00005162    000000ba     msp430_interrupt.obj (.text:_isr:P2_ISR)
+                  0000521c    000000b8     CYC_SYS_ADC.obj (.text:_isr:ADC12_A_ISR)
+                  000052d4    0000009c     CYC_SYS_Timer.obj (.text:_isr:CYC_SYS_TMR_Timer1ISR)
+                  00005370    0000007a     msp430_interrupt.obj (.text:_isr:P1_ISR)
+                  000053ea    0000003a     CYC_SYS_UART.obj (.text:_isr:USCI_A0_ISR)
+                  00005424    0000003a     CYC_SYS_UART.obj (.text:_isr:USCI_A1_ISR)
+                  0000545e    00000026     CYC_SYS_Clock.obj (.text:_isr:NMI_ISR)
+                  00005484    0000001a     rts430x_lc_rd_eabi.lib : boot.obj (.text:_isr:_c_int00_noexit)
+                  0000549e    00000002     CYC_SYS_PWM.obj (.text:_isr:CYC_SYS_PWM_PWMTimer)
 
-.text      0    00005492    000035a2     
-                  00005492    000002e0     inv_mpu_dmp_motion_driver.obj (.text:dmp_read_fifo)
-                  00005772    00000226     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_feature)
-                  00005998    0000020c     inv_mpu.obj (.text:setup_compass)
-                  00005ba4    000001d4     inv_mpu.obj (.text:mpu_reset_fifo)
-                  00005d78    000001b4     CYC_IO_MOTS_Config.obj (.text:CYC_IO_MOTS_Init)
-                  00005f2c    0000019e     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_thresh)
-                  000060ca    0000019a     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_orientation)
-                  00006264    00000182     pmm.obj (.text:PMM_setVCoreUp)
-                  000063e6    00000154     inv_mpu.obj (.text:mpu_init)
-                  0000653a    00000154     inv_mpu.obj (.text:mpu_set_sensors)
-                  0000668e    0000013c     inv_mpu.obj (.text:mpu_set_bypass)
-                  000067ca    0000013c     ucs.obj (.text:privateUCSSourceClockFromDCO)
-                  00006906    00000128     ucs.obj (.text:UCS_initFLL)
-                  00006a2e    0000011e     ucs.obj (.text:privateUCSComputeCLKFrequency)
-                  00006b4c    0000010c     ucs.obj (.text:UCS_clockSignalInit)
-                  00006c58    0000010a     inv_mpu.obj (.text:mpu_lp_accel_mode)
-                  00006d62    000000fa     pmm.obj (.text:PMM_setVCoreDown)
-                  00006e5c    000000f4     CYC_SYS_Clock.obj (.text:CYC_SYS_CLK_SetSystemClock)
-                  00006f50    000000e4     usci_uart.obj (.text:USCI_UART_initAdvance)
-                  00007034    000000d8     msp430_interrupt.obj (.text:msp430_reg_int_cb)
-                  0000710c    000000c2     inv_mpu.obj (.text:mpu_load_firmware)
-                  000071ce    000000c2     inv_mpu.obj (.text:mpu_read_fifo_stream)
-                  00007290    000000b8     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Enable)
-                  00007348    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
-                  000073fe    000000b2     inv_mpu.obj (.text:mpu_set_sample_rate)
-                  000074b0    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Read)
-                  00007560    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Write)
-                  00007610    0000009a     gpio.obj (.text:GPIO_setAsOutputPin)
-                  000076aa    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionInputPin)
-                  00007744    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionOutputPin)
-                  000077de    0000008e     rts430x_lc_rd_eabi.lib : fs_div.obj (.text)
-                  0000786c    0000008c     CYC_SYS_UART.obj (.text:CYC_SYS_UART0_Initialize)
-                  000078f8    00000080     inv_mpu.obj (.text:mpu_set_dmp_state)
-                  00007978    0000007e     ucs.obj (.text:UCS_LFXT1Start)
-                  000079f6    0000007e     inv_mpu.obj (.text:mpu_set_gyro_fsr)
-                  00007a74    0000007c     inv_mpu.obj (.text:mpu_set_lpf)
-                  00007af0    0000007a     inv_mpu.obj (.text:mpu_read_mem)
-                  00007b6a    0000007a     inv_mpu.obj (.text:mpu_write_mem)
-                  00007be4    00000078     inv_mpu.obj (.text:mpu_set_accel_fsr)
-                  00007c5c    00000078     gpio.obj (.text:privateGPIOGetBaseAddress)
-                  00007cd4    00000076     gpio.obj (.text:GPIO_setOutputHighOnPin)
-                  00007d4a    00000076     gpio.obj (.text:GPIO_setOutputLowOnPin)
-                  00007dc0    00000074     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_fifo_rate)
-                  00007e34    00000074     inv_mpu.obj (.text:set_int_enable)
-                  00007ea8    0000006e     rts430x_lc_rd_eabi.lib : autoinit.obj (.text:_auto_init_hold_wdt)
-                  00007f16    00000066     CYC_BBU_APP_Demo_v2.obj (.text:main)
-                  00007f7c    00000066     inv_mpu.obj (.text:mpu_configure_fifo)
-                  00007fe2    00000064     msp430_interrupt.obj (.text:msp430_int_enable)
-                  00008046    00000062     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  000080a8    00000060     CYC_SYS_PWM.obj (.text:CYC_SYS_PWM_InitPWMTimer)
-                  00008108    00000060     inv_mpu.obj (.text:mpu_set_int_latched)
-                  00008168    0000005a     inv_mpu.obj (.text:mpu_set_compass_sample_rate)
-                  000081c2    00000058     rts430x_lc_rd_eabi.lib : div32u.obj (.text)
-                  0000821a    00000056     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_thresh)
-                  00008270    00000050     inv_mpu_dmp_motion_driver.obj (.text:decode_gesture)
-                  000082c0    0000004a     CYC_IO_MOTS_Config.obj (.text:gyro_data_ready_cb)
-                  0000830a    00000048     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_gyro_cal)
-                  00008352    00000046     rts430x_lc_rd_eabi.lib : fs_tou.obj (.text)
-                  00008398    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_6x_lp_quat)
-                  000083dc    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_lp_quat)
-                  00008420    00000042     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_EnableTimer1)
-                  00008462    00000040     inv_mpu.obj (.text:mpu_get_accel_fsr)
-                  000084a2    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
-                  000084e2    0000003e     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_DelayInMilliSeconds)
-                  00008520    0000003e     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr_const)
-                  0000855e    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  0000859c    0000003a     pmm.obj (.text:PMM_setVCore)
-                  000085d6    00000036     ucs.obj (.text:UCS_initFLLSettle)
-                  0000860c    00000034     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_axes)
-                  00008640    00000032     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_InitTimer1)
-                  00008672    00000030     CYC_SYS_Init.obj (.text:CYC_SYS_InitializeTarget)
-                  000086a2    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
-                  000086ce    00000028     ucs.obj (.text:UCS_clearAllOscFlagsWithTimeout)
-                  000086f6    00000028     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_count)
-                  0000871e    00000026     usci_uart.obj (.text:USCI_UART_enableInterrupt)
-                  00008744    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_time)
-                  0000876a    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_timeout)
-                  00008790    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time)
-                  000087b6    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time_multi)
-                  000087dc    00000026     rts430x_lc_rd_eabi.lib : memcmp.obj (.text:memcmp)
-                  00008802    00000024     ucs.obj (.text:UCS_getACLK)
-                  00008826    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  0000884a    00000024                            : fs_utof.obj (.text)
-                  0000886e    00000022     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Disable)
-                  00008890    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
-                  000088b2    00000020     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_GetClockMs)
-                  000088d2    00000020     ucs.obj (.text:UCS_getSMCLK)
-                  000088f2    0000001c     CYC_IO_LEDS.obj (.text:CYC_IO_LEDS_IntializeLEDs)
-                  0000890e    0000001c     ucs.obj (.text:UCS_getMCLK)
-                  0000892a    0000001a     ucs.obj (.text:UCS_setExternalClockSource)
-                  00008944    00000018     inv_mpu_dmp_motion_driver.obj (.text:dmp_load_motion_driver_firmware)
-                  0000895c    00000016     rts430x_lc_rd_eabi.lib : memset.obj (.text:memset)
-                  00008972    00000016                            : div16u.obj (.text)
-                  00008988    00000014                            : memcpy.obj (.text:memcpy)
-                  0000899c    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  000089ae    0000000e     CYC_IO_MOTS_Config.obj (.text:tap_cb)
-                  000089bc    0000000c     adc12_a.obj (.text:ADC12_A_clearInterrupt)
-                  000089c8    0000000c     usci_uart.obj (.text:USCI_UART_clearInterruptFlag)
-                  000089d4    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetPeripheralPinAsOutput)
-                  000089de    0000000a     sfr.obj (.text:SFR_clearInterrupt)
-                  000089e8    0000000a     rts430x_lc_rd_eabi.lib : lsl16.obj (.text)
-                  000089f2    00000008     CYC_SYS_Reset.obj (.text:CYC_SYS_RST_StopWatchdog)
-                  000089fa    00000008     usci_uart.obj (.text:USCI_UART_receiveData)
-                  00008a02    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_android_orient_cb)
-                  00008a0a    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_tap_cb)
-                  00008a12    00000006     sfr.obj (.text:SFR_enableInterrupt)
-                  00008a18    00000006     usci_uart.obj (.text:USCI_UART_enable)
-                  00008a1e    00000006     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:__TI_ISR_TRAP)
-                  00008a24    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  00008a2a    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  00008a2e    00000004                            : exit.obj (.text:abort)
-                  00008a32    00000002     CYC_IO_MOTS_Config.obj (.text:android_orient_cb)
+.text      0    000054a0    000035fc     
+                  000054a0    000002e0     inv_mpu_dmp_motion_driver.obj (.text:dmp_read_fifo)
+                  00005780    00000226     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_feature)
+                  000059a6    0000020c     inv_mpu.obj (.text:setup_compass)
+                  00005bb2    000001d4     inv_mpu.obj (.text:mpu_reset_fifo)
+                  00005d86    000001a0     CYC_IO_MOTS_Config.obj (.text:CYC_IO_MOTS_Init)
+                  00005f26    0000019e     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_thresh)
+                  000060c4    0000019a     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_orientation)
+                  0000625e    00000182     pmm.obj (.text:PMM_setVCoreUp)
+                  000063e0    00000154     inv_mpu.obj (.text:mpu_init)
+                  00006534    00000154     inv_mpu.obj (.text:mpu_set_sensors)
+                  00006688    0000013c     inv_mpu.obj (.text:mpu_set_bypass)
+                  000067c4    0000013c     ucs.obj (.text:privateUCSSourceClockFromDCO)
+                  00006900    00000128     ucs.obj (.text:UCS_initFLL)
+                  00006a28    0000011e     ucs.obj (.text:privateUCSComputeCLKFrequency)
+                  00006b46    0000010c     ucs.obj (.text:UCS_clockSignalInit)
+                  00006c52    0000010a     inv_mpu.obj (.text:mpu_lp_accel_mode)
+                  00006d5c    000000fa     pmm.obj (.text:PMM_setVCoreDown)
+                  00006e56    000000f4     CYC_SYS_Clock.obj (.text:CYC_SYS_CLK_SetSystemClock)
+                  00006f4a    000000e4     usci_uart.obj (.text:USCI_UART_initAdvance)
+                  0000702e    000000d8     msp430_interrupt.obj (.text:msp430_reg_int_cb)
+                  00007106    000000c2     inv_mpu.obj (.text:mpu_load_firmware)
+                  000071c8    000000c2     inv_mpu.obj (.text:mpu_read_fifo_stream)
+                  0000728a    000000b8     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Enable)
+                  00007342    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
+                  000073f8    000000b2     inv_mpu.obj (.text:mpu_set_sample_rate)
+                  000074aa    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Read)
+                  0000755a    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Write)
+                  0000760a    0000009a     gpio.obj (.text:GPIO_setAsOutputPin)
+                  000076a4    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionInputPin)
+                  0000773e    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionOutputPin)
+                  000077d8    0000008e     rts430x_lc_rd_eabi.lib : fs_div.obj (.text)
+                  00007866    0000008c     CYC_SYS_UART.obj (.text:CYC_SYS_UART0_Initialize)
+                  000078f2    0000008a     CYC_IO_MOTS_Config.obj (.text:get_mpu_data)
+                  0000797c    0000008a     CYC_BBU_APP_Demo_v2.obj (.text:main)
+                  00007a06    00000080     inv_mpu.obj (.text:mpu_set_dmp_state)
+                  00007a86    0000007e     ucs.obj (.text:UCS_LFXT1Start)
+                  00007b04    0000007e     inv_mpu.obj (.text:mpu_set_gyro_fsr)
+                  00007b82    0000007c     inv_mpu.obj (.text:mpu_set_lpf)
+                  00007bfe    0000007a     inv_mpu.obj (.text:mpu_read_mem)
+                  00007c78    0000007a     inv_mpu.obj (.text:mpu_write_mem)
+                  00007cf2    00000078     inv_mpu.obj (.text:mpu_set_accel_fsr)
+                  00007d6a    00000078     gpio.obj (.text:privateGPIOGetBaseAddress)
+                  00007de2    00000076     gpio.obj (.text:GPIO_setOutputHighOnPin)
+                  00007e58    00000076     gpio.obj (.text:GPIO_setOutputLowOnPin)
+                  00007ece    00000074     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_fifo_rate)
+                  00007f42    00000074     inv_mpu.obj (.text:set_int_enable)
+                  00007fb6    0000006e     rts430x_lc_rd_eabi.lib : autoinit.obj (.text:_auto_init_hold_wdt)
+                  00008024    00000066     inv_mpu.obj (.text:mpu_configure_fifo)
+                  0000808a    00000064     msp430_interrupt.obj (.text:msp430_int_enable)
+                  000080ee    00000062     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  00008150    00000060     CYC_SYS_PWM.obj (.text:CYC_SYS_PWM_InitPWMTimer)
+                  000081b0    00000060     inv_mpu.obj (.text:mpu_set_int_latched)
+                  00008210    0000005a     inv_mpu.obj (.text:mpu_set_compass_sample_rate)
+                  0000826a    00000058     rts430x_lc_rd_eabi.lib : div32u.obj (.text)
+                  000082c2    00000056     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_thresh)
+                  00008318    00000050     inv_mpu_dmp_motion_driver.obj (.text:decode_gesture)
+                  00008368    00000048     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_gyro_cal)
+                  000083b0    00000046     rts430x_lc_rd_eabi.lib : fs_tou.obj (.text)
+                  000083f6    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_6x_lp_quat)
+                  0000843a    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_lp_quat)
+                  0000847e    00000042     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_EnableTimer1)
+                  000084c0    00000040     inv_mpu.obj (.text:mpu_get_accel_fsr)
+                  00008500    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
+                  00008540    0000003e     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_DelayInMilliSeconds)
+                  0000857e    0000003e     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr_const)
+                  000085bc    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  000085fa    0000003a     pmm.obj (.text:PMM_setVCore)
+                  00008634    00000036     ucs.obj (.text:UCS_initFLLSettle)
+                  0000866a    00000034     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_axes)
+                  0000869e    00000032     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_InitTimer1)
+                  000086d0    00000030     CYC_SYS_Init.obj (.text:CYC_SYS_InitializeTarget)
+                  00008700    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
+                  0000872c    00000028     ucs.obj (.text:UCS_clearAllOscFlagsWithTimeout)
+                  00008754    00000028     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_count)
+                  0000877c    00000026     usci_uart.obj (.text:USCI_UART_enableInterrupt)
+                  000087a2    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_time)
+                  000087c8    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_timeout)
+                  000087ee    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time)
+                  00008814    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time_multi)
+                  0000883a    00000026     rts430x_lc_rd_eabi.lib : memcmp.obj (.text:memcmp)
+                  00008860    00000024     ucs.obj (.text:UCS_getACLK)
+                  00008884    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  000088a8    00000024                            : fs_utof.obj (.text)
+                  000088cc    00000022     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Disable)
+                  000088ee    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  00008910    00000020     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_GetClockMs)
+                  00008930    00000020     ucs.obj (.text:UCS_getSMCLK)
+                  00008950    0000001c     CYC_IO_LEDS.obj (.text:CYC_IO_LEDS_IntializeLEDs)
+                  0000896c    0000001c     ucs.obj (.text:UCS_getMCLK)
+                  00008988    0000001a     ucs.obj (.text:UCS_setExternalClockSource)
+                  000089a2    00000018     inv_mpu_dmp_motion_driver.obj (.text:dmp_load_motion_driver_firmware)
+                  000089ba    00000016     rts430x_lc_rd_eabi.lib : memset.obj (.text:memset)
+                  000089d0    00000016                            : div16u.obj (.text)
+                  000089e6    00000014                            : memcpy.obj (.text:memcpy)
+                  000089fa    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  00008a0c    0000000e     CYC_IO_MOTS_Config.obj (.text:tap_cb)
+                  00008a1a    0000000c     adc12_a.obj (.text:ADC12_A_clearInterrupt)
+                  00008a26    0000000c     usci_uart.obj (.text:USCI_UART_clearInterruptFlag)
+                  00008a32    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetPeripheralPinAsOutput)
+                  00008a3c    0000000a     sfr.obj (.text:SFR_clearInterrupt)
+                  00008a46    0000000a     CYC_IO_MOTS_Config.obj (.text:gyro_data_ready_cb)
+                  00008a50    0000000a     rts430x_lc_rd_eabi.lib : lsl16.obj (.text)
+                  00008a5a    00000008     CYC_SYS_Reset.obj (.text:CYC_SYS_RST_StopWatchdog)
+                  00008a62    00000008     usci_uart.obj (.text:USCI_UART_receiveData)
+                  00008a6a    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_android_orient_cb)
+                  00008a72    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_tap_cb)
+                  00008a7a    00000006     sfr.obj (.text:SFR_enableInterrupt)
+                  00008a80    00000006     usci_uart.obj (.text:USCI_UART_enable)
+                  00008a86    00000006     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:__TI_ISR_TRAP)
+                  00008a8c    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00008a92    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  00008a96    00000004                            : exit.obj (.text:abort)
+                  00008a9a    00000002     CYC_IO_MOTS_Config.obj (.text:android_orient_cb)
 
-.cinit     0    00008a34    00000046     
-                  00008a34    00000023     (.cinit..data.load) [load image, compression = rle]
-                  00008a57    00000001     --HOLE-- [fill = 0]
-                  00008a58    0000000c     (__TI_handler_table)
-                  00008a64    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00008a6a    00000010     (__TI_cinit_table)
+.cinit     0    00008a9c    00000046     
+                  00008a9c    00000023     (.cinit..data.load) [load image, compression = rle]
+                  00008abf    00000001     --HOLE-- [fill = 0]
+                  00008ac0    0000000c     (__TI_handler_table)
+                  00008acc    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00008ad2    00000010     (__TI_cinit_table)
 
 RTC        0    0000ffd2    00000002     
                   0000ffd2    00000002     rts430x_lc_rd_eabi.lib : int41.obj (.int41)
@@ -360,14 +362,14 @@ SYSNMI     0    0000fffc    00000002
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00008a6a records: 2, size/record: 8, table size: 16
-	.data: load addr=00008a34, load size=00000023 bytes, run addr=00001c00, run size=000000dc bytes, compression=rle
-	.bss: load addr=00008a64, load size=00000006 bytes, run addr=00001cdc, run size=000000d0 bytes, compression=zero_init
+__TI_cinit_table @ 00008ad2 records: 2, size/record: 8, table size: 16
+	.data: load addr=00008a9c, load size=00000023 bytes, run addr=00001c00, run size=000000dc bytes, compression=rle
+	.bss: load addr=00008acc, load size=00000006 bytes, run addr=00001cdc, run size=000000d0 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00008a58 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00008ac0 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_rle24
 	index: 2, handler: __TI_decompress_none
@@ -459,10 +461,10 @@ address    name
 00000732   ADC12MEM9
 00000733   ADC12MEM9_H
 00000732   ADC12MEM9_L
-0000520e   ADC12_A_ISR
-000089bc   ADC12_A_clearInterrupt
+0000521c   ADC12_A_ISR
+00008a1a   ADC12_A_clearInterrupt
 00001c55   ADC_DATA_READY
-00008a2e   C$$EXIT
+00008a96   C$$EXIT
 000008c0   CBCTL0
 000008c1   CBCTL0_H
 000008c0   CBCTL0_L
@@ -491,24 +493,24 @@ address    name
 00000156   CRCRESR
 00000157   CRCRESR_H
 00000156   CRCRESR_L
-000088f2   CYC_IO_LEDS_IntializeLEDs
-00005d78   CYC_IO_MOTS_Init
-00006e5c   CYC_SYS_CLK_SetSystemClock
-000089d4   CYC_SYS_GPIO_SetPeripheralPinAsOutput
-0000886e   CYC_SYS_I2CB0_Disable
-00007290   CYC_SYS_I2CB0_Enable
-000074b0   CYC_SYS_I2CB0_Read
-00007560   CYC_SYS_I2CB0_Write
-00008672   CYC_SYS_InitializeTarget
-000080a8   CYC_SYS_PWM_InitPWMTimer
-00005490   CYC_SYS_PWM_PWMTimer
-000089f2   CYC_SYS_RST_StopWatchdog
-000084e2   CYC_SYS_TMR_DelayInMilliSeconds
-00008420   CYC_SYS_TMR_EnableTimer1
-000088b2   CYC_SYS_TMR_GetClockMs
-00008640   CYC_SYS_TMR_InitTimer1
-000052c6   CYC_SYS_TMR_Timer1ISR
-0000786c   CYC_SYS_UART0_Initialize
+00008950   CYC_IO_LEDS_IntializeLEDs
+00005d86   CYC_IO_MOTS_Init
+00006e56   CYC_SYS_CLK_SetSystemClock
+00008a32   CYC_SYS_GPIO_SetPeripheralPinAsOutput
+000088cc   CYC_SYS_I2CB0_Disable
+0000728a   CYC_SYS_I2CB0_Enable
+000074aa   CYC_SYS_I2CB0_Read
+0000755a   CYC_SYS_I2CB0_Write
+000086d0   CYC_SYS_InitializeTarget
+00008150   CYC_SYS_PWM_InitPWMTimer
+0000549e   CYC_SYS_PWM_PWMTimer
+00008a5a   CYC_SYS_RST_StopWatchdog
+00008540   CYC_SYS_TMR_DelayInMilliSeconds
+0000847e   CYC_SYS_TMR_EnableTimer1
+00008910   CYC_SYS_TMR_GetClockMs
+0000869e   CYC_SYS_TMR_InitTimer1
+000052d4   CYC_SYS_TMR_Timer1ISR
+00007866   CYC_SYS_UART0_Initialize
 00000510   DMA0CTL
 00000511   DMA0CTL_H
 00000510   DMA0CTL_L
@@ -560,12 +562,12 @@ address    name
 00000146   FCTL4
 00000147   FCTL4_H
 00000146   FCTL4_L
-00007610   GPIO_setAsOutputPin
-000076aa   GPIO_setAsPeripheralModuleFunctionInputPin
-00007744   GPIO_setAsPeripheralModuleFunctionOutputPin
-00007cd4   GPIO_setOutputHighOnPin
-00007d4a   GPIO_setOutputLowOnPin
-0000508e   I2CB0_ISR
+0000760a   GPIO_setAsOutputPin
+000076a4   GPIO_setAsPeripheralModuleFunctionInputPin
+0000773e   GPIO_setAsPeripheralModuleFunctionOutputPin
+00007de2   GPIO_setOutputHighOnPin
+00007e58   GPIO_setOutputLowOnPin
+0000509c   I2CB0_ISR
 00000900   LDOKEYPID
 00000901   LDOKEYPID_H
 00000900   LDOKEYPID_L
@@ -611,7 +613,7 @@ address    name
 000004c2   MPYS_L
 000004c1   MPY_H
 000004c0   MPY_L
-00005450   NMI_ISR
+0000545e   NMI_ISR
 000004c8   OP2
 000004e2   OP2H
 000004e3   OP2H_H
@@ -622,9 +624,9 @@ address    name
 000004c9   OP2_H
 000004c8   OP2_L
 0000020e   P1IV
-00005362   P1_ISR
+00005370   P1_ISR
 0000021e   P2IV
-00005154   P2_ISR
+00005162   P2_ISR
 000001e0   P4MAP01
 000001e1   P4MAP01_H
 000001e0   P4MAP01_L
@@ -736,9 +738,9 @@ address    name
 0000012e   PMMRIE
 0000012f   PMMRIE_H
 0000012e   PMMRIE_L
-0000859c   PMM_setVCore
-00006d62   PMM_setVCoreDown
-00006264   PMM_setVCoreUp
+000085fa   PMM_setVCore
+00006d5c   PMM_setVCoreDown
+0000625e   PMM_setVCoreUp
 00000904   PUCTL
 00000905   PUCTL_H
 00000904   PUCTL_L
@@ -809,8 +811,8 @@ address    name
 00000104   SFRRPCR
 00000105   SFRRPCR_H
 00000104   SFRRPCR_L
-000089de   SFR_clearInterrupt
-00008a12   SFR_enableInterrupt
+00008a3c   SFR_clearInterrupt
+00008a7a   SFR_enableInterrupt
 000004ce   SUMEXT
 000004cf   SUMEXT_H
 000004ce   SUMEXT_L
@@ -1009,39 +1011,39 @@ address    name
 00000170   UCSCTL8
 00000171   UCSCTL8_H
 00000170   UCSCTL8_L
-00007978   UCS_LFXT1Start
+00007a86   UCS_LFXT1Start
 00001cd2   UCS_XT1ClockFrequency
 00001cd6   UCS_XT2ClockFrequency
-000086ce   UCS_clearAllOscFlagsWithTimeout
-00006b4c   UCS_clockSignalInit
-00008802   UCS_getACLK
-0000890e   UCS_getMCLK
-000088d2   UCS_getSMCLK
-00006906   UCS_initFLL
-000085d6   UCS_initFLLSettle
-0000892a   UCS_setExternalClockSource
-000053dc   USCI_A0_ISR
-00005416   USCI_A1_ISR
-000089c8   USCI_UART_clearInterruptFlag
-00008a18   USCI_UART_enable
-0000871e   USCI_UART_enableInterrupt
-00006f50   USCI_UART_initAdvance
-000089fa   USCI_UART_receiveData
+0000872c   UCS_clearAllOscFlagsWithTimeout
+00006b46   UCS_clockSignalInit
+00008860   UCS_getACLK
+0000896c   UCS_getMCLK
+00008930   UCS_getSMCLK
+00006900   UCS_initFLL
+00008634   UCS_initFLLSettle
+00008988   UCS_setExternalClockSource
+000053ea   USCI_A0_ISR
+00005424   USCI_A1_ISR
+00008a26   USCI_UART_clearInterruptFlag
+00008a80   USCI_UART_enable
+0000877c   USCI_UART_enableInterrupt
+00006f4a   USCI_UART_initAdvance
+00008a62   USCI_UART_receiveData
 0000015c   WDTCTL
 0000015d   WDTCTL_H
 0000015c   WDTCTL_L
 00004400   __STACK_END
 000000a0   __STACK_SIZE
-00008a6a   __TI_CINIT_Base
-00008a7a   __TI_CINIT_Limit
-00008a58   __TI_Handler_Table_Base
-00008a64   __TI_Handler_Table_Limit
+00008ad2   __TI_CINIT_Base
+00008ae2   __TI_CINIT_Limit
+00008ac0   __TI_Handler_Table_Base
+00008acc   __TI_Handler_Table_Limit
 UNDEFED    __TI_INITARRAY_Base
 UNDEFED    __TI_INITARRAY_Limit
-00008a1e   __TI_ISR_TRAP
+00008a86   __TI_ISR_TRAP
 00000001   __TI_args_main
-0000899c   __TI_decompress_none
-00008a24   __TI_decompress_rle24
+000089fa   __TI_decompress_none
+00008a8c   __TI_decompress_rle24
 00000001   __TI_exit
 0000ffd2   __TI_int41
 0000ffd4   __TI_int42
@@ -1065,81 +1067,82 @@ UNDEFED    __TI_INITARRAY_Limit
 0000fff8   __TI_int60
 0000fffa   __TI_int61
 0000fffc   __TI_int62
-00008826   __TI_zero_init
+00008884   __TI_zero_init
 ffffffff   __binit__
 ffffffff   __c_args__
-000077de   __mspabi_divf
-000086a2   __mspabi_divi
-000084a2   __mspabi_divli
-00008972   __mspabi_divu
-000081c2   __mspabi_divul
-00008352   __mspabi_fixfu
-0000884a   __mspabi_fltuf
-00007348   __mspabi_mpyf
-00008890   __mspabi_mpyl_f5hw
-000086a2   __mspabi_remi
-000084a2   __mspabi_remli
-00008972   __mspabi_remu
-000081c2   __mspabi_remul
-000089e8   __mspabi_slli
-00008596   __mspabi_slll_1
-00008572   __mspabi_slll_10
-0000856e   __mspabi_slll_11
-0000856a   __mspabi_slll_12
-00008566   __mspabi_slll_13
-00008562   __mspabi_slll_14
-0000855e   __mspabi_slll_15
-00008592   __mspabi_slll_2
-0000858e   __mspabi_slll_3
-0000858a   __mspabi_slll_4
-00008586   __mspabi_slll_5
-00008582   __mspabi_slll_6
-0000857e   __mspabi_slll_7
-0000857a   __mspabi_slll_8
-00008576   __mspabi_slll_9
-00008558   __mspabi_sral_1
-00008534   __mspabi_sral_10
-00008530   __mspabi_sral_11
-0000852c   __mspabi_sral_12
-00008528   __mspabi_sral_13
-00008524   __mspabi_sral_14
-00008520   __mspabi_sral_15
-00008554   __mspabi_sral_2
-00008550   __mspabi_sral_3
-0000854c   __mspabi_sral_4
-00008548   __mspabi_sral_5
-00008544   __mspabi_sral_6
-00008540   __mspabi_sral_7
-0000853c   __mspabi_sral_8
-00008538   __mspabi_sral_9
-00007ea8   _auto_init_hold_wdt
-00005476   _c_int00
-00005476   _c_int00_noexit
+000077d8   __mspabi_divf
+00008700   __mspabi_divi
+00008500   __mspabi_divli
+000089d0   __mspabi_divu
+0000826a   __mspabi_divul
+000083b0   __mspabi_fixfu
+000088a8   __mspabi_fltuf
+00007342   __mspabi_mpyf
+000088ee   __mspabi_mpyl_f5hw
+00008700   __mspabi_remi
+00008500   __mspabi_remli
+000089d0   __mspabi_remu
+0000826a   __mspabi_remul
+00008a50   __mspabi_slli
+000085f4   __mspabi_slll_1
+000085d0   __mspabi_slll_10
+000085cc   __mspabi_slll_11
+000085c8   __mspabi_slll_12
+000085c4   __mspabi_slll_13
+000085c0   __mspabi_slll_14
+000085bc   __mspabi_slll_15
+000085f0   __mspabi_slll_2
+000085ec   __mspabi_slll_3
+000085e8   __mspabi_slll_4
+000085e4   __mspabi_slll_5
+000085e0   __mspabi_slll_6
+000085dc   __mspabi_slll_7
+000085d8   __mspabi_slll_8
+000085d4   __mspabi_slll_9
+000085b6   __mspabi_sral_1
+00008592   __mspabi_sral_10
+0000858e   __mspabi_sral_11
+0000858a   __mspabi_sral_12
+00008586   __mspabi_sral_13
+00008582   __mspabi_sral_14
+0000857e   __mspabi_sral_15
+000085b2   __mspabi_sral_2
+000085ae   __mspabi_sral_3
+000085aa   __mspabi_sral_4
+000085a6   __mspabi_sral_5
+000085a2   __mspabi_sral_6
+0000859e   __mspabi_sral_7
+0000859a   __mspabi_sral_8
+00008596   __mspabi_sral_9
+00007fb6   _auto_init_hold_wdt
+00005484   _c_int00
+00005484   _c_int00_noexit
 0000fffe   _reset_vector
 00004360   _stack
-00008a2a   _system_pre_init
-00008a2e   abort
+00008a92   _system_pre_init
+00008a96   abort
 ffffffff   binit
 00001cca   clockValue
-00008398   dmp_enable_6x_lp_quat
-00005772   dmp_enable_feature
-0000830a   dmp_enable_gyro_cal
-000083dc   dmp_enable_lp_quat
-00008944   dmp_load_motion_driver_firmware
-00005492   dmp_read_fifo
-00008a02   dmp_register_android_orient_cb
-00008a0a   dmp_register_tap_cb
-00007dc0   dmp_set_fifo_rate
-000060ca   dmp_set_orientation
-0000821a   dmp_set_shake_reject_thresh
-00008744   dmp_set_shake_reject_time
-0000876a   dmp_set_shake_reject_timeout
-0000860c   dmp_set_tap_axes
-000086f6   dmp_set_tap_count
-00005f2c   dmp_set_tap_thresh
-00008790   dmp_set_tap_time
-000087b6   dmp_set_tap_time_multi
+000083f6   dmp_enable_6x_lp_quat
+00005780   dmp_enable_feature
+00008368   dmp_enable_gyro_cal
+0000843a   dmp_enable_lp_quat
+000089a2   dmp_load_motion_driver_firmware
+000054a0   dmp_read_fifo
+00008a6a   dmp_register_android_orient_cb
+00008a72   dmp_register_tap_cb
+00007ece   dmp_set_fifo_rate
+000060c4   dmp_set_orientation
+000082c2   dmp_set_shake_reject_thresh
+000087a2   dmp_set_shake_reject_time
+000087c8   dmp_set_shake_reject_timeout
+0000866a   dmp_set_tap_axes
+00008754   dmp_set_tap_count
+00005f26   dmp_set_tap_thresh
+000087ee   dmp_set_tap_time
+00008814   dmp_set_tap_time_multi
 00001cdc   gasTimerInfo
+000078f2   get_mpu_data
 00001c54   gu8InterruptCount
 00001c00   gu8PowerOffMode
 00001d56   gu8Rx0Buffer
@@ -1147,30 +1150,30 @@ ffffffff   binit
 00001cda   gu8RxData
 00001cdb   gu8RxDataCount
 00005020   hw
-00007f16   main
-000087dc   memcmp
-00008988   memcpy
-0000895c   memset
-00007f7c   mpu_configure_fifo
-00008462   mpu_get_accel_fsr
-000063e6   mpu_init
-0000710c   mpu_load_firmware
-00006c58   mpu_lp_accel_mode
-000071ce   mpu_read_fifo_stream
-00007af0   mpu_read_mem
-00005ba4   mpu_reset_fifo
-00007be4   mpu_set_accel_fsr
-0000668e   mpu_set_bypass
-00008168   mpu_set_compass_sample_rate
-000078f8   mpu_set_dmp_state
-000079f6   mpu_set_gyro_fsr
-00008108   mpu_set_int_latched
-00007a74   mpu_set_lpf
-000073fe   mpu_set_sample_rate
-0000653a   mpu_set_sensors
-00007b6a   mpu_write_mem
-00007fe2   msp430_int_enable
-00007034   msp430_reg_int_cb
+0000797c   main
+0000883a   memcmp
+000089e6   memcpy
+000089ba   memset
+00008024   mpu_configure_fifo
+000084c0   mpu_get_accel_fsr
+000063e0   mpu_init
+00007106   mpu_load_firmware
+00006c52   mpu_lp_accel_mode
+000071c8   mpu_read_fifo_stream
+00007bfe   mpu_read_mem
+00005bb2   mpu_reset_fifo
+00007cf2   mpu_set_accel_fsr
+00006688   mpu_set_bypass
+00008210   mpu_set_compass_sample_rate
+00007a06   mpu_set_dmp_state
+00007b04   mpu_set_gyro_fsr
+000081b0   mpu_set_int_latched
+00007b82   mpu_set_lpf
+000073f8   mpu_set_sample_rate
+00006534   mpu_set_sensors
+00007c78   mpu_write_mem
+0000808a   msp430_int_enable
+0000702e   msp430_reg_int_cb
 00004ff6   reg
 00001cce   status
 0000502e   test
@@ -1799,156 +1802,157 @@ address    name
 00004ff6   reg
 00005020   hw
 0000502e   test
-0000508e   I2CB0_ISR
-00005154   P2_ISR
-0000520e   ADC12_A_ISR
-000052c6   CYC_SYS_TMR_Timer1ISR
-00005362   P1_ISR
-000053dc   USCI_A0_ISR
-00005416   USCI_A1_ISR
-00005450   NMI_ISR
-00005476   _c_int00
-00005476   _c_int00_noexit
-00005490   CYC_SYS_PWM_PWMTimer
-00005492   dmp_read_fifo
-00005772   dmp_enable_feature
-00005ba4   mpu_reset_fifo
-00005d78   CYC_IO_MOTS_Init
-00005f2c   dmp_set_tap_thresh
-000060ca   dmp_set_orientation
-00006264   PMM_setVCoreUp
-000063e6   mpu_init
-0000653a   mpu_set_sensors
-0000668e   mpu_set_bypass
-00006906   UCS_initFLL
-00006b4c   UCS_clockSignalInit
-00006c58   mpu_lp_accel_mode
-00006d62   PMM_setVCoreDown
-00006e5c   CYC_SYS_CLK_SetSystemClock
-00006f50   USCI_UART_initAdvance
-00007034   msp430_reg_int_cb
-0000710c   mpu_load_firmware
-000071ce   mpu_read_fifo_stream
-00007290   CYC_SYS_I2CB0_Enable
-00007348   __mspabi_mpyf
-000073fe   mpu_set_sample_rate
-000074b0   CYC_SYS_I2CB0_Read
-00007560   CYC_SYS_I2CB0_Write
-00007610   GPIO_setAsOutputPin
-000076aa   GPIO_setAsPeripheralModuleFunctionInputPin
-00007744   GPIO_setAsPeripheralModuleFunctionOutputPin
-000077de   __mspabi_divf
-0000786c   CYC_SYS_UART0_Initialize
-000078f8   mpu_set_dmp_state
-00007978   UCS_LFXT1Start
-000079f6   mpu_set_gyro_fsr
-00007a74   mpu_set_lpf
-00007af0   mpu_read_mem
-00007b6a   mpu_write_mem
-00007be4   mpu_set_accel_fsr
-00007cd4   GPIO_setOutputHighOnPin
-00007d4a   GPIO_setOutputLowOnPin
-00007dc0   dmp_set_fifo_rate
-00007ea8   _auto_init_hold_wdt
-00007f16   main
-00007f7c   mpu_configure_fifo
-00007fe2   msp430_int_enable
-000080a8   CYC_SYS_PWM_InitPWMTimer
-00008108   mpu_set_int_latched
-00008168   mpu_set_compass_sample_rate
-000081c2   __mspabi_divul
-000081c2   __mspabi_remul
-0000821a   dmp_set_shake_reject_thresh
-0000830a   dmp_enable_gyro_cal
-00008352   __mspabi_fixfu
-00008398   dmp_enable_6x_lp_quat
-000083dc   dmp_enable_lp_quat
-00008420   CYC_SYS_TMR_EnableTimer1
-00008462   mpu_get_accel_fsr
-000084a2   __mspabi_divli
-000084a2   __mspabi_remli
-000084e2   CYC_SYS_TMR_DelayInMilliSeconds
-00008520   __mspabi_sral_15
-00008524   __mspabi_sral_14
-00008528   __mspabi_sral_13
-0000852c   __mspabi_sral_12
-00008530   __mspabi_sral_11
-00008534   __mspabi_sral_10
-00008538   __mspabi_sral_9
-0000853c   __mspabi_sral_8
-00008540   __mspabi_sral_7
-00008544   __mspabi_sral_6
-00008548   __mspabi_sral_5
-0000854c   __mspabi_sral_4
-00008550   __mspabi_sral_3
-00008554   __mspabi_sral_2
-00008558   __mspabi_sral_1
-0000855e   __mspabi_slll_15
-00008562   __mspabi_slll_14
-00008566   __mspabi_slll_13
-0000856a   __mspabi_slll_12
-0000856e   __mspabi_slll_11
-00008572   __mspabi_slll_10
-00008576   __mspabi_slll_9
-0000857a   __mspabi_slll_8
-0000857e   __mspabi_slll_7
-00008582   __mspabi_slll_6
-00008586   __mspabi_slll_5
-0000858a   __mspabi_slll_4
-0000858e   __mspabi_slll_3
-00008592   __mspabi_slll_2
-00008596   __mspabi_slll_1
-0000859c   PMM_setVCore
-000085d6   UCS_initFLLSettle
-0000860c   dmp_set_tap_axes
-00008640   CYC_SYS_TMR_InitTimer1
-00008672   CYC_SYS_InitializeTarget
-000086a2   __mspabi_divi
-000086a2   __mspabi_remi
-000086ce   UCS_clearAllOscFlagsWithTimeout
-000086f6   dmp_set_tap_count
-0000871e   USCI_UART_enableInterrupt
-00008744   dmp_set_shake_reject_time
-0000876a   dmp_set_shake_reject_timeout
-00008790   dmp_set_tap_time
-000087b6   dmp_set_tap_time_multi
-000087dc   memcmp
-00008802   UCS_getACLK
-00008826   __TI_zero_init
-0000884a   __mspabi_fltuf
-0000886e   CYC_SYS_I2CB0_Disable
-00008890   __mspabi_mpyl_f5hw
-000088b2   CYC_SYS_TMR_GetClockMs
-000088d2   UCS_getSMCLK
-000088f2   CYC_IO_LEDS_IntializeLEDs
-0000890e   UCS_getMCLK
-0000892a   UCS_setExternalClockSource
-00008944   dmp_load_motion_driver_firmware
-0000895c   memset
-00008972   __mspabi_divu
-00008972   __mspabi_remu
-00008988   memcpy
-0000899c   __TI_decompress_none
-000089bc   ADC12_A_clearInterrupt
-000089c8   USCI_UART_clearInterruptFlag
-000089d4   CYC_SYS_GPIO_SetPeripheralPinAsOutput
-000089de   SFR_clearInterrupt
-000089e8   __mspabi_slli
-000089f2   CYC_SYS_RST_StopWatchdog
-000089fa   USCI_UART_receiveData
-00008a02   dmp_register_android_orient_cb
-00008a0a   dmp_register_tap_cb
-00008a12   SFR_enableInterrupt
-00008a18   USCI_UART_enable
-00008a1e   __TI_ISR_TRAP
-00008a24   __TI_decompress_rle24
-00008a2a   _system_pre_init
-00008a2e   C$$EXIT
-00008a2e   abort
-00008a58   __TI_Handler_Table_Base
-00008a64   __TI_Handler_Table_Limit
-00008a6a   __TI_CINIT_Base
-00008a7a   __TI_CINIT_Limit
+0000509c   I2CB0_ISR
+00005162   P2_ISR
+0000521c   ADC12_A_ISR
+000052d4   CYC_SYS_TMR_Timer1ISR
+00005370   P1_ISR
+000053ea   USCI_A0_ISR
+00005424   USCI_A1_ISR
+0000545e   NMI_ISR
+00005484   _c_int00
+00005484   _c_int00_noexit
+0000549e   CYC_SYS_PWM_PWMTimer
+000054a0   dmp_read_fifo
+00005780   dmp_enable_feature
+00005bb2   mpu_reset_fifo
+00005d86   CYC_IO_MOTS_Init
+00005f26   dmp_set_tap_thresh
+000060c4   dmp_set_orientation
+0000625e   PMM_setVCoreUp
+000063e0   mpu_init
+00006534   mpu_set_sensors
+00006688   mpu_set_bypass
+00006900   UCS_initFLL
+00006b46   UCS_clockSignalInit
+00006c52   mpu_lp_accel_mode
+00006d5c   PMM_setVCoreDown
+00006e56   CYC_SYS_CLK_SetSystemClock
+00006f4a   USCI_UART_initAdvance
+0000702e   msp430_reg_int_cb
+00007106   mpu_load_firmware
+000071c8   mpu_read_fifo_stream
+0000728a   CYC_SYS_I2CB0_Enable
+00007342   __mspabi_mpyf
+000073f8   mpu_set_sample_rate
+000074aa   CYC_SYS_I2CB0_Read
+0000755a   CYC_SYS_I2CB0_Write
+0000760a   GPIO_setAsOutputPin
+000076a4   GPIO_setAsPeripheralModuleFunctionInputPin
+0000773e   GPIO_setAsPeripheralModuleFunctionOutputPin
+000077d8   __mspabi_divf
+00007866   CYC_SYS_UART0_Initialize
+000078f2   get_mpu_data
+0000797c   main
+00007a06   mpu_set_dmp_state
+00007a86   UCS_LFXT1Start
+00007b04   mpu_set_gyro_fsr
+00007b82   mpu_set_lpf
+00007bfe   mpu_read_mem
+00007c78   mpu_write_mem
+00007cf2   mpu_set_accel_fsr
+00007de2   GPIO_setOutputHighOnPin
+00007e58   GPIO_setOutputLowOnPin
+00007ece   dmp_set_fifo_rate
+00007fb6   _auto_init_hold_wdt
+00008024   mpu_configure_fifo
+0000808a   msp430_int_enable
+00008150   CYC_SYS_PWM_InitPWMTimer
+000081b0   mpu_set_int_latched
+00008210   mpu_set_compass_sample_rate
+0000826a   __mspabi_divul
+0000826a   __mspabi_remul
+000082c2   dmp_set_shake_reject_thresh
+00008368   dmp_enable_gyro_cal
+000083b0   __mspabi_fixfu
+000083f6   dmp_enable_6x_lp_quat
+0000843a   dmp_enable_lp_quat
+0000847e   CYC_SYS_TMR_EnableTimer1
+000084c0   mpu_get_accel_fsr
+00008500   __mspabi_divli
+00008500   __mspabi_remli
+00008540   CYC_SYS_TMR_DelayInMilliSeconds
+0000857e   __mspabi_sral_15
+00008582   __mspabi_sral_14
+00008586   __mspabi_sral_13
+0000858a   __mspabi_sral_12
+0000858e   __mspabi_sral_11
+00008592   __mspabi_sral_10
+00008596   __mspabi_sral_9
+0000859a   __mspabi_sral_8
+0000859e   __mspabi_sral_7
+000085a2   __mspabi_sral_6
+000085a6   __mspabi_sral_5
+000085aa   __mspabi_sral_4
+000085ae   __mspabi_sral_3
+000085b2   __mspabi_sral_2
+000085b6   __mspabi_sral_1
+000085bc   __mspabi_slll_15
+000085c0   __mspabi_slll_14
+000085c4   __mspabi_slll_13
+000085c8   __mspabi_slll_12
+000085cc   __mspabi_slll_11
+000085d0   __mspabi_slll_10
+000085d4   __mspabi_slll_9
+000085d8   __mspabi_slll_8
+000085dc   __mspabi_slll_7
+000085e0   __mspabi_slll_6
+000085e4   __mspabi_slll_5
+000085e8   __mspabi_slll_4
+000085ec   __mspabi_slll_3
+000085f0   __mspabi_slll_2
+000085f4   __mspabi_slll_1
+000085fa   PMM_setVCore
+00008634   UCS_initFLLSettle
+0000866a   dmp_set_tap_axes
+0000869e   CYC_SYS_TMR_InitTimer1
+000086d0   CYC_SYS_InitializeTarget
+00008700   __mspabi_divi
+00008700   __mspabi_remi
+0000872c   UCS_clearAllOscFlagsWithTimeout
+00008754   dmp_set_tap_count
+0000877c   USCI_UART_enableInterrupt
+000087a2   dmp_set_shake_reject_time
+000087c8   dmp_set_shake_reject_timeout
+000087ee   dmp_set_tap_time
+00008814   dmp_set_tap_time_multi
+0000883a   memcmp
+00008860   UCS_getACLK
+00008884   __TI_zero_init
+000088a8   __mspabi_fltuf
+000088cc   CYC_SYS_I2CB0_Disable
+000088ee   __mspabi_mpyl_f5hw
+00008910   CYC_SYS_TMR_GetClockMs
+00008930   UCS_getSMCLK
+00008950   CYC_IO_LEDS_IntializeLEDs
+0000896c   UCS_getMCLK
+00008988   UCS_setExternalClockSource
+000089a2   dmp_load_motion_driver_firmware
+000089ba   memset
+000089d0   __mspabi_divu
+000089d0   __mspabi_remu
+000089e6   memcpy
+000089fa   __TI_decompress_none
+00008a1a   ADC12_A_clearInterrupt
+00008a26   USCI_UART_clearInterruptFlag
+00008a32   CYC_SYS_GPIO_SetPeripheralPinAsOutput
+00008a3c   SFR_clearInterrupt
+00008a50   __mspabi_slli
+00008a5a   CYC_SYS_RST_StopWatchdog
+00008a62   USCI_UART_receiveData
+00008a6a   dmp_register_android_orient_cb
+00008a72   dmp_register_tap_cb
+00008a7a   SFR_enableInterrupt
+00008a80   USCI_UART_enable
+00008a86   __TI_ISR_TRAP
+00008a8c   __TI_decompress_rle24
+00008a92   _system_pre_init
+00008a96   C$$EXIT
+00008a96   abort
+00008ac0   __TI_Handler_Table_Base
+00008acc   __TI_Handler_Table_Limit
+00008ad2   __TI_CINIT_Base
+00008ae2   __TI_CINIT_Limit
 0000ffd2   __TI_int41
 0000ffd4   __TI_int42
 0000ffd6   __TI_int43
@@ -1978,4 +1982,4 @@ ffffffff   binit
 UNDEFED    __TI_INITARRAY_Base
 UNDEFED    __TI_INITARRAY_Limit
 
-[797 symbols]
+[798 symbols]

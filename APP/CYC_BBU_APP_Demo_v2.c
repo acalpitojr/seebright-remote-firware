@@ -162,7 +162,12 @@ main()
 
 	CYC_IO_MOTS_Init();
     //mpu_test();
-
+	 mpu_data_STRUCT mpu;
+	while(1)
+	{
+        mpu = get_mpu_data();
+        __delay_cycles(0xfffff);
+	}
 
 
 	//while(1)
