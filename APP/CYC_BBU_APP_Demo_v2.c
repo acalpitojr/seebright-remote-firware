@@ -156,27 +156,27 @@ main()
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();
 
-	GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN2);
-	GPIO_setOutputLowOnPin(GPIO_PORT_P5,GPIO_PIN2 );
-	GPIO_setOutputHighOnPin(GPIO_PORT_P5,GPIO_PIN2 );
+	/*------------------------------GPIO OUTPUT TEST------------------------------------*/
+	//GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN2);
+//	GPIO_setOutputLowOnPin(GPIO_PORT_P5,GPIO_PIN2 );
+//	GPIO_setOutputHighOnPin(GPIO_PORT_P5,GPIO_PIN2 );
+/*---------------------------------------------------------------------------------------------------*/
 
-	CYC_IO_MOTS_Init();
+
+/*------------------------------MOTION SENSOR TEST------------------------------------*/
+	//	CYC_IO_MOTS_Init();
     //mpu_test();
-	 mpu_data_STRUCT mpu;
-	while(1)
-	{
-        mpu = get_mpu_data();
-        __delay_cycles(0xfffff);
-	}
-
-
-	//while(1)
-	//{
-	  //  CYC_IO_MOTS_GetQuaternionData(&quat_data);
-	   // __delay_cycles(0xfffff);
+	 //mpu_data_STRUCT mpu;
+//	while(1)
+//	{
+  //      mpu = get_mpu_data();
+   //     __delay_cycles(0xfffff);
 	//}
+	/*---------------------------------------------------------------------------------------------------*/
 
 
+
+	/*----------------------------------------------BLUETOOTH TESTING--------------------------------------------------------*/
 	//init_bluetooth();
 	//__delay_cycles(0xfffff);
 	//while(1)
@@ -184,12 +184,24 @@ main()
 	//  CYC_SYS_UART_TransmitData(SERIAL_UART_PORT, "Seebright\r\n", sizeof("Seebright\r\n"));
 	// __delay_cycles(0xfffff);
 	//}
+	/*-----------------------------------------------------------------------------------------------------------------------------------------*/
 
+
+
+	/*------------------------------------------------------EEPROM TESTING-----------------------------------------------------------*/
 	//eeprom_test();
+	/*-------------------------------------------------------------------------------------------------------------------------------------------*/
 
+
+
+
+	/*------------------------------------------------------FUEL GAUGE TESTING-----------------------------------------------------------*/
     //fuel_gauge_test();
+	/*-------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
+
+	/*-----------------------------------------------------------ADC_TESTING--------------------------------------------------------------*/
 	//CYC_SYS_ADC_Init();
     //volatile uint16_t adc_reading = 0x00;
 
@@ -200,7 +212,7 @@ main()
 	//adc_reading=Read_ADC_Voltage(6);
 	//adc_reading=Read_ADC_Voltage(7);
 //	}
-
+	/*-------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
 

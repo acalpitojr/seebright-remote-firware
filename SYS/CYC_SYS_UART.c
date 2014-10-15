@@ -384,7 +384,7 @@ __interrupt void USCI_A1_ISR (void)
     switch (__even_in_range(UCA1IV,4)){
         //Vector 2 - RXIFG
         case 2:
-
+#if 0
         	if(gu8RxDataCount <= RX_BUFFER_SIZE)
         	{
         		//Receive the data
@@ -394,6 +394,12 @@ __interrupt void USCI_A1_ISR (void)
 				//	Circularly fill the buffer
 				gu8RxDataCount = gu8RxDataCount & (RX_BUFFER_SIZE-1);
         	}
+#endif
+
+        	uint8_t received_byte = USCI_UART_receiveData(USCI_A1_BASE);  /*good for debugging.  reading the register clears the interupt flag?*/
+        	INT_SPP_RX_IRQHandler(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
+
+
             break;
         default: break;
     }
