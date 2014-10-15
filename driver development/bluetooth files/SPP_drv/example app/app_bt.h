@@ -19,14 +19,14 @@
 *                Include files                *
 **********************************************/
 #include "stdint.h"
-#ifndef FreeRTOS
-  #define FreeRTOS
-#endif
-#ifdef FreeRTOS
-  #include "FreeRTOS.h"
-  #include "queue.h"
-  #include "task.h"
-#endif
+//#ifndef FreeRTOS
+ // #define FreeRTOS
+//#endif
+//#ifdef FreeRTOS
+ // #include "FreeRTOS.h"
+ // #include "queue.h"
+  //#include "task.h"
+//#endif
 
 #include "bt_common.h"
 

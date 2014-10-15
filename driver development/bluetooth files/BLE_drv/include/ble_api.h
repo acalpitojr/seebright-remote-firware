@@ -185,11 +185,11 @@ typedef struct tag_le_srv_service_def_st
  * @return LE_API_SUCCCESS  Completed succesfully.
  * @return LE_NULL_PTR_ERR  Uninitialised pointer to the callback function given.
  */
-le_api_result_e eBleApiInit(xQueueHandle qHandle,
+le_api_result_e eBleApiInit(void* qHandle,
                                void (*pUnxEvtFunc)(uint8_t, uint8_t,uint16_t, uint8_t*),
-                               le_api_result_e (*pCharValUpdFunc)(xQueueHandle, uint16_t, uint16_t),
-                               le_api_result_e (*pCharDescUpdFunc)(xQueueHandle, uint16_t, uint16_t),
-                               le_api_result_e (*pUpdMultiFunc)(xQueueHandle, uint16_t, uint16_t, uint8_t*));
+                               le_api_result_e (*pCharValUpdFunc)(void*, uint16_t, uint16_t),
+                               le_api_result_e (*pCharDescUpdFunc)(void*, uint16_t, uint16_t),
+                               le_api_result_e (*pUpdMultiFunc)(void*, uint16_t, uint16_t, uint8_t*));
 
 /**
  * @brief      Function initializes the BT Low-Energy device and GATT Server.
@@ -204,7 +204,7 @@ le_api_result_e eBleApiInit(xQueueHandle qHandle,
  * @return LE_API_ERR_INIT  LE Device initialization failed.
  * @return LE_SER_INIT_ERROR  LE GATT Server initialization failed.
  */
-le_api_result_e eBleDeviceSrv_Init(xQueueHandle qHandle,
+le_api_result_e eBleDeviceSrv_Init(void* qHandle,
                                       uint8_t* const pu8DevName,
                                       uint8_t u8DevNameLen,
                                       uint8_t* pu8RetBd_Addr);
@@ -227,7 +227,7 @@ le_api_result_e eBleDeviceSrv_Init(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_SER_INIT_ERROR  LE GATT Server initialization failed.
  */
-le_api_result_e eBleDevice_Disconnect(xQueueHandle qHandle,
+le_api_result_e eBleDevice_Disconnect(void* qHandle,
                                          uint8_t* const pu8Bd_Addr,
                                          uint16_t* pu16RetConnHandle);
 /**
@@ -244,7 +244,7 @@ le_api_result_e eBleDevice_Disconnect(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Advertize response returned error.
 */
-le_api_result_e eBlePerif_StartAdv(xQueueHandle qHandle,
+le_api_result_e eBlePerif_StartAdv(void* qHandle,
                                       le_adv_req_st stConfig);
 
 /**
@@ -261,7 +261,7 @@ le_api_result_e eBlePerif_StartAdv(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Advertize response returned error.
 */
-le_api_result_e eBlePerif_StopAdv(xQueueHandle qHandle);
+le_api_result_e eBlePerif_StopAdv(void* qHandle);
 
 
 /*******************************************************************************
@@ -281,7 +281,7 @@ le_api_result_e eBlePerif_StopAdv(xQueueHandle qHandle);
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Primary service response returned an error.
  */
-le_api_result_e eBleSrv_RegisterPrimaryService(xQueueHandle qHandle,
+le_api_result_e eBleSrv_RegisterPrimaryService(void* qHandle,
                                                   le_srv_service_def_st* pstSvcDef);
 
 /**
@@ -299,7 +299,7 @@ le_api_result_e eBleSrv_RegisterPrimaryService(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Primary service response returned an error.
  */
-le_api_result_e eBleSrv_RegisterSecondaryService(xQueueHandle qHandle,
+le_api_result_e eBleSrv_RegisterSecondaryService(void* qHandle,
                                                     le_srv_service_def_st* pstParentSvcDef,
                                                     le_srv_service_def_st* pstSecSvcDef);
 
@@ -319,7 +319,7 @@ le_api_result_e eBleSrv_RegisterSecondaryService(xQueueHandle qHandle,
  * @return LE_USR_ABORT     User Aborted wait.
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  */
-le_api_result_e eBleSrv_UpdateCharacteristic(xQueueHandle qHandle,
+le_api_result_e eBleSrv_UpdateCharacteristic(void* qHandle,
                                                 uint16_t u16CharEleHandle,
                                                 uint16_t u16AttValLen,
                                                 uint8_t* pu8AttVal);
@@ -341,7 +341,7 @@ le_api_result_e eBleSrv_UpdateCharacteristic(xQueueHandle qHandle,
  * @return LE_USR_ABORT     User Aborted wait.
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  */
-le_api_result_e eBleSrv_GetEndGroupHandle(xQueueHandle qHandle,
+le_api_result_e eBleSrv_GetEndGroupHandle(void* qHandle,
                                              uint16_t u16SvcHandle,
                                              uint16_t* pu16EndGroupHandle);
 
@@ -394,7 +394,7 @@ le_api_result_e eBleSrv_DisconnectHndlr(le_disconnect_st* pstDisconnInfo);
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_ClientMtuExchangeHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_ClientMtuExchangeHndlr(void* qHandle,
                                                   uint16_t u16ConnHandle,
                                                   le_mtu_exchg_st* pstMtuClientData,
                                                   le_mtu_exchg_acc_resp_st* pstMtuSrvData);
@@ -427,7 +427,7 @@ le_api_result_e eBleSrv_ClientMtuExchangeHndlr(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_ReadMultiEventHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_ReadMultiEventHndlr(void* qHandle,
                                                uint16_t u16ConnHandle,
                                                uint16_t* pu16RetConnHandle);
 
@@ -455,7 +455,7 @@ le_api_result_e eBleSrv_ReadMultiEventHndlr(xQueueHandle qHandle,
  * @return LE_CONN_HNDLR    Unexpected connection handler received.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_ReadCharValHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_ReadCharValHndlr(void* qHandle,
                                             uint16_t u16ConnHandle,
                                             uint16_t* pu16RetConnHandle);
 /**
@@ -489,7 +489,7 @@ le_api_result_e eBleSrv_ReadCharValHndlr(xQueueHandle qHandle,
  * @return LE_CONN_HNDLR    Unexpected connection handler received.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_ReadCharDescriptorHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_ReadCharDescriptorHndlr(void* qHandle,
                                                   uint16_t u16ConnHandle,
                                                   uint16_t* pu16RetConnHandle);
 
@@ -519,7 +519,7 @@ le_api_result_e eBleSrv_ReadCharDescriptorHndlr(xQueueHandle qHandle,
  * @return LE_CONN_HNDLR    Unexpected connection handler received.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_WriteCharDescriptorHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_WriteCharDescriptorHndlr(void* qHandle,
                                                    uint16_t u16ConnHandle,
                                                    le_srv_write_char_desp_event_st* pstCharDespEvt);
 
@@ -549,7 +549,7 @@ le_api_result_e eBleSrv_WriteCharDescriptorHndlr(xQueueHandle qHandle,
  * @return LE_CONN_HNDLR    Unexpected connection handler received.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_WriteCharValueHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_WriteCharValueHndlr(void* qHandle,
                                               uint16_t u16ConnHandle,
                                               le_srv_write_char_desp_event_st* pstCharValEvt);
 
@@ -575,7 +575,7 @@ le_api_result_e eBleSrv_WriteCharValueHndlr(xQueueHandle qHandle,
  * @return LE_USR_ABORT     User Aborted wait.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_WriteWithoutRespHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_WriteWithoutRespHndlr(void* qHandle,
                                                  le_srv_wrt_wo_evt_st* pstEvtData);
 
 
@@ -601,7 +601,7 @@ le_api_result_e eBleSrv_WriteWithoutRespHndlr(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_CONN_HNDLR    Unexpected connection handler received.
  */
-le_api_result_e eBleSrv_SendNotification(xQueueHandle qHandle,
+le_api_result_e eBleSrv_SendNotification(void* qHandle,
                                             uint16_t u16ConnHandle,
                                             le_srv_char_st* pstChar,
                                             uint8_t* pu8NewCharValue);
@@ -625,7 +625,7 @@ le_api_result_e eBleSrv_SendNotification(xQueueHandle qHandle,
  * @return LE_GATT_ERR      Error status returned after indication request.
  * @return LE_CONN_HNDLR    Unexpected connection handler received.
  */
-le_api_result_e eBleSrv_SendIndication(xQueueHandle qHandle,
+le_api_result_e eBleSrv_SendIndication(void* qHandle,
                                             uint16_t u16ConnHandle,
                                             le_srv_char_st* pstChar,
                                             uint8_t* pu8NewCharValue);
@@ -678,7 +678,7 @@ le_api_result_e  eBleRegisterCallback_UnexpEvnt(void (*pCallback)(uint8_t, uint8
  *                       the requested characteristic element .
  *
  *                       Parameters of callback function are as follows:
- *                       Param 1 (xQueueHandle): OS Queue Handle
+ *                       Param 1 (void*): OS Queue Handle
  *                       Param 2 (uint16_t): Connection Handle.
  *                       Param 3 (uint16_t): Characteristic descriptor handle
  *                                           of the element that must be updated.
@@ -686,7 +686,7 @@ le_api_result_e  eBleRegisterCallback_UnexpEvnt(void (*pCallback)(uint8_t, uint8
  * @return LE_API_SUCCCESS  Completed succesfully.
  * @return LE_NULL_PTR_ERR  Uninitialised pointer to the callback function given.
  */
-le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)(xQueueHandle, uint16_t, uint16_t));
+le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)(void*, uint16_t, uint16_t));
 
 /**
  * @brief      Registers a user defined callback function to be called when Characteristic
@@ -704,7 +704,7 @@ le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)
  *                       the requested characteristic element .
  *
  *                       Parameters of callback function are as follows:
- *                       Param 1 (xQueueHandle): OS Queue Handle
+ *                       Param 1 (void*): OS Queue Handle
  *                       Param 2 (uint16_t): Connection Handle.
  *                       Param 3 (uint16_t): Characteristic descriptor handle
  *                                           of the element that must be updated.
@@ -712,7 +712,7 @@ le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)
  * @return LE_API_SUCCCESS  Completed succesfully.
  * @return LE_NULL_PTR_ERR  Uninitialised pointer to the callback function given.
  */
-le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback)(xQueueHandle, uint16_t, uint16_t));
+le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback)(void*, uint16_t, uint16_t));
 
 /**
  * @brief      Registers a user defined callback function to be update of multiple values
@@ -729,7 +729,7 @@ le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback
  *                       obtained and that eBleSrv_UpdateCharacteristic() is called to update all
  *                       requested characteristic elements.
  *                       Parameters of callback function are all of type:
- *                       Param 1 (xQueueHandle) : OS Queue handle.
+ *                       Param 1 (void*) : OS Queue handle.
  *                       Param 2 (uint16_t) : Connection handle for which the update is required.
  *                       Param 3 (uint16_t) : Number of handles in a list.
  *                       Param 4 (uint8_t*) : Pointer to the list of handles whose values need to be
@@ -738,7 +738,8 @@ le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback
  * @return LE_API_SUCCCESS  Completed succesfully.
  * @return LE_NULL_PTR_ERR  Uninitialised pointer to the callback function given.
  */
-le_api_result_e  eBleRegisterCallback_MultiUpdate(le_api_result_e (*pCallback)(xQueueHandle, uint16_t, uint16_t, uint8_t*));
+//le_api_result_e  eBleRegisterCallback_MultiUpdate(le_api_result_e (*pCallback)(void*, uint16_t, uint16_t, uint8_t*));
+enum tag_ble_api_result_e        eBleRegisterCallback_MultiUpdate(enum tag_ble_api_result_e (*pCallback)(void*, uint16_t, uint16_t, uint8_t*));
 
 
 /*******************************************************************************
@@ -760,7 +761,7 @@ le_api_result_e  eBleRegisterCallback_MultiUpdate(le_api_result_e (*pCallback)(x
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Primary service response returned an error.
  */
-le_api_result_e eBleSrv_AddPrimServiceAttributes(xQueueHandle qHandle,
+le_api_result_e eBleSrv_AddPrimServiceAttributes(void* qHandle,
                                                     uint16_t u16UUID,
                                                     uint16_t* pu16Handle);
 
@@ -777,7 +778,7 @@ le_api_result_e eBleSrv_AddPrimServiceAttributes(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Primary service response returned an error.
  */
-le_api_result_e eBleSrv_AddSecServiceAttributes(xQueueHandle qHandle,
+le_api_result_e eBleSrv_AddSecServiceAttributes(void* qHandle,
                                                    uint16_t u16ParentSvcHandle,
                                                    uint16_t u16UUID,
                                                    uint16_t* pu16Handle);
@@ -803,7 +804,7 @@ le_api_result_e eBleSrv_AddSecServiceAttributes(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_AddCharacteristic(xQueueHandle qHandle,
+le_api_result_e eBleSrv_AddCharacteristic(void* qHandle,
                                              uint16_t u16SvcHandle,
                                              le_srv_char_st* pstCharac,
                                              uint16_t* pu16RetHandleChar,
@@ -823,7 +824,7 @@ le_api_result_e eBleSrv_AddCharacteristic(xQueueHandle qHandle,
  * @return LE_API_ERR_DRV   Low-level driver request failed.
  * @return LE_API_ERR_EVENT Response returned an error.
  */
-le_api_result_e eBleSrv_AddIncludeToSvc(xQueueHandle qHandle,
+le_api_result_e eBleSrv_AddIncludeToSvc(void* qHandle,
                                            uint16_t u16ParentSvcHandle,
                                            uint16_t u16InclSvcHandle,
                                            uint16_t u16InclSvcUuid,
@@ -848,7 +849,7 @@ void vSmartProcessPacket(uint8_t* pu8Buff,
  * @param[in]  qHandle OS Message-Queue Handle
  * @param[out] pu16Cmd Pointer to location where received ServiceID will be stored
  */
-le_api_result_e  vSmartWaitForAnyEvent(xQueueHandle qHandle,
+le_api_result_e  vSmartWaitForAnyEvent(void* qHandle,
                             uint16_t* pu16Cmd);
 
 #endif /* _SMART_API_H */

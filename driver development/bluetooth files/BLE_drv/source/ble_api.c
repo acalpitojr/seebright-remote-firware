@@ -27,11 +27,12 @@
 #include "bt_uart_transport.h"
 #include "ble_api.h"
 #include "bt_OS.h"
+#include <stdio.h>
 
 //#ifdef FreeRTOS
-  #include "FreeRTOS.h"
-  #include "queue.h"
-  #include "task.h"
+  //#include "FreeRTOS.h"
+  //#include "queue.h"
+  //#include "task.h"
 //#endif
 
 
@@ -48,13 +49,14 @@
 void (*ptUnexEvtCallBack)(uint8_t, uint8_t,uint16_t, uint8_t*) = NULL;
 
 /* Pointer to a callback function called when Character Value needs to be updated */
-le_api_result_e (*pCharValUpdCallback)(xQueueHandle, uint16_t, uint16_t);
+le_api_result_e (*pCharValUpdCallback)(void*, uint16_t, uint16_t);
+
 
 /* Pointer to a callback function called when Character Descriptor needs to be updated */
-le_api_result_e (*pCharDescUpdCallback)(xQueueHandle, uint16_t, uint16_t);
+le_api_result_e (*pCharDescUpdCallback)(void*, uint16_t, uint16_t);
 
 /* Pointer to a callback function called when multiple handle values need to be updated */
-le_api_result_e (*pUpdMultiCallback)(xQueueHandle, uint16_t, uint16_t, uint8_t*);
+le_api_result_e (*pUpdMultiCallback)(void*, uint16_t, uint16_t, uint8_t*);
 
 
 t_tcu_event stTcuEvent;
@@ -88,7 +90,7 @@ le_api_result_e  eBleRegisterCallback_UnexpEvnt(void (*pCallback)(uint8_t, uint8
  }
 
 /******************************************************************************/
-le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)(xQueueHandle, uint16_t, uint16_t))
+le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)(void*, uint16_t, uint16_t))
  {
    le_api_result_e eRet = LE_API_SUCCCESS;
 
@@ -105,7 +107,7 @@ le_api_result_e  eBleRegisterCallback_CharValUpdate(le_api_result_e (*pCallback)
  }
 
 /******************************************************************************/
-le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback)(xQueueHandle, uint16_t, uint16_t))
+le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback)(void*, uint16_t, uint16_t))
  {
    le_api_result_e eRet = LE_API_SUCCCESS;
 
@@ -123,7 +125,8 @@ le_api_result_e  eBleRegisterCallback_CharDescUpdate(le_api_result_e (*pCallback
 
 
 /******************************************************************************/
-le_api_result_e  eBleRegisterCallback_MultiUpdate(le_api_result_e (*pCallback)(xQueueHandle, uint16_t, uint16_t, uint8_t*))
+
+le_api_result_e  eBleRegisterCallback_MultiUpdate(le_api_result_e (*pCallback)(void*, uint16_t, uint16_t, uint8_t*))
  {
    le_api_result_e eRet = LE_API_SUCCCESS;
 
@@ -140,11 +143,11 @@ le_api_result_e  eBleRegisterCallback_MultiUpdate(le_api_result_e (*pCallback)(x
  }
 
 /******************************************************************************/
-le_api_result_e eBleApiInit(xQueueHandle qHandle,
+le_api_result_e eBleApiInit(void* qHandle,
                                void (*pUnxEvtFunc)(uint8_t, uint8_t,uint16_t, uint8_t*),
-                               le_api_result_e (*pCharValUpdFunc)(xQueueHandle, uint16_t, uint16_t),
-                               le_api_result_e (*pCharDescUpdFunc)(xQueueHandle, uint16_t, uint16_t),
-                               le_api_result_e (*pUpdMultiFunc)(xQueueHandle, uint16_t, uint16_t, uint8_t*))
+                               le_api_result_e (*pCharValUpdFunc)(void*, uint16_t, uint16_t),
+                               le_api_result_e (*pCharDescUpdFunc)(void*, uint16_t, uint16_t),
+                               le_api_result_e (*pUpdMultiFunc)(void*, uint16_t, uint16_t, uint8_t*))
 {
   le_api_result_e eRet = LE_API_SUCCCESS;
 
@@ -186,20 +189,41 @@ le_api_result_e eBleExtractDataEventMng(uint8_t* pu8Buff, void* pvRetData)
     uint8_t u8OpCode = PARSE_CMD_OPCODE(pu8Buff);
     le_func_status_e eLeDrvRes;
 
+    enum le_opcodes{  TCU_MNG_LE_INIT_RESP_OPCODE = 0x81,  /*found this through macro calls*/
+        TCU_MNG_LE_START_ADVERTISE_RESP_OPCODE = 0x88,
+        TCU_MNG_LE_DISABLE_ADVERTISE_RESP_OPCODE = 0x89,
+        TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_OPCODE = 0x4C,
+        TCU_MNG_LE_DISCONNECT_EVENT_OPCODE = 0x93,
+        TCU_LE_ACCEPT_OPCODE = 0xF1,
+     };
+
+
     /* Process returned response/notification */
     switch(u8OpCode)
     {
-        case GET_CMD_OPCODE(TCU_MNG_LE_INIT_RESP):                 eLeDrvRes = eGetLeMngInit_Resp(pu8Buff, (le_mnginit_resp_st*)pvRetData);
+        //case GET_CMD_OPCODE(TCU_MNG_LE_INIT_RESP):                 eLeDrvRes = eGetLeMngInit_Resp(pu8Buff, (le_mnginit_resp_st*)pvRetData);
+        case TCU_MNG_LE_INIT_RESP_OPCODE:
+            eLeDrvRes = eGetLeMngInit_Resp(pu8Buff, (le_mnginit_resp_st*)pvRetData);
         break;
-        case GET_CMD_OPCODE(TCU_MNG_LE_START_ADVERTISE_RESP):      eLeDrvRes =  eGetLeStartAdvertise_Resp(pu8Buff, (uint8_t*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_MNG_LE_START_ADVERTISE_RESP):
+        case TCU_MNG_LE_START_ADVERTISE_RESP_OPCODE:
+                eLeDrvRes =  eGetLeStartAdvertise_Resp(pu8Buff, (uint8_t*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_MNG_LE_DISABLE_ADVERTISE_RESP):      eLeDrvRes =  eGetLeDisableAdvertise_Resp(pu8Buff, (uint8_t*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_MNG_LE_DISABLE_ADVERTISE_RESP):
+        case TCU_MNG_LE_DISABLE_ADVERTISE_RESP_OPCODE:
+                eLeDrvRes =  eGetLeDisableAdvertise_Resp(pu8Buff, (uint8_t*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_MNG_LE_CONNECTION_COMPLETE_EVENT): eLeDrvRes = eGetLeMngConnComplete_Event(pu8Buff, (le_conn_evt_st*)(pvRetData));
+       // case GET_CMD_OPCODE(TCU_MNG_LE_CONNECTION_COMPLETE_EVENT):
+        case TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_OPCODE:
+                eLeDrvRes = eGetLeMngConnComplete_Event(pu8Buff, (le_conn_evt_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_MNG_LE_DISCONNECT_EVENT):          eLeDrvRes = eGetLeDisconnect_Event(pu8Buff, (le_disconnect_st*)(pvRetData));
+       // case GET_CMD_OPCODE(TCU_MNG_LE_DISCONNECT_EVENT):
+        case TCU_MNG_LE_DISCONNECT_EVENT_OPCODE:
+                eLeDrvRes = eGetLeDisconnect_Event(pu8Buff, (le_disconnect_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_ACCEPT):                        eLeDrvRes = eGetLeAccept_Ack(pu8Buff, (le_accept_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_ACCEPT):
+        case TCU_LE_ACCEPT_OPCODE:
+                eLeDrvRes = eGetLeAccept_Ack(pu8Buff, (le_accept_st*)(pvRetData));
         break;
         default:
         {
@@ -222,50 +246,119 @@ le_api_result_e eBleExtractDataEventGattSer(uint8_t* pu8Buff, void* pvRetData)
     uint8_t u8OpCode = PARSE_CMD_OPCODE(pu8Buff);
     le_func_status_e eLeDrvRes;
 
+
+    enum gatt_opcodes{ TCU_LE_GATT_SER_INIT_RESP_OPCODE = 0x80,
+        TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_OPCODE = 0xA0,
+        TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_OPCODE = 0xA2,
+        TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_OPCODE = 0xA3,
+        TCU_LE_GATT_SER_EXG_MTU_EVENT_OPCODE = 0xC1,
+        TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_OPCODE = 0x81,
+        TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_OPCODE = 0xCA,
+        TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_OPCODE = 0x8A,
+        TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_OPCODE = 0xC2,
+        TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_OPCODE = 0x82,
+        TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_OPCODE = 0xC4,
+        TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_OPCODE = 0xA5,
+        TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_OPCODE = 0x84,
+        TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_OPCODE = 0x83,
+        TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_OPCODE = 0x45,
+        TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_OPCODE = 0xA6,
+        TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_OPCODE = 0xA4,
+        TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_OPCODE = 0x46,
+        TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_OPCODE = 0xC9,
+        TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_OPCODE = 0xC8,
+        TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_OPCODE = 0x88,
+
+
+    };
+
+
     /* Process returned response/notification */
     switch(u8OpCode)
     {
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_INIT_RESP):            eLeDrvRes = eGetServerGattInit_Resp(pu8Buff, (gatt_status_code_e*)pvRetData);
+       // case GET_CMD_OPCODE(TCU_LE_GATT_SER_INIT_RESP):       /*We are changing this because their macro for get_cmd_opcode just uses bitshifts on a 32 bit number.  Since the mcu is only 16 bits, we are having a problem with this.*/
+        case TCU_LE_GATT_SER_INIT_RESP_OPCODE:
+                eLeDrvRes = eGetServerGattInit_Resp(pu8Buff, (gatt_status_code_e*)pvRetData);
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP):    eLeDrvRes =  eGetSdbGattAddPrimaryService_Resp(pu8Buff, &(((le_srv_svc_resp_st*)(pvRetData))->eStatus), &(((le_srv_svc_resp_st*)(pvRetData))->u16Handle));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP):
+        case TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_OPCODE:
+                eLeDrvRes =  eGetSdbGattAddPrimaryService_Resp(pu8Buff, &(((le_srv_svc_resp_st*)(pvRetData))->eStatus), &(((le_srv_svc_resp_st*)(pvRetData))->u16Handle));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP):   eLeDrvRes =  eGetSdbGattAddCharacterDecl_Resp(pu8Buff, &(((le_srv_char_decl_resp_st*)(pvRetData))->eStatus), &(((le_srv_char_decl_resp_st*)(pvRetData))->u16Handle));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP):
+        case    TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_OPCODE:
+                eLeDrvRes =  eGetSdbGattAddCharacterDecl_Resp(pu8Buff, &(((le_srv_char_decl_resp_st*)(pvRetData))->eStatus), &(((le_srv_char_decl_resp_st*)(pvRetData))->u16Handle));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP):    eLeDrvRes =  eGetSdbGattAddCharacterEle_Resp(pu8Buff, &(((le_srv_char_decl_resp_st*)(pvRetData))->eStatus), &(((le_srv_char_decl_resp_st*)(pvRetData))->u16Handle));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP):
+        case TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_OPCODE:
+                eLeDrvRes =  eGetSdbGattAddCharacterEle_Resp(pu8Buff, &(((le_srv_char_decl_resp_st*)(pvRetData))->eStatus), &(((le_srv_char_decl_resp_st*)(pvRetData))->u16Handle));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_EXG_MTU_EVENT):        eLeDrvRes = eGetServerGattExgMtu_Event(pu8Buff, (le_mtu_exchg_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_EXG_MTU_EVENT):
+        case TCU_LE_GATT_SER_EXG_MTU_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattExgMtu_Event(pu8Buff, (le_mtu_exchg_st*)(pvRetData));
         break;
-        case  GET_CMD_OPCODE(TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP): eLeDrvRes = eGetServerGattExgMtuAccept_Resp(pu8Buff, (le_mtu_exchg_acc_resp_st*) (pvRetData));
+        //case  GET_CMD_OPCODE(TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP):
+        case TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_OPCODE:
+                eLeDrvRes = eGetServerGattExgMtuAccept_Resp(pu8Buff, (le_mtu_exchg_acc_resp_st*) (pvRetData));
         break;
-        case  GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_MULTIPLE_EVENT): eLeDrvRes = eGetServerGattReadMulti_Event(pu8Buff, (le_srv_multi_event_st*)(pvRetData));
+        //case  GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_MULTIPLE_EVENT):
+        case TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattReadMulti_Event(pu8Buff, (le_srv_multi_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP):   eLeDrvRes = eGetServerGattReadMultiAccept_Resp(pu8Buff, (le_srv_multi_acc_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP):
+        case TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_OPCODE:
+                eLeDrvRes = eGetServerGattReadMultiAccept_Resp(pu8Buff, (le_srv_multi_acc_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT):         eLeDrvRes = eGetServerGattReadCharVal_Event(pu8Buff, (le_srv_read_char_val_event_st*) (pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT):
+        case TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattReadCharVal_Event(pu8Buff, (le_srv_read_char_val_event_st*) (pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP):   eLeDrvRes = eSetServerGattReadCharValAccept_Resp(pu8Buff, (le_srv_read_char_acc_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP):
+        case TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_OPCODE:
+                eLeDrvRes = eSetServerGattReadCharValAccept_Resp(pu8Buff, (le_srv_read_char_acc_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT):       eLeDrvRes = eGetServerGattWriteCharDesc_Event(pu8Buff, (le_srv_write_char_desp_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT):
+        case TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattWriteCharDesc_Event(pu8Buff, (le_srv_write_char_desp_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP):           eLeDrvRes = eGetSdbGattUpdateCharacterEle_Resp(pu8Buff, (gatt_status_code_e*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP):
+        case TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_OPCODE:
+                eLeDrvRes = eGetSdbGattUpdateCharacterEle_Resp(pu8Buff, (gatt_status_code_e*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP): eLeDrvRes = eGetServerGattWriteCharDespAccept_Resp(pu8Buff, (le_srv_multi_acc_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP):
+        case TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_OPCODE:
+                eLeDrvRes = eGetServerGattWriteCharDespAccept_Resp(pu8Buff, (le_srv_multi_acc_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP): eLeDrvRes = eGetServerGattWriteCharValAccept_Resp(pu8Buff, (le_srv_multi_acc_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP):
+        case TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_OPCODE:
+                eLeDrvRes = eGetServerGattWriteCharValAccept_Resp(pu8Buff, (le_srv_multi_acc_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT): eLeDrvRes = eGetServerGattValNotify_Event(pu8Buff, (uint16_t*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT):
+        case TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattValNotify_Event(pu8Buff, (uint16_t*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP):        eLeDrvRes = eGetSdbGattReturnEndGroupHandle_Resp(pu8Buff, (le_resp_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP):
+        case TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_OPCODE:
+                eLeDrvRes = eGetSdbGattReturnEndGroupHandle_Resp(pu8Buff, (le_resp_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_INC_SVC_RESP):            eLeDrvRes = eGetSdbGattAddInclSvc_Resp(pu8Buff, (le_resp_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SDB_ADD_INC_SVC_RESP):
+        case TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_OPCODE:
+                eLeDrvRes = eGetSdbGattAddInclSvc_Resp(pu8Buff, (le_resp_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT):   eLeDrvRes = eGetServerGattValIndication_Event(pu8Buff, (le_srv_char_cal_ind_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT):
+        case TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattValIndication_Event(pu8Buff, (le_srv_char_cal_ind_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT):  eLeDrvRes = eGetServerGattWriteWithoutRespCmd_Event(pu8Buff, (le_srv_wrt_wo_evt_st*)(pvRetData));
+       // case GET_CMD_OPCODE(TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT):
+        case TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattWriteWithoutRespCmd_Event(pu8Buff, (le_srv_wrt_wo_evt_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT):              eLeDrvRes = eGetServerGattReadCharDescriptor_Event(pu8Buff, (le_srv_read_char_val_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT):
+        case TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_OPCODE:
+                eLeDrvRes = eGetServerGattReadCharDescriptor_Event(pu8Buff, (le_srv_read_char_val_event_st*)(pvRetData));
         break;
-        case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP):        eLeDrvRes = eGetServerGattReadCharDescriptorAccept_Resp(pu8Buff, (le_srv_read_char_acc_event_st*)(pvRetData));
+        //case GET_CMD_OPCODE(TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP):
+        case TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_OPCODE:
+                eLeDrvRes = eGetServerGattReadCharDescriptorAccept_Resp(pu8Buff, (le_srv_read_char_acc_event_st*)(pvRetData));
         break;
 //      case GET_CMD_OPCODE(): eLeDrvRes = (pu8Buff, (*)(pvRetData));
 //      break;
@@ -361,41 +454,63 @@ void vAppCallback(uint8_t* pu8Data)
 }
 
 /******************************************************************************/
-le_api_result_e vSmartWaitForAnyEvent(xQueueHandle qHandle, uint16_t* pu16Cmd)
+le_api_result_e vSmartWaitForAnyEvent(void* qHandle, uint16_t* pu16Cmd)
 {
   le_api_result_e eResult = LE_API_SUCCCESS;
-  portBASE_TYPE qResult = pdFAIL;
+  int32_t qResult = 0;
+
+  uint32_t timeout = 0xFFFFFFFF;
+
+
   uint8_t* pu8Data = (uint8_t*)(stTcuEvent.ptEvent);
 
-  /* Wait until any event comes or timeout*/
-  qResult = ReceiveEvent(qHandle, &stTcuEvent, TCU_MNG_TIMEOUT_1Sec);
 
-  if(qResult != pdFAIL){
+  extern uint8_t DATA_FROM_BLUETOOTH_UART;
+
+  /* Wait until any event comes or timeout*/
+  //qResult = ReceiveEvent(qHandle, &stTcuEvent, TCU_MNG_TIMEOUT_1Sec);
+  DATA_FROM_BLUETOOTH_UART = 0;
+  while(DATA_FROM_BLUETOOTH_UART == 0)
+  {
+      /*wait forever?
+       * timeout--;
+       *
+       * */
+  }
+
+
+
+  //if(qResult != 0)
+  if(DATA_FROM_BLUETOOTH_UART == 1)
+  {
     /* Extract the data from input stream */
     *pu16Cmd = PARSE_CMD_MESSAGE(pu8Data);
     eResult = LE_API_SUCCCESS;
-  }else
-    eResult = LE_API_ERR_TIMEOUT;
+  }
+  else
+  {
+      eResult = LE_API_ERR_TIMEOUT;
+  }
 
   return eResult;
 }
 
 /******************************************************************************/
-le_api_result_e eBleWaitForSpecificEvent(xQueueHandle qHandle, uint32_t u32ExpEvent, uint32_t u32TimeOut, void* pvRetData)
+le_api_result_e eBleWaitForSpecificEvent(void* qHandle, uint32_t u32ExpEvent, uint32_t u32TimeOut, void* pvRetData)
 {
-  portBASE_TYPE qResult = pdFAIL;
+  int32_t qResult = 0;
   le_api_result_e eResult = LE_API_SUCCCESS;
 #ifdef DEBUG_PRINT
   printf(" eBleWaitForSpecificEvent()\n");
   vPrintCmd(GET_CMD_SERVICE_ID(u32ExpEvent), GET_CMD_OPCODE(u32ExpEvent));
 #endif
   /* No time-out, so stay until expected message comes */
-  while((qResult != pdPASS) || ( eResult != LE_API_SUCCCESS))
+  while((qResult != 1) || ( eResult != LE_API_SUCCCESS))
   {
     qResult = ReceiveEvent(qHandle, &stTcuEvent, u32TimeOut);
 
     /* If message received, then process it */
-    if(qResult == pdPASS)
+    if(qResult == 1)
     {
       /* Check if event was expected and that was not a control message sent by application */
       if(((GET_CMD_OPCODE(u32ExpEvent) != stTcuEvent.eventType) || (GET_CMD_SERVICE_ID(u32ExpEvent) != stTcuEvent.Service_ID)) && ( TCU_BT_CNTRL != stTcuEvent.Service_ID))
@@ -429,7 +544,7 @@ le_api_result_e eBleWaitForSpecificEvent(xQueueHandle qHandle, uint32_t u32ExpEv
   return eResult;
 }
 /******************************************************************************/
-le_api_result_e eBleDeviceSrv_Init(xQueueHandle qHandle, uint8_t* const pu8DevName, uint8_t u8DevNameLen, uint8_t* pu8RetBd_Addr)
+le_api_result_e eBleDeviceSrv_Init(void* qHandle, uint8_t* const pu8DevName, uint8_t u8DevNameLen, uint8_t* pu8RetBd_Addr)
 {
     le_api_result_e eResTemp;
     le_mnginit_resp_st stInitResp;
@@ -486,7 +601,7 @@ le_api_result_e eBleDeviceSrv_Init(xQueueHandle qHandle, uint8_t* const pu8DevNa
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_GetEndGroupHandle(xQueueHandle qHandle,
+le_api_result_e eBleSrv_GetEndGroupHandle(void* qHandle,
                                              uint16_t u16SvcHandle,
                                              uint16_t* pu16EndGroupHandle)
 {
@@ -524,7 +639,7 @@ le_api_result_e eBleSrv_GetEndGroupHandle(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_AddIncludeToSvc(xQueueHandle qHandle,
+le_api_result_e eBleSrv_AddIncludeToSvc(void* qHandle,
                                            uint16_t u16ParentSvcHandle,
                                            uint16_t u16InclSvcHandle,
                                            uint16_t u16InclSvcUuid,
@@ -587,7 +702,7 @@ le_api_result_e eBleSrv_AddIncludeToSvc(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_AddPrimServiceAttributes(xQueueHandle qHandle, uint16_t u16UUID, uint16_t* pu16Handle)
+le_api_result_e eBleSrv_AddPrimServiceAttributes(void* qHandle, uint16_t u16UUID, uint16_t* pu16Handle)
 {
     le_srv_svc_resp_st stPrimSvcResp;
     le_func_status_e eFncRes;
@@ -630,7 +745,7 @@ le_api_result_e eBleSrv_AddPrimServiceAttributes(xQueueHandle qHandle, uint16_t 
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_AddSecServiceAttributes(xQueueHandle qHandle, uint16_t u16ParentSvcHandle, uint16_t u16UUID, uint16_t* pu16Handle)
+le_api_result_e eBleSrv_AddSecServiceAttributes(void* qHandle, uint16_t u16ParentSvcHandle, uint16_t u16UUID, uint16_t* pu16Handle)
 {
     le_srv_svc_resp_st stSvcResp;
     le_func_status_e eFncRes;
@@ -673,7 +788,7 @@ le_api_result_e eBleSrv_AddSecServiceAttributes(xQueueHandle qHandle, uint16_t u
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_AddCharacteristic(xQueueHandle qHandle,
+le_api_result_e eBleSrv_AddCharacteristic(void* qHandle,
                                               uint16_t u16SvcHandle,
                                               le_srv_char_st* pstCharac,
                                               uint16_t* pu16RetHandleChar,
@@ -792,7 +907,7 @@ le_api_result_e eBleSrv_AddCharacteristic(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_RegisterPrimaryService(xQueueHandle qHandle, le_srv_service_def_st* pstSvcDef)
+le_api_result_e eBleSrv_RegisterPrimaryService(void* qHandle, le_srv_service_def_st* pstSvcDef)
 {
   le_api_result_e eResult;
   uint8_t u8Iter;
@@ -869,8 +984,8 @@ le_api_result_e eBleSrv_RegisterPrimaryService(xQueueHandle qHandle, le_srv_serv
 }
 
 /******************************************************************************/
-//le_api_result_e eBleSrv_RegisterSecondaryService(xQueueHandle qHandle, uint16_t u16ParentSvcHandle, uint16_t u16ParentSvcUuid, le_srv_service_def_st* pstSvcDef)
-le_api_result_e eBleSrv_RegisterSecondaryService(xQueueHandle qHandle, le_srv_service_def_st* pstParentSvcDef, le_srv_service_def_st* pstSecSvcDef)
+//le_api_result_e eBleSrv_RegisterSecondaryService(void* qHandle, uint16_t u16ParentSvcHandle, uint16_t u16ParentSvcUuid, le_srv_service_def_st* pstSvcDef)
+le_api_result_e eBleSrv_RegisterSecondaryService(void* qHandle, le_srv_service_def_st* pstParentSvcDef, le_srv_service_def_st* pstSecSvcDef)
 {
   le_api_result_e eResult;
   uint8_t u8Iter;
@@ -949,7 +1064,7 @@ le_api_result_e eBleSrv_RegisterSecondaryService(xQueueHandle qHandle, le_srv_se
 }
 
 /******************************************************************************/
-le_api_result_e eBlePerif_StartAdv(xQueueHandle qHandle, le_adv_req_st stConfig)
+le_api_result_e eBlePerif_StartAdv(void* qHandle, le_adv_req_st stConfig)
  {
     le_func_status_e eResFnc;
     le_api_result_e eResTemp;
@@ -987,7 +1102,7 @@ le_api_result_e eBlePerif_StartAdv(xQueueHandle qHandle, le_adv_req_st stConfig)
  }
 
 /******************************************************************************/
-le_api_result_e eBlePerif_StopAdv(xQueueHandle qHandle)
+le_api_result_e eBlePerif_StopAdv(void* qHandle)
  {
     le_func_status_e eResFnc;
     le_api_result_e eResTemp;
@@ -1026,7 +1141,7 @@ le_api_result_e eBlePerif_StopAdv(xQueueHandle qHandle)
  }
 
 /******************************************************************************/
-le_api_result_e eBleDevice_Disconnect(xQueueHandle qHandle,  uint8_t* const pu8Bd_Addr, uint16_t* pu16RetConnHandle)
+le_api_result_e eBleDevice_Disconnect(void* qHandle,  uint8_t* const pu8Bd_Addr, uint16_t* pu16RetConnHandle)
 {
   le_func_status_e eResFnc;
   le_api_result_e eResTemp = LE_API_UNINITIALIZED;
@@ -1093,7 +1208,7 @@ le_api_result_e eBleSrv_ClientConnRequestHndlr(le_conn_evt_st* pstConnectInfo)
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_ClientMtuExchangeHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_ClientMtuExchangeHndlr(void* qHandle,
                                                   uint16_t u16ConnHandle,
                                                   le_mtu_exchg_st* pstMtuClientData,
                                                   le_mtu_exchg_acc_resp_st* pstMtuSrvData)
@@ -1155,7 +1270,7 @@ le_api_result_e eBleSrv_ClientMtuExchangeHndlr(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_ReadMultiEventHndlr(xQueueHandle qHandle, uint16_t u16ConnHandle, uint16_t* pu16RetConnHandle)
+le_api_result_e eBleSrv_ReadMultiEventHndlr(void* qHandle, uint16_t u16ConnHandle, uint16_t* pu16RetConnHandle)
 {
 
   le_api_result_e eResTemp = LE_API_UNINITIALIZED;
@@ -1240,7 +1355,7 @@ le_api_result_e eBleSrv_ReadMultiEventHndlr(xQueueHandle qHandle, uint16_t u16Co
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_ReadCharValHndlr(xQueueHandle qHandle, uint16_t u16ConnHandle, uint16_t* pu16RetConnHandle)
+le_api_result_e eBleSrv_ReadCharValHndlr(void* qHandle, uint16_t u16ConnHandle, uint16_t* pu16RetConnHandle)
 {
   le_func_status_e eResFnc;
   le_api_result_e eResTemp = LE_API_UNINITIALIZED;
@@ -1315,7 +1430,7 @@ le_api_result_e eBleSrv_ReadCharValHndlr(xQueueHandle qHandle, uint16_t u16ConnH
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_ReadCharDescriptorHndlr(xQueueHandle qHandle, uint16_t u16ConnHandle, uint16_t* pu16RetConnHandle)
+le_api_result_e eBleSrv_ReadCharDescriptorHndlr(void* qHandle, uint16_t u16ConnHandle, uint16_t* pu16RetConnHandle)
 {
   le_func_status_e eResFnc;
   le_api_result_e eResTemp = LE_API_UNINITIALIZED;
@@ -1389,7 +1504,7 @@ le_api_result_e eBleSrv_ReadCharDescriptorHndlr(xQueueHandle qHandle, uint16_t u
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_UpdateCharacteristic(xQueueHandle qHandle, uint16_t u16CharEleHandle, uint16_t u16AttValLen, uint8_t* pu8AttVal)
+le_api_result_e eBleSrv_UpdateCharacteristic(void* qHandle, uint16_t u16CharEleHandle, uint16_t u16AttValLen, uint8_t* pu8AttVal)
 {
   le_func_status_e eResFnc;
   le_api_result_e eResTemp = LE_API_UNINITIALIZED;
@@ -1419,7 +1534,7 @@ le_api_result_e eBleSrv_UpdateCharacteristic(xQueueHandle qHandle, uint16_t u16C
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_WriteCharDescriptorHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_WriteCharDescriptorHndlr(void* qHandle,
                                                    uint16_t u16ConnHandle,
                                                    le_srv_write_char_desp_event_st* pstCharDespEvt)
 {
@@ -1501,7 +1616,7 @@ le_api_result_e eBleSrv_WriteCharDescriptorHndlr(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_WriteCharValueHndlr(xQueueHandle qHandle,
+le_api_result_e eBleSrv_WriteCharValueHndlr(void* qHandle,
                                               uint16_t u16ConnHandle,
                                               le_srv_write_char_desp_event_st* pstCharValEvt)
 {
@@ -1583,7 +1698,7 @@ le_api_result_e eBleSrv_WriteCharValueHndlr(xQueueHandle qHandle,
 
 
 /******************************************************************************/
-le_api_result_e eBleSrv_SendNotification(xQueueHandle qHandle,
+le_api_result_e eBleSrv_SendNotification(void* qHandle,
                                             uint16_t u16ConnHandle,
                                             le_srv_char_st* pstChar,
                                             uint8_t* pu8NewCharValue)
@@ -1641,7 +1756,7 @@ le_api_result_e eBleSrv_SendNotification(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_SendIndication(xQueueHandle qHandle,
+le_api_result_e eBleSrv_SendIndication(void* qHandle,
                                           uint16_t u16ConnHandle,
                                           le_srv_char_st* pstChar,
                                           uint8_t* pu8NewCharValue)
@@ -1721,7 +1836,7 @@ le_api_result_e eBleSrv_DisconnectHndlr(le_disconnect_st* pstDisconnInfo)
 }
 
 /******************************************************************************/
-le_api_result_e eBleSrv_WriteWithoutRespHndlr(xQueueHandle qHandle, le_srv_wrt_wo_evt_st* pstEvtData)
+le_api_result_e eBleSrv_WriteWithoutRespHndlr(void* qHandle, le_srv_wrt_wo_evt_st* pstEvtData)
 {
   le_api_result_e eResTemp;
 

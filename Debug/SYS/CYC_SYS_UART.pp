@@ -19,6 +19,7 @@ SYS/CYC_SYS_UART.obj: ../SYS/MSP430Ware/usci_uart.h
 SYS/CYC_SYS_UART.obj: ../SYS/MSP430Ware/ucs.h
 SYS/CYC_SYS_UART.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/string.h
 SYS/CYC_SYS_UART.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/linkage.h
+SYS/CYC_SYS_UART.obj: D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/driver\ development/bluetooth\ files/SPP_drv/include/bt_uart_transport.h
 
 ../SYS/CYC_SYS_UART.c: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430f5xx_6xxgeneric.h: 
@@ -39,3 +40,4 @@ c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h:
 ../SYS/MSP430Ware/ucs.h: 
 c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/string.h: 
 c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/linkage.h: 
+D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/driver\ development/bluetooth\ files/SPP_drv/include/bt_uart_transport.h: 

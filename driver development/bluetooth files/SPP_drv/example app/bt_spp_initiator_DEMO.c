@@ -30,7 +30,7 @@ and sends back all received data.
 /**********************************************
 *         Variables and forward declarations  *
 **********************************************/
-
+extern uint8_t DATA_FROM_BLUETOOTH_UART;
 /**********************************************
 *             Constants & Macros              *
 **********************************************/
@@ -63,6 +63,7 @@ void error(void){
 }
 /**************************************
 **************************************/
+#if 0
 int main(void)
 {
   //unsigned portSHORT stackSize = 800;
@@ -105,7 +106,7 @@ int main(void)
   /*NOW START THE BLUETOOTH TASK*/
 
 }
-
+#endif
 volatile uint8_t deviceNo; //No. of remote device to be connected to.
 volatile uint8_t max_Number_of_Reports;//  specifies maximum number of remote devices to be found  
 uint8_t remoteDevCount;//contains number of found remote  devices

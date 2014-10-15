@@ -22,7 +22,7 @@
 #include "bt_spp_drv.h"
 #include "bt_hci_drv.h"
 #include "bt_mng_drv.h"
-#include "ble_api.h"
+//#include "ble_api.h"
 
 #include "bt_OS.h"
 #endif /*_H_BT_COMMON_*/

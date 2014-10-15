@@ -75,7 +75,7 @@ typedef struct t_tcu_event_{
 
 /*Decleration of TCU Callback event tcu_event*/
 volatile extern t_tcu_event tcu_event;
-
+void bt_uart_manager(uint8_t dataRX_);  /*this needs to be in the systems uart rx isr*/
 void send_tx (uint8_t * strADDR, uint32_t len);
 #endif                          /* _H_BT_UART_TRANSPORT_ */
 

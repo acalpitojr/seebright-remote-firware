@@ -20,7 +20,7 @@
 *                Include files                *
 **********************************************/
 #include "stdint.h"
-#include "main.h"
+//#include "main.h"
 #include "bt_spp_api.h"
 #include "bt_uart_transport.h"  
 
@@ -59,12 +59,12 @@
 /*Data structure for TCU_SPP_CONNECT_REQ*/
 union uDataFormat_{
   struct {
-    uint8_t BIT0:1;//unused
+    uint8_t BIT_0:1;//unused
     uint8_t DataBit:2;
     uint8_t StopBit:1;
     uint8_t Parity:1;
     uint8_t ParityType:2;
-    uint8_t BIT7:1;//unused       
+    uint8_t BIT_7:1;//unused
   }sDataFormat_;
   uint8_t DataFormatByte;
 };
@@ -277,7 +277,7 @@ extern int8_t cSPP_DATA_RECEIVE_buff[];
 extern uint8_t au8SendBuff[];
 volatile extern uint16_t BT_Mode;//HCI or TCU
 extern t_tcu_event ul_BT_SPP_rcvValue;
-extern xQueueHandle btQueueEVENT;
+//extern xQueueHandle btQueueEVENT;
 #endif /* _H_BT_SPP_DRV_ */
 
 /****************************************************************************/

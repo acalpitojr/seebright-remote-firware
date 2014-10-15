@@ -15,10 +15,10 @@
 /**********************************************
 *                Include files                *
 **********************************************/
-#include "main.h"
+//#include "main.h"
 #include "bt_spp_api.h"
 
-
+#define errQUEUE_EMPTY     (0u)    /*from old projdef used in freetos*/
 /**********************************************
 *         Variables and forward declarations  *
 **********************************************/
@@ -37,6 +37,8 @@ t_bt_remote_device bt_remote_device[MAX_NUMBER_OF_SEARCHED_DEVICES];
 t_bt_service_information bt_service_information;
 
 
+extern uint8_t DATA_FROM_BLUETOOTH_UART;
+
 /* Functions */
 /***********************************************************************
  * @brief This API initializes Complete mode on Chiron
@@ -48,6 +50,8 @@ t_bt_service_information bt_service_information;
  *   API_SUCCESS:  Complete Mode on Chiron initialized successfully
  *   Value different from API_SUCCESS: see error code list bt_error.h
  */
+
+#if 0
 API_RESULT BT_hci_init__(unsigned char *BD_ADDR_, unsigned char *Dev_Name)
 {
   unsigned long ret = API_SUCCESS;    
@@ -145,6 +149,8 @@ API_RESULT BT_hci_init__(unsigned char *BD_ADDR_, unsigned char *Dev_Name)
   
   return ret;
 }
+
+#endif
 /***********************************************************************
  * @brief This API initializes Complete mode on Chiron
  * @param BD_ADDR
@@ -354,7 +360,7 @@ API_RESULT BT_spp_discover_remote_device( uint8_t max_Number_of_Reports_, t_bt_r
 
 
    //if(queueRETURN != pdPASS)
-    if(DATA_FROM_BLUETTOTH == 0)
+    if(DATA_FROM_BLUETOOTH_UART == 0)
     {
       ret = BT_ERR_TIMEOUT;
     }
@@ -781,7 +787,7 @@ API_RESULT BT_spp_scan(uint8_t parm){
   while(process == 0){
     tcu_event.eventType = 0;//reset tcu_event  
 
-    queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (SPP_WAIT_RESPONSE_TIME_100ms) );//200ms portMAX_DELAY
+   // queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (SPP_WAIT_RESPONSE_TIME_100ms) );//200ms portMAX_DELAY
     DATA_FROM_BLUETOOTH_UART = 0;
     timeout = 0xffffffff;
    while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
@@ -1031,10 +1037,10 @@ API_RESULT BT_os_init(void){
   /* Create the BT_Queue */  
   /*BT_Queue is used to pass events from the SPP driver layer to BT_SPP_API layer*/
   //btQueueEVENT = CreateQueue( BT_QUEUE_LENGTH, sizeof( unsigned long ) );
-  btQueueEVENT = CreateQueue( BT_QUEUE_LENGTH, 8 );
+ // btQueueEVENT = CreateQueue( BT_QUEUE_LENGTH, 8 );
   
-  if(btQueueEVENT == NULL)
-    ret = BT_ERR_QUEUE_COULD_NOT_BE_CREATED;
+//  if(btQueueEVENT == NULL)
+  //  ret = BT_ERR_QUEUE_COULD_NOT_BE_CREATED;
   return ret;
 }
 /****************************************************************************/

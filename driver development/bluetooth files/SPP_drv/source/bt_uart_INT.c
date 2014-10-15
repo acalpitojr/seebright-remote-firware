@@ -492,12 +492,12 @@ void processPaketTCU(uint8_t * buff){
 
 /*------------------------------------------------------------------------------
 -------------------------------------------------------------------------------*/
-void INT_SPP_RX_IRQHandler(uint8_t dataRX_)   /*we are going to just place this code into our UART1 RX ISR and pass the data to this function there*/
+void bt_uart_manager(uint8_t dataRX_)   /*we are going to just place this code into our UART1 RX ISR and pass the data to this function there*/
 {
   //uint8_t dataRX_;
   
   //uint32_t errorUART_SSP;  	
-  FUART_Err errorUART_SSP;
+  //FUART_Err errorUART_SSP;
   
   if(gReceivePacketCountINT < UART_PACKET_LENGHT){
   //dataRX_ = UART_BT_GetRxData(UART_BT_SSP);//read received data

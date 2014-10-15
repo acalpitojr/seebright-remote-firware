@@ -99,7 +99,7 @@ typedef struct tag_hr_init_st
  * @param[in]  stInit Pointer to initialization structure
  *
  */
-le_api_result_e eHRInitialise(xQueueHandle qHandle,
+le_api_result_e eHRInitialise(void* qHandle,
                                hr_init_st* stInit);
 
 /**
@@ -111,7 +111,7 @@ le_api_result_e eHRInitialise(xQueueHandle qHandle,
  * @param[in]  stInit Pointer to initialization structure
  *
  */
-void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit);
+void HRMainRoutine(void* qHandle, hr_init_st* stInit);
 
 /**
  * @brief     Configures and starts advertizing. After this function is executed,
@@ -121,7 +121,7 @@ void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit);
  * @param[in]  qHandle OS Message-Queue Handle
  *
  */
-le_api_result_e eHRStartAdvertising(xQueueHandle qHandle);
+le_api_result_e eHRStartAdvertising(void* qHandle);
 
 /**
  * @brief     Registers GAP services (Device Name & Appearance)
@@ -130,7 +130,7 @@ le_api_result_e eHRStartAdvertising(xQueueHandle qHandle);
  * @param[in]  stInit Pointer to initialization structure
  *
  */
-le_api_result_e eHRAddGAPDevName_Appearance_Service(xQueueHandle qHandle,
+le_api_result_e eHRAddGAPDevName_Appearance_Service(void* qHandle,
                                                    uint16_t* pu16SvcHandle,
                                                    uint16_t u16DevNameLen,
                                                    uint8_t* pu8DevName);
@@ -147,7 +147,7 @@ le_api_result_e eHRAddGAPDevName_Appearance_Service(xQueueHandle qHandle,
  * @param[out]  pu16RetHandleCharValDecl Returned character value declaration handles.
  *
  */
-le_api_result_e eHRAddDevIdentService(xQueueHandle qHandle,
+le_api_result_e eHRAddDevIdentService(void* qHandle,
                                        uint8_t* pu8ManufName,
                                        uint8_t pu8ManufNameLen,
                                        uint16_t* pu16SvcHandle,
@@ -160,7 +160,7 @@ le_api_result_e eHRAddDevIdentService(xQueueHandle qHandle,
  * @param[out]  pu16RetHandleCharValDecl Returned character value declaration handles.
  *
  */
-le_api_result_e eHRAddHeartRateService(xQueueHandle qHandle, uint16_t* pu16SvcHandle,
+le_api_result_e eHRAddHeartRateService(void* qHandle, uint16_t* pu16SvcHandle,
                                      uint16_t* pu16RetHandleCharDecl,
                                      uint16_t* pu16RetHandleCharValDecl);
 

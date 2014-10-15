@@ -16,7 +16,7 @@
 /**********************************************
 *                Include files                *
 **********************************************/
-#include "main.h"
+//#include "main.h"
 #include "bt_spp_api.h"
 
 #ifdef FreeRTOS

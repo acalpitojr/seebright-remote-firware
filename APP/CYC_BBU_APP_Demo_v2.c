@@ -154,7 +154,7 @@ main()
 	//double ldFactor = 0.000000000931322574615478515625;
 
 	//	Initialize the target
-	CYC_SYS_InitializeTarget();
+	CYC_SYS_InitializeTarget();  /*clocks and timers should be init here.  Our debug port uart is init here as well.*/
 
 	/*------------------------------GPIO OUTPUT TEST------------------------------------*/
 	//GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN2);

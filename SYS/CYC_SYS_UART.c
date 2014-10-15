@@ -33,7 +33,7 @@ NOTES:
 #include "MSP430Ware\usci_uart.h"
 #include "MSP430Ware\ucs.h"
 #include "string.h"
-
+#include "bt_uart_transport.h"
 
 /* MODULE EXTERNAL DATA DEFINITIONS        *ddddddd*/
 
@@ -79,13 +79,13 @@ volatile UINT8 gu8Rx1Buffer[RX_BUFFER_SIZE];
  *  Note         	 :
  ******************************************************************************
  */
-STATUS CYC_SYS_UART0_Initialize()
+uint8_t CYC_SYS_UART0_Initialize()
 {
 
 	//	Set the values
 	UINT32	__IO lu32ACLKValue = 0;
 
-	STATUS	lsReturnValue = SUCCESS;
+	uint8_t	lsReturnValue = SUCCESS;
 
 	//	Get Auxiliary Clock Source value
 	lu32ACLKValue = UCS_getACLK(UCS_BASE);
@@ -162,12 +162,12 @@ STATUS CYC_SYS_UART0_Initialize()
 
 
 
-STATUS CYC_SYS_UART1_Initialize()
+uint8_t CYC_SYS_UART1_Initialize()
 {
 //	Set the values
 UINT32	__IO lu32ACLKValue = 0;
 
-STATUS	lsReturnValue = SUCCESS;
+uint8_t	lsReturnValue = SUCCESS;
 
 //	Get Auxiliary Clock Source value
 lu32ACLKValue = UCS_getACLK(UCS_BASE);
@@ -250,7 +250,7 @@ return lsReturnValue;
  *  Note         	 :
  ******************************************************************************
  */
-STATUS CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
+uint8_t CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
 {
 	int portBase;
 
@@ -265,7 +265,7 @@ STATUS CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
 		return !SUCCESS;
 	}
 
-	STATUS	lsReturnValue = SUCCESS;
+	uint8_t	lsReturnValue = SUCCESS;
 
 	UINT8 lu8TxBufferLen = 0;
 
@@ -291,7 +291,7 @@ STATUS CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
  *  Note         	 :
  ******************************************************************************
  */
-STATUS CYC_SYS_UART_ReadCommandData(UINT8 port, UINT8 *rpu8Data, UINT8* ru8DataLen)
+uint8_t CYC_SYS_UART_ReadCommandData(UINT8 port, UINT8 *rpu8Data, UINT8* ru8DataLen)
 {
 	__IO UINT16 lu16LoopCount = 0;
 
@@ -384,6 +384,7 @@ __interrupt void USCI_A1_ISR (void)
     switch (__even_in_range(UCA1IV,4)){
         //Vector 2 - RXIFG
         case 2:
+        {
 #if 0
         	if(gu8RxDataCount <= RX_BUFFER_SIZE)
         	{
@@ -397,9 +398,9 @@ __interrupt void USCI_A1_ISR (void)
 #endif
 
         	uint8_t received_byte = USCI_UART_receiveData(USCI_A1_BASE);  /*good for debugging.  reading the register clears the interupt flag?*/
-        	INT_SPP_RX_IRQHandler(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
+        	bt_uart_manager(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
 
-
+        }
             break;
         default: break;
     }

@@ -24,7 +24,7 @@
 /**********************************************
 *         Variables and forward declarations  *
 **********************************************/
-xQueueHandle qHandle;
+void* qHandle;
 uint32_t err;//error code
 
 /*****************************************************************************
@@ -47,7 +47,7 @@ uint32_t err;//error code
 **********************************************/
 #include <stdint.h>
 #include <stdio.h>
-#include "main.h"
+//#include "main.h"
 #include "bt_common.h"
 
 /**********************************************
@@ -67,13 +67,13 @@ uint32_t err;//error code
 
 /**************************************
 **************************************/
-void vApplicationStackOverflowHook (xTaskHandle *pxTask, signed portCHAR *pcTaskName)
-{
+//void vApplicationStackOverflowHook (xTaskHandle *pxTask, signed portCHAR *pcTaskName)
+//{
 	/* This function will get called if a task overflows its stack. */
-  (void)pxTask;
-  (void)pcTaskName;
-  while(1);
-}
+ // (void)pxTask;
+ // (void)pcTaskName;
+ // while(1);
+//}
 
 /**************************************
 **************************************/

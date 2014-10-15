@@ -43,16 +43,16 @@ NOTES:
 /* EXPORTED TYPE DEFINITIONS                *ttttttttt*/
 
 /* EXPORTED FUNCTIONS                       *ggggggggg*/
-STATUS CYC_SYS_UART0_Initialize();
-STATUS CYC_SYS_UART1_Initialize();
+uint8_t CYC_SYS_UART0_Initialize();
+uint8_t CYC_SYS_UART1_Initialize();
 
-void SendSerial (UINT8* string);
+void SendSerial (uint8_t* string);
 
-STATUS CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen);
+uint8_t CYC_SYS_UART_TransmitData(uint8_t port, uint8_t *rpu8Data, uint8_t ru8DataLen);
 
-STATUS CYC_SYS_UART_ReadCommandData(UINT8 port, UINT8 *rpu8Data, UINT8* ru8DataLen);
+uint8_t CYC_SYS_UART_ReadCommandData(uint8_t port, uint8_t *rpu8Data, uint8_t* ru8DataLen);
 
 /* EXPORTED DATA DEFINITIONS/DECLARATIONS   ddddddd*/
-extern UINT8 gu8RxBuffer[RX_BUFFER_SIZE];
+extern uint8_t gu8RxBuffer[RX_BUFFER_SIZE];
 
 /*-----------------------------EOF-------------------------------------------*/

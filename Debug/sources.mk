@@ -99,6 +99,9 @@ S64_DEPS__QUOTED :=
 SUBDIRS := \
 . \
 driver\ development \
+driver\ development/bluetooth\ files/SPP_drv/source \
+driver\ development/bluetooth\ files/SPP_drv/example\ app \
+driver\ development/bluetooth\ files/BLE_drv/source \
 SYS \
 SYS/MSP430Ware \
 IO/eMPL \
