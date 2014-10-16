@@ -144,12 +144,12 @@ void app_BT_SPP_Initiator_DEMO(void)
      // }
  
 
-  init_bluetooth();  /*inits the uart, and reset line for the bluetooth*/
+ // init_bluetooth();  /*inits the uart, and reset line for the bluetooth*/
 
 
 
   /*Switch Chiron to TCU Compete mode*/
-  err = BT_hci_init((uint8_t *)(&BD_ADDR), (uint8_t *)&Device_Name);
+  err = BT_hci_init((uint8_t *)(&BD_ADDR), (uint8_t *)&Device_Name);   /*this function will init the bluetooth uart and reset lines.*/
   if(err != API_SUCCESS){
     while(1){};//endless loop
     }
@@ -166,10 +166,10 @@ void app_BT_SPP_Initiator_DEMO(void)
   /*deviceNo is used to select one of devices dicovered by routine "BT_spp_discover_remote_device()"*/
   err = BT_spp_discover_remote_service(&bt_remote_device[deviceNo], &bt_service_information);
   if(err != API_SUCCESS){
-    //while(1){};//endless loop
+    while(1){};//endless loop
   } 
   if(bt_service_information.Service_Type != PROFILE_INDICATOR_SPP_B_PARTY){
-    //while(1){};//endless loop
+    while(1){};//endless loop
   }
   
   /*Initiate SPP connection*/
@@ -178,6 +178,8 @@ void app_BT_SPP_Initiator_DEMO(void)
     while(1){};//endless loop
   }          
 
+
+  DATA_FROM_BLUETOOTH_UART = 0;
   /*Send string "! HELLO !"*/
   if (tcu_event.eventType == TCU_SPP_CONNECT_EVENT){
     BT_spp_send("! HELLO !", 9);

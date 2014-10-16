@@ -235,6 +235,12 @@ USCI_UART_enableInterrupt(USCI_A1_BASE,
     );
 
 
+GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN3);   /*CTS line. Should be HIGH when we are processing received data.  should be LOW when we are Ready to receive data*/
+GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN0);   /*RTS line. Should be LOW if it is OK to send data.  Will be HIGH when it is not ok to send data*/
+GPIO_setOutputLowOnPin(GPIO_PORT_P4,GPIO_PIN3 );  /*make it low because we are ready to receive data*/
+
+
+
 
 
 return lsReturnValue;
@@ -384,6 +390,9 @@ __interrupt void USCI_A0_ISR (void)
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_ISR (void)
 {
+
+    GPIO_setOutputHighOnPin(GPIO_PORT_P4,GPIO_PIN3 );  /*make it HIGH because we are processing data*/
+
     uint8_t received_byte = 0x00;
     static uint8_t rx_buffer[10] = {0x00};
     static uint8_t index = 0;
@@ -395,25 +404,27 @@ __interrupt void USCI_A1_ISR (void)
 
 
 
-            received_byte = USCI_UART_receiveData(USCI_A1_BASE);
-				if(index<sizeof(rx_buffer))
-				{
-				    rx_buffer[index] = received_byte;
-				    index++;
-				}
-				else
-				{
-				}
+       //    received_byte = USCI_UART_receiveData(USCI_A1_BASE);
+	//			if(index<sizeof(rx_buffer))
+			//	{
+			//	    rx_buffer[index] = received_byte;
+			//	  index++;
+			//}
+			//else
+			//	{
+			//}
 
 
-       // 	uint8_t received_byte = USCI_UART_receiveData(USCI_A1_BASE);  /*good for debugging.  reading the register clears the interupt flag?*/
-        //	bt_uart_manager(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
+        received_byte = USCI_UART_receiveData(USCI_A1_BASE);  /*good for debugging.  reading the register clears the interupt flag?*/
+        bt_uart_manager(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
 
 
             break;
         default:
             break;
     }
+
+    GPIO_setOutputLowOnPin(GPIO_PORT_P4,GPIO_PIN3 );  /*make it low because we are ready to receive data*/
 }
 
 

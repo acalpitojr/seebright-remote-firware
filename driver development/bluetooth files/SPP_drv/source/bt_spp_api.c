@@ -175,14 +175,28 @@ uint32_t timeout =0xffffffff;
   /*Start from HCI mode. Chiron after reset is in the HCI mode.*/
   BT_Mode = HCI_MODE;
 
+  /*TURN ON BLUETOOTH HERE AFTER BASIC INITIALIZATIONS*/
+    DATA_FROM_BLUETOOTH_UART = 0;  /*this will change in the uart rx interrupt*/
+
+
+
+         hci_event.event = HCI_NO_EVENT;
+    init_bluetooth();  /*inits the uart, and reset line for the bluetooth.  Once the bluetooth turns on, it will start sending hard reset packet*/
+
+
+
   /*Process sequence*/  
-    while(BT_Mode == HCI_MODE){ 
-    //ul_BT_SPP_rcvValue = 0;
-    hci_event.event = HCI_NO_EVENT;
+    while(BT_Mode == HCI_MODE)
+    {
+
     
 
+
+
+
+
     timeout = 0xffffffff;
-    DATA_FROM_BLUETOOTH_UART = 0;  /*this will change in the uart rx interrupt*/
+
     while( (DATA_FROM_BLUETOOTH_UART == 0 ) &&(timeout>0) )
     {
         timeout--;
@@ -193,12 +207,13 @@ uint32_t timeout =0xffffffff;
     //if(queueRETURN != pdPASS)
     if(DATA_FROM_BLUETOOTH_UART == 0)
     {
-      queueRETURN = errQUEUE_EMPTY;
+
       ret = HCI_ERR_TIMEOUT;
       break;
     }
     else  /*bluettooth send some packet through the uart and set hci_event.event to some value*/
     {
+        DATA_FROM_BLUETOOTH_UART = 0;
       //while(CTS_BT_interface == 1){};//wait for CTS low, Chiron ready
       
       switch (hci_event.event) {      
@@ -297,6 +312,7 @@ uint32_t timeout =0xffffffff;
     }
     else  /*we got data from uart to process*/
     {
+        DATA_FROM_BLUETOOTH_UART = 0;
       if(tcu_event.Service_ID == TCU_BT_MNG){
         //TCU_BT_MNG_INTERFACE
         switch (tcu_event.eventType)
@@ -340,18 +356,19 @@ API_RESULT BT_spp_discover_remote_device( uint8_t max_Number_of_Reports_, t_bt_r
   uint32_t temp, loop;
   uint32_t timeout = 0xffffffff;
 
-
+  DATA_FROM_BLUETOOTH_UART = 0;  /*clear the flag before we send a command.  Maybe put this in the tx_data to bt uart function?*/
+  /*HERE WE WAIT FOR A MESSAGE TO COME THROUGH THE UART*/
+     tcu_event.eventType = 0;//reset tcu_event
   tcu_MNG_DISCOVER_REMOTE_DEVICE_REQ(max_Number_of_Reports_);
   
   
   while(process == 0){
-   /*HERE WE WAIT FOR A MESSAGE TO COME THROUGH THE UART*/
-    tcu_event.eventType = 0;//reset tcu_event  
+
 
 
 
   //  queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (portMAX_DELAY) );//200ms portMAX_DELAY
-    DATA_FROM_BLUETOOTH_UART = 0;
+
     timeout = 0xffffffff;
    while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
    {
@@ -366,7 +383,7 @@ API_RESULT BT_spp_discover_remote_device( uint8_t max_Number_of_Reports_, t_bt_r
     }
     else  /*we got data from the bluetooth uart*/
     {
-      
+        DATA_FROM_BLUETOOTH_UART = 0;
       if(tcu_event.Service_ID == TCU_BT_MNG){
 /*TCU_BT_MNG_INTERFACE*/        
         switch (tcu_event.eventType)
@@ -449,14 +466,18 @@ API_RESULT BT_spp_discover_remote_service(t_bt_remote_device * param1, t_bt_serv
   tcu_mng_discover_remote_service_req.BD_ADDR[5]=param1->BD_ADDR[5];
   tcu_mng_discover_remote_service_req.Use_of_Link_Key = 0;
   
+
+  tcu_event.eventType = 0;//reset tcu_event
+  DATA_FROM_BLUETOOTH_UART = 0;
+
   tcu_MNG_DISCOVER_REMOTE_SERVICE_REQ(&tcu_mng_discover_remote_service_req);
 
   while(process == 0){
-    tcu_event.eventType = 0;//reset tcu_event  
+
 
 
    // queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (portMAX_DELAY) );//200ms portMAX_DELAY
-    DATA_FROM_BLUETOOTH_UART = 0;
+
         timeout = 0xffffffff;
        while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
        {
@@ -469,7 +490,7 @@ API_RESULT BT_spp_discover_remote_service(t_bt_remote_device * param1, t_bt_serv
     }
     else  /*data from bluetooth from the uart was received*/
     {
-      
+        DATA_FROM_BLUETOOTH_UART = 0;
       if(tcu_event.Service_ID == TCU_BT_MNG){
 /*TCU_BT_MNG_INTERFACE*/        
         switch (tcu_event.eventType){
@@ -531,13 +552,17 @@ API_RESULT BT_spp_connect_remote_device(t_bt_remote_device * param1, t_bt_servic
   uint32_t ret = API_SUCCESS;
   uint32_t * pPasskey;//used for MITM_Protection_Required_Dedicated_BondingIO_Capabilities 
   uint32_t timeout = 0xffffffff;
+
+  DATA_FROM_BLUETOOTH_UART = 0;
+  tcu_event.eventType = 0;//reset tcu_event
+
   tcu_SPP_SETUP_REQ();  
   
   while(process == 0){
-    tcu_event.eventType = 0;//reset tcu_event  
+
 
     //queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (portMAX_DELAY) );//200ms portMAX_DELAY
-    DATA_FROM_BLUETOOTH_UART = 0;
+
     timeout = 0xffffffff;
    while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
    {
@@ -550,6 +575,7 @@ API_RESULT BT_spp_connect_remote_device(t_bt_remote_device * param1, t_bt_servic
     }
     else
     {
+        DATA_FROM_BLUETOOTH_UART = 0;
       if(tcu_event.Service_ID == TCU_BT_MNG){
 /*TCU_BT_MNG_INTERFACE*/        
         switch (tcu_event.eventType)
@@ -782,13 +808,17 @@ API_RESULT BT_spp_scan(uint8_t parm){
   uint32_t process=0;
   int32_t queueRETURN;
   uint32_t timeout = 0xffffffff;
+
+  DATA_FROM_BLUETOOTH_UART = 0;
+  tcu_event.eventType = 0;//reset tcu_event
+
   tcu_SPP_SETUP_REQ();//setup SPP device
 
   while(process == 0){
-    tcu_event.eventType = 0;//reset tcu_event  
+
 
    // queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (SPP_WAIT_RESPONSE_TIME_100ms) );//200ms portMAX_DELAY
-    DATA_FROM_BLUETOOTH_UART = 0;
+
     timeout = 0xffffffff;
    while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
    {
@@ -803,27 +833,37 @@ API_RESULT BT_spp_scan(uint8_t parm){
     }
     else
     {
-      
-      if(tcu_event.Service_ID == TCU_BT_SPP){
-      switch (tcu_event.eventType)
+        DATA_FROM_BLUETOOTH_UART = 0;
+      if(tcu_event.Service_ID == TCU_BT_SPP)
+      {
+        switch (tcu_event.eventType)
         {
-        case TCU_SPP_SETUP_RESP:
-          ret = errorCode(tcu_event.status);
-          if(ret == BT_NO_ERR)
-            tcu_MNG_SET_SCAN_REQ(parm);
-          else
-            process=1;
-          break;
+            case TCU_SPP_SETUP_RESP:
+                    ret = errorCode(tcu_event.status);
+                    if(ret == BT_NO_ERR)
+                    {
+                        tcu_MNG_SET_SCAN_REQ(parm);
+                    }
+                    else
+                    {
+                        process=1;
+                    }
+             break;
           
-        default:break;
+            default:
+            break;
         }        
-      } else if(tcu_event.Service_ID == TCU_BT_MNG){
-        if (tcu_event.eventType == TCU_MNG_SET_SCAN_RESP){
-          ret = errorCode(tcu_event.status);          
-          process=1;
-          tcu_event.eventType = TCU_NO_EVENT;//reset tcu_event 
-        }
       }
+      else
+          if(tcu_event.Service_ID == TCU_BT_MNG)
+          {
+              if (tcu_event.eventType == TCU_MNG_SET_SCAN_RESP)
+              {
+                  ret = errorCode(tcu_event.status);
+                  process=1;
+                  tcu_event.eventType = TCU_NO_EVENT;//reset tcu_event
+              }
+          }
     }
   }
   return ret;
@@ -839,12 +879,16 @@ API_RESULT BT_spp_rcv_connect_req(void*  pADDR, uint32_t time_interval){
   int32_t queueRETURN;
   uint32_t timeout = 0xffffffff;
   
+
+  tcu_event.eventType = 0;//reset tcu_event
+  DATA_FROM_BLUETOOTH_UART = 0;
+
   while(process == 0){
-    tcu_event.eventType = 0;//reset tcu_event  
+
 
 
     //queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (time_interval) );//portMAX_DELAY
-    DATA_FROM_BLUETOOTH_UART = 0;
+
     timeout = 0xffffffff;
    while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
    {
@@ -912,13 +956,17 @@ API_RESULT BT_spp_connection_accept_req(uint8_t *BD_ADDR){
   tcu_mng_connection_accept_req.Use_of_Link_Key=0;//no link key
   tcu_mng_connection_accept_req.Response_Type=0;
   
+
+
+  tcu_event.eventType = 0;//reset tcu_event
+  DATA_FROM_BLUETOOTH_UART = 0;
   tcu_MNG_CONNECTION_ACCEPT_REQ(&tcu_mng_connection_accept_req);
   
   while(process == 0){
-    tcu_event.eventType = 0;//reset tcu_event  
+
 
     //queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (SPP_WAIT_RESPONSE_TIME_100ms) );
-    DATA_FROM_BLUETOOTH_UART = 0;
+
     timeout = 0xffffffff;
    while( (DATA_FROM_BLUETOOTH_UART == 0) && (timeout>0) )
    {
@@ -931,7 +979,7 @@ API_RESULT BT_spp_connection_accept_req(uint8_t *BD_ADDR){
     }
     else
     {
-      
+        DATA_FROM_BLUETOOTH_UART = 0;
       if(tcu_event.Service_ID == TCU_BT_MNG){
         switch (tcu_event.eventType){
           case TCU_MNG_CONNECTION_ACCEPT_RESP:
@@ -942,7 +990,7 @@ API_RESULT BT_spp_connection_accept_req(uint8_t *BD_ADDR){
           case TCU_MNG_CONNECTION_STATUS_EVENT:
             ret = errorCode(tcu_event.status);
               if ( BT_NO_ERR != ret)
-                process = 1;//
+                process = 1;//he is exiting in this case
             break;                    
           case TCU_MNG_SSP_INFO_EVENT:
               if (tcu_mng_ssp_info_event.OpCode == IO_User_Confirmation_Request_Event){//0x33 User_Confirmation_Request 

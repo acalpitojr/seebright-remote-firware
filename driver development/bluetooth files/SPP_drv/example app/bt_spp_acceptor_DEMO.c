@@ -33,7 +33,7 @@ and sends back all received data.
 **********************************************/
 uint8_t * pPartyB_BD_ADDR;
 static uint32_t err;//error code
-
+extern uint8_t DATA_FROM_BLUETOOTH_UART;
 /**********************************************
 *             Constants & Macros              *
 **********************************************/
@@ -66,6 +66,7 @@ void error(void){
 }
 /**************************************
 **************************************/
+#if 0
 int main(void)
 {
   unsigned portSHORT stackSize = 800; 
@@ -105,37 +106,22 @@ int main(void)
   while(1);
 }
 
-
+#endif
 /********************************************************************************
  Function		app_BT_SPP_DEMO(void* pvParameters)
  Argumets		:pvParameters
  Returns		:non
  Explanation	:
 *********************************************************************************/
-void app_BT_SPP_Acceptor_DEMO(void* pvParameters)
+void app_BT_SPP_Acceptor_DEMO(void)
 {  
-  portBASE_TYPE queueRETURN;
+  //portBASE_TYPE queueRETURN;
   uint32_t loop;
   
-  #if defined(BOARD_TOPASM369_BT)
-    /*RESET Chiron*/
-    GPIO_SetOpenDrain(GPIO_PD, GPIO_BIT_7, ENABLE);//set PD7 to Open-drain
-    GPIO_WriteDataBit(GPIO_PD, GPIO_BIT_7, 0);//set Reset signal to low
-    GPIO_SetOutputEnableReg(GPIO_PD, GPIO_BIT_7, ENABLE);
-    GPIO_SetInputEnableReg(GPIO_PD, GPIO_BIT_7, DISABLE); 
-    for(loop=0; loop< 40000;loop++){
-    }
-    GPIO_WriteDataBit(GPIO_PD, GPIO_BIT_7, 1);//set Reset signal to high
-    for(loop=0; loop< 40000;loop++){
-    }  
-    /*RESET Chiron*/
-  #endif
   
-  /*Initiate OS resources for BT SPP driver*/
-  if(BT_os_init() != API_SUCCESS){
-      while(1){};//endless loop      
-  }
   
+
+
   /*Switch Chiron to TCU Compete mode*/
   err = BT_hci_init((uint8_t *)(&BD_ADDR), (uint8_t *)&Device_Name);
   //err = BT_hci_init__((uint8_t *)(&BD_ADDR), (uint8_t *)&Device_Name);
@@ -164,17 +150,16 @@ void app_BT_SPP_Acceptor_DEMO(void* pvParameters)
    }  
     
   /*Send string "! HELLO !"*/
+  DATA_FROM_BLUETOOTH_UART = 0;
   if (tcu_event.eventType == TCU_SPP_CONNECT_EVENT){
     BT_spp_send("! HELLO !", 9);
   }
   
   /*run demo application*/
   while(1){        
-    queueRETURN = ReceiveEvent( btQueueEVENT, &ul_BT_SPP_rcvValue, (portMAX_DELAY) );
-    if(queueRETURN != pdPASS){
-      queueRETURN = errQUEUE_EMPTY;
-      //write code for error
-    }       
+      while(DATA_FROM_BLUETOOTH_UART == 0)  /*we wait for data from uart to process*/
+         {
+         }
 
   if(TCU_BT_SPP == tcu_event.Service_ID){
     if(TCU_NO_EVENT != tcu_event.eventType){

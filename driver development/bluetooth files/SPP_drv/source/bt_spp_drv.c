@@ -22,7 +22,7 @@
 /**********************************************
 *         Variables and forward declarations  *
 **********************************************/
-volatile uint16_t BT_Mode;//HCI or TCU
+volatile uint16_t BT_Mode = HCI_MODE;//HCI or TCU
 
 /*Data Receive buffer definition*/
 int8_t cSPP_DATA_RECEIVE_buff[SPP_DATA_RECEIVE_LENGHT];
