@@ -24,7 +24,7 @@ uint8_t init_bluetooth(void)
     GPIO_setOutputHighOnPin(GPIO_PORT_P1,GPIO_PIN5);
     __delay_cycles(0xffffff);
     uint8_t reset_cmd[4] = {0x01, 0x03, 0x0c, 0x00};
-    //CYC_SYS_UART_TransmitData(1, reset_cmd, sizeof(reset_cmd));   /*    we expect response 0x04, 0x0e, 0x04, 0x04, 0x03, 0x0c 0x00   TCU_HCI_RESET_RESP  */
+    CYC_SYS_UART_TransmitData(1, reset_cmd, sizeof(reset_cmd));   /*    we expect response 0x04, 0x0e, 0x04, 0x04, 0x03, 0x0c 0x00   TCU_HCI_RESET_RESP  */
 
 
 

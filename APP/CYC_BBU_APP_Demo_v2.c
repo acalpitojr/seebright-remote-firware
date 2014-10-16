@@ -156,6 +156,14 @@ main()
 	//	Initialize the target
 	CYC_SYS_InitializeTarget();  /*clocks and timers should be init here.  Our debug port uart is init here as well.*/
 
+	/*-------------------------------------DEBUG UART TESTING-------------------------------------------*/
+//	while(1)
+	//    {
+	//      CYC_SYS_UART_TransmitData(SERIAL_UART_PORT, "Seebright\r\n", sizeof("Seebright\r\n"));
+	//__delay_cycles(0xfffff);
+	//    }
+
+
 	/*------------------------------GPIO OUTPUT TEST------------------------------------*/
 	//GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN2);
 //	GPIO_setOutputLowOnPin(GPIO_PORT_P5,GPIO_PIN2 );
@@ -177,13 +185,12 @@ main()
 
 
 	/*----------------------------------------------BLUETOOTH TESTING--------------------------------------------------------*/
-	//init_bluetooth();
-	//__delay_cycles(0xfffff);
-	//while(1)
-	//{
-	//  CYC_SYS_UART_TransmitData(SERIAL_UART_PORT, "Seebright\r\n", sizeof("Seebright\r\n"));
-	// __delay_cycles(0xfffff);
-	//}
+	init_bluetooth();
+	__delay_cycles(0xfffff);
+
+
+	//app_BT_SPP_Initiator_DEMO();
+
 	/*-----------------------------------------------------------------------------------------------------------------------------------------*/
 
 

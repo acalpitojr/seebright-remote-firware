@@ -66,8 +66,8 @@ UINT8 gu8RxData = 0x00;
 UINT8 gu8RxDataCount = 0x00;
 
 /* MODULE INTERNAL FUNCTIONS               *fffffff*/
-volatile UINT8 gu8Rx0Buffer[RX_BUFFER_SIZE];
-volatile UINT8 gu8Rx1Buffer[RX_BUFFER_SIZE];
+ UINT8 volatile gu8Rx0Buffer[RX_BUFFER_SIZE];
+ UINT8 volatile gu8Rx1Buffer[RX_BUFFER_SIZE];
 
 /*
 @@********************* CYC_SYS_UART_Initialize ***************************************
@@ -358,7 +358,10 @@ void SendSerial (UINT8* string)
 #pragma vector=USCI_A0_VECTOR
 __interrupt void USCI_A0_ISR (void)
 {
-#if 1
+
+
+
+    #if 1
     switch (__even_in_range(UCA0IV,4)){
         //Vector 2 - RXIFG
         case 2:
@@ -381,28 +384,35 @@ __interrupt void USCI_A0_ISR (void)
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_ISR (void)
 {
-    switch (__even_in_range(UCA1IV,4)){
+    uint8_t received_byte = 0x00;
+    static uint8_t rx_buffer[10] = {0x00};
+    static uint8_t index = 0;
+
+    switch (__even_in_range(UCA1IV,4))
+    {
         //Vector 2 - RXIFG
         case 2:
-        {
-#if 0
-        	if(gu8RxDataCount <= RX_BUFFER_SIZE)
-        	{
-        		//Receive the data
-				gu8RxData = USCI_UART_receiveData(USCI_A1_BASE);
-				gu8Rx1Buffer[gu8RxDataCount] = gu8RxData ;
-				gu8RxDataCount++;
-				//	Circularly fill the buffer
-				gu8RxDataCount = gu8RxDataCount & (RX_BUFFER_SIZE-1);
-        	}
-#endif
 
-        	uint8_t received_byte = USCI_UART_receiveData(USCI_A1_BASE);  /*good for debugging.  reading the register clears the interupt flag?*/
-        	bt_uart_manager(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
 
-        }
+
+            received_byte = USCI_UART_receiveData(USCI_A1_BASE);
+				if(index<sizeof(rx_buffer))
+				{
+				    rx_buffer[index] = received_byte;
+				    index++;
+				}
+				else
+				{
+				}
+
+
+       // 	uint8_t received_byte = USCI_UART_receiveData(USCI_A1_BASE);  /*good for debugging.  reading the register clears the interupt flag?*/
+        //	bt_uart_manager(received_byte);   /*pass the byte from the uart into this function which will store it and parse it accordingly*/
+
+
             break;
-        default: break;
+        default:
+            break;
     }
 }
 

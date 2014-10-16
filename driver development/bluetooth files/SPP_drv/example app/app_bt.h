@@ -120,7 +120,7 @@ typedef union tag_time_u{
 extern uint8_t fHR_1HZ_tick;
       
 void app_BT_SPP_Acceptor_DEMO(void* pvParameters);
-void app_BT_SPP_Initiator_DEMO(void* pvParameters);
+void app_BT_SPP_Initiator_DEMO(void);
 void app_BT_BLE_peripherial_DEMO(void* pvParameters);
 #endif //__APP_BT_H
 

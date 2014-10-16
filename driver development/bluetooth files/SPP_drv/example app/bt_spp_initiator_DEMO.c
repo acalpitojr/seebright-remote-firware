@@ -117,7 +117,7 @@ static uint32_t err;//error code
  Returns		:non
  Explanation	:
 *********************************************************************************/
-void app_BT_SPP_Initiator_DEMO(void* pvParameters)
+void app_BT_SPP_Initiator_DEMO(void)
 {  
   uint32_t queueRETURN;
   uint32_t loop;
