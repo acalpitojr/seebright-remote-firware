@@ -28,6 +28,7 @@
 #include "ble_api.h"
 #include "bt_OS.h"
 #include "HeartRate.h"
+#include <stdio.h>
 
 /**********************************************
 *               Defs                          *
@@ -60,7 +61,7 @@ uint8_t HR_ready=0U;
 ******************************************************************************/
 
 /******************************************************************************/
-le_api_result_e eHRAddGAPDevName_Appearance_Service(xQueueHandle qHandle,
+le_api_result_e eHRAddGAPDevName_Appearance_Service(void* qHandle,
                                                    uint16_t* pu16SvcHandle,
                                                    uint16_t u16DevNameLen,
                                                    uint8_t* pu8DevName)
@@ -119,7 +120,7 @@ le_api_result_e eHRAddGAPDevName_Appearance_Service(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eHRAddDevIdentService(xQueueHandle qHandle,
+le_api_result_e eHRAddDevIdentService(void* qHandle,
                                        uint8_t* pu8ManufName,
                                        uint8_t pu8ManufNameLen,
                                        uint16_t* pu16SvcHandle,
@@ -166,7 +167,7 @@ le_api_result_e eHRAddDevIdentService(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eHRAddHeartRateService(xQueueHandle qHandle, uint16_t* pu16SvcHandle,
+le_api_result_e eHRAddHeartRateService(void* qHandle, uint16_t* pu16SvcHandle,
                                      uint16_t* pu16RetHandleCharDecl,
                                      uint16_t* pu16RetHandleCharValDecl)
 {
@@ -227,7 +228,7 @@ le_api_result_e eHRAddHeartRateService(xQueueHandle qHandle, uint16_t* pu16SvcHa
 *                               ADVERTIZING
 *
 ******************************************************************************/
-le_api_result_e eHRStartAdvertising(xQueueHandle qHandle)
+le_api_result_e eHRStartAdvertising(void* qHandle)
 {
   le_api_result_e eResult;
   le_adv_req_st stConfig;
@@ -340,7 +341,7 @@ void vPrintUnexpectedCMD(uint8_t u8ServiceID,
 }
 
 /******************************************************************************/
-le_api_result_e eUpdateCharValue(xQueueHandle qHandle,
+le_api_result_e eUpdateCharValue(void* qHandle,
                                       uint16_t u16ConnHandle,
                                       uint16_t u16CharValHandle)
 {
@@ -350,7 +351,7 @@ le_api_result_e eUpdateCharValue(xQueueHandle qHandle,
 }
 
 /******************************************************************************/
-le_api_result_e eUpdateCharDescriptor(xQueueHandle qHandle,
+le_api_result_e eUpdateCharDescriptor(void* qHandle,
                                       uint16_t u16ConnHandle,
                                       uint16_t u16CharValHandle)
 {
@@ -359,7 +360,7 @@ le_api_result_e eUpdateCharDescriptor(xQueueHandle qHandle,
   return LE_API_SUCCCESS;
 }
 /******************************************************************************/
-le_api_result_e eUpdateMulti(xQueueHandle qHandle,
+le_api_result_e eUpdateMulti(void* qHandle,
                                uint16_t u16ConnHandle,
                                uint16_t u16HandleCnt,  uint8_t* pu8Handles)
 {
@@ -376,7 +377,7 @@ le_api_result_e eUpdateMulti(xQueueHandle qHandle,
 *
 ******************************************************************************/
 /******************************************************************************/
-le_api_result_e eHRInitialise(xQueueHandle qHandle, hr_init_st* stInit)
+le_api_result_e eHRInitialise(void* qHandle, hr_init_st* stInit)
 {
   le_api_result_e eResult;
   uint8_t auMyBd_Addr[6];
@@ -426,13 +427,24 @@ le_api_result_e eHRInitialise(xQueueHandle qHandle, hr_init_st* stInit)
 }
 
 /****************************************************************************/
-void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit)
+void HRMainRoutine(void* qHandle, hr_init_st* stInit)
 {
   uint16_t u16Command;
   le_api_result_e eResult;
   uint16_t u16RetConnHandle;
   uint8_t au8HRValue[2] = {0x00,0x30};
 
+
+  enum serviceID_opcodes{   TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OC = 0xD14C,  /*taken from le_gatt_command.h*/
+                                                     TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OC = 0xD3C1,
+                                                     TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_SID_OC = 0xD3CA,
+                                                     TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_SID_OC = 0xD3C2,
+                                                     TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OC = 0xD3C8,
+                                                     TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OC = 0xD3C4,
+
+
+
+  };
 
   /* Main HR-Profile Event Handler */
   while(1)
@@ -451,14 +463,16 @@ void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit)
        */
       switch(u16Command)
       {
-        case GET_CMD_MESSAGE(TCU_MNG_LE_CONNECTION_COMPLETE_EVENT):
+        //case GET_CMD_MESSAGE(TCU_MNG_LE_CONNECTION_COMPLETE_EVENT):  /*omg who wrote this*/
+          case TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OC:
           {
             /* Client has sent a Connection Request to the Server,
                therefore a connection handler will be called */
              eResult = eBleSrv_ClientConnRequestHndlr(stInit->pstConnectInfo);
           }
         break;
-        case GET_CMD_MESSAGE(TCU_LE_GATT_SER_EXG_MTU_EVENT):
+       // case GET_CMD_MESSAGE(TCU_LE_GATT_SER_EXG_MTU_EVENT):
+          case TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OC:
           {
             /*  MTU size negotiation started, so start an MTU Exchange
              *  handler.
@@ -469,7 +483,8 @@ void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit)
                                               stInit->pstMtuAccResp);
           }
         break;
-        case GET_CMD_MESSAGE(TCU_LE_GATT_SER_READ_MULTIPLE_EVENT):
+        //case GET_CMD_MESSAGE(TCU_LE_GATT_SER_READ_MULTIPLE_EVENT):
+          case TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_SID_OC:
           {
             /* Update of multiple values in data-base requested, before
             *  sending those data to client side  */
@@ -478,7 +493,8 @@ void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit)
                                                     &(stInit->u16ConnHandle));
           }
         break;
-        case GET_CMD_MESSAGE(TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT):
+        //case GET_CMD_MESSAGE(TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT):
+          case TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_SID_OC:
           {
             /* Read characteristic VALUE request received */
             eResult = eBleSrv_ReadCharValHndlr(qHandle,
@@ -487,7 +503,8 @@ void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit)
                                                  &u16RetConnHandle);
           }
         break;
-        case GET_CMD_MESSAGE(TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT):
+        //case GET_CMD_MESSAGE(TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT):
+          case TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OC:
           {
             /* Read characteristic DESCRIPTOR request received */
             eResult = eBleSrv_ReadCharDescriptorHndlr(qHandle,
@@ -498,7 +515,8 @@ void HRMainRoutine(xQueueHandle qHandle, hr_init_st* stInit)
         break;
 
 
-        case GET_CMD_MESSAGE(TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT):
+        //case GET_CMD_MESSAGE(TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT):
+          case TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OC:
           {
               /* Write characteristic DESCRIPTOR request received */
               eResult = eBleSrv_WriteCharDescriptorHndlr(qHandle,

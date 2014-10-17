@@ -100,8 +100,8 @@ SUBDIRS := \
 . \
 driver\ development \
 driver\ development/bluetooth\ files/SPP_drv/source \
-driver\ development/bluetooth\ files/SPP_drv/example\ app \
 driver\ development/bluetooth\ files/BLE_drv/source \
+driver\ development/bluetooth\ files/BLE_drv/example\ app \
 SYS \
 SYS/MSP430Ware \
 IO/eMPL \

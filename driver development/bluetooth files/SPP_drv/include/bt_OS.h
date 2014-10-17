@@ -20,7 +20,7 @@
   #define ReceiveEvent xQueueReceive /*Wrapp event reception function for FreeRTOS*/
   #define CreateQueue xQueueCreate /*Wrapp queue */
   #define BT_QUEUE_LENGTH (1)
-  extern xQueueHandle btQueueEVENT;
+  extern void* btQueueEVENT;
 #endif
 
 #endif

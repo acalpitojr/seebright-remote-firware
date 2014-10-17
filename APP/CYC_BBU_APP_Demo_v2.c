@@ -188,8 +188,10 @@ main()
 	//init_bluetooth();
 //	__delay_cycles(0xfffff);
 ////
-	app_BT_SPP_Acceptor_DEMO();
+	//app_BT_SPP_Acceptor_DEMO();
 	//app_BT_SPP_Initiator_DEMO();
+
+	app_BT_BLE_peripherial_DEMO();
 
 	/*-----------------------------------------------------------------------------------------------------------------------------------------*/
 

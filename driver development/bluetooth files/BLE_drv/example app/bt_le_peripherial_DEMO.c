@@ -65,6 +65,9 @@ uint32_t err;//error code
 /* The rate at which data is sent to the queue, specified in milliseconds. */
 #define mainQUEUE_SEND_FREQUENCY_MS			( 10 / portTICK_RATE_MS )
 
+
+
+void* btQueueEVENT = NULL;  /*this is only for freetos code i believe*/
 /**************************************
 **************************************/
 //void vApplicationStackOverflowHook (xTaskHandle *pxTask, signed portCHAR *pcTaskName)
@@ -82,6 +85,7 @@ void error(void){
 }
 /**************************************
 **************************************/
+#if 0
 int main(void)
 {
   unsigned portSHORT stackSize = 800;
@@ -120,7 +124,7 @@ int main(void)
 
   while(1);
 }
-
+#endif
 
 /********************************************************************************
  Function		app_BT_SPP_DEMO(void* pvParameters)
@@ -128,7 +132,7 @@ int main(void)
  Returns		:non
  Explanation	:
 *********************************************************************************/
-void app_BT_BLE_peripherial_DEMO(void* pvParameters)
+void app_BT_BLE_peripherial_DEMO(void)
 {
   uint32_t loop;
  // portBASE_TYPE queueRETURN;
@@ -152,6 +156,8 @@ void app_BT_BLE_peripherial_DEMO(void* pvParameters)
   char auDevName[]="MY HRS";
   uint8_t au8ManufName[7] = {0x54,0x4F,0x53,0x48,0x49,0x42,0x41}; /* "Toshiba" string in UTF8-format */
 
+ /*initializing the RESET PIN, AND TAKING THE DEVICE OUT OF RESET*/
+#if 0
   #if defined(BOARD_TOPASM369_BT)
     /*RESET Chiron*/
     GPIO_SetOpenDrain(GPIO_PD, GPIO_BIT_7, ENABLE);//set PD7 to Open-drain
@@ -165,12 +171,12 @@ void app_BT_BLE_peripherial_DEMO(void* pvParameters)
     }
     /*RESET Chiron*/
   #endif
+#endif
 
-
-  /*Initiate OS resources for BT SPP driver*/
-  if(BT_os_init() != API_SUCCESS){
-      while(1){};//endless loop
-  }
+//  /*Initiate OS resources for BT SPP driver*/
+ // if(BT_os_init() != API_SUCCESS){
+  //    while(1){};//endless loop
+ // }
 
   /*Switch Chiron to TCU Compete mode*/
   //if(BT_hci_init((uint8_t *)(&BD_ADDR), (uint8_t *)&Device_Name) != API_SUCCESS){
