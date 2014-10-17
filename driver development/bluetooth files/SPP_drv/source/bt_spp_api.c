@@ -1024,7 +1024,10 @@ API_RESULT BT_spp_connection_accept_req(uint8_t *BD_ADDR){
                 tcu_mng_spp_set_req.param.t_HCI_IO_Capability_Request_Reply_Parameter.BD_ADDR[3]=tcu_mng_ssp_info_event.Parameter[3];
                 tcu_mng_spp_set_req.param.t_HCI_IO_Capability_Request_Reply_Parameter.BD_ADDR[4]=tcu_mng_ssp_info_event.Parameter[4];
                 tcu_mng_spp_set_req.param.t_HCI_IO_Capability_Request_Reply_Parameter.BD_ADDR[5]=tcu_mng_ssp_info_event.Parameter[5];
-                tcu_mng_spp_set_req.OpCode = HCI_IO_User_Passkey_Request_Reply;     //0x042E                                                
+                tcu_mng_spp_set_req.OpCode = HCI_IO_User_Passkey_Request_Reply;     //0x042E
+
+            //    tcu_MNG_SSP_SET_REQ(&tcu_mng_spp_set_req);
+
               }else if(tcu_mng_ssp_info_event.OpCode == User_Passkey_Notification){//0x3b(User_Passkey_Notification)
                 pPasskey = (uint32_t *)&tcu_mng_ssp_info_event.Parameter[6];//party B must use this passkey on "User_Passkey_Request_Replay"
               }else if(tcu_mng_ssp_info_event.OpCode == Simple_Pairing_Complete_Event){//0x36(Simple_Pairing_Complete_Event)
