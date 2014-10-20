@@ -462,7 +462,7 @@ uint8_t get_gyro_data(uint8_t* data_buf)
 
 uint8_t get_quat_data(uint8_t* data_buf)
 {
-    memcpy(data_buf, mpu_data.quat_data, sizeof(mpu_data.quat_data) );
+    memcpy(data_buf,& mpu_data.quat_data, sizeof(mpu_data.quat_data) );
     return 1;
 }
 /*-----------------------------EOF-------------------------------------------*/
@@ -479,7 +479,7 @@ mpu_data_STRUCT   get_mpu_data(void)
    if(MPU_HAS_DATA)
    {
        MPU_HAS_DATA = 0;
-       dmp_read_fifo(mpu_data.gyro_data, mpu_data.accel_data, mpu_data.quat_data, &sensor_timestamp, &sensors,&more);
+       dmp_read_fifo(&mpu_data.gyro_data, &mpu_data.accel_data, &mpu_data.quat_data, &sensor_timestamp, &sensors,&more);
        value = mpu_data;
    }
    else

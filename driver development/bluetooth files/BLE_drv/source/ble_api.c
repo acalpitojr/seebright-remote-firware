@@ -1242,8 +1242,10 @@ le_api_result_e eBleDevice_Disconnect(void* qHandle,  uint8_t* const pu8Bd_Addr,
   }
 
   /* Check if everything went fine */
-  if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_MNG_LE_DISCONNECT_REQ))||
-     (stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_MNG_LE_DISCONNECT_REQ)) ||
+//  if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_MNG_LE_DISCONNECT_REQ))||   0x13
+  if((stEvntData.u8OpCode == 0x13)||
+    // (stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_MNG_LE_DISCONNECT_REQ)) ||  0xD1
+          (stEvntData.u16ServiceId ==0xD1) ||
       stEvntData.eStatus == LE_SUCCESS)
   {
     /* Wait for  TCU_MNG_LE_DISCONNECT_EVENT */
@@ -1876,8 +1878,10 @@ le_api_result_e eBleSrv_SendNotification(void* qHandle,
 
   // Check if everything went fine
 
-  if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ))||
-     (stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ)) ||
+//  if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ))||   0x05
+  if((stEvntData.u8OpCode == 0x05)||
+     //(stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ)) ||  0xD3
+          (stEvntData.u16ServiceId == 0xD3) ||
       stEvntData.eStatus == LE_SUCCESS)
   {
     // Wait for  TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT
@@ -1947,8 +1951,10 @@ le_api_result_e eBleSrv_SendIndication(void* qHandle,
   }
 
   /* Check if everything went fine */
-  if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ))||
-     (stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ)) ||
+  //if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ))|| 0x06
+  if((stEvntData.u8OpCode == 0x06)||
+     //(stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ)) || 0xD3
+     (stEvntData.u16ServiceId == 0xD3) ||
       stEvntData.eStatus == LE_SUCCESS)
   {
     /* Wait for  TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT */
