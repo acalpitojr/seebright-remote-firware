@@ -1020,6 +1020,7 @@ le_api_result_e eBleSrv_RegisterPrimaryService(void* qHandle, le_srv_service_def
   }
 
   /* Add Primary service Declaration */
+  __delay_cycles(0xfff);  /*when I added a break point here, this passed.  seems there is some timing issue if we run straight through the first time.*/
   eResult = eBleSrv_AddPrimServiceAttributes(qHandle, pstSvcDef->u16SvcUUID, &(pstSvcDef->u16RetSvcHandle));
 
   /* Check if successful */

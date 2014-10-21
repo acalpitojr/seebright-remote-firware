@@ -22,6 +22,7 @@
 #include <string.h>
 #include "bt_common.h"
 #include "CYC_SYS_UART.h"
+#include "gpio.h"
 
 
 /**********************************************
@@ -579,7 +580,14 @@ void bt_uart_manager(uint8_t dataRX_)   /*we are going to just place this code i
 void send_tx (uint8_t * strADDR, uint32_t len)
 {         
    /*need to call our uart send data function here*/
-    CYC_SYS_UART_TransmitData(BT_UART_PORT,strADDR, len);
+
+
+
+
+
+        CYC_SYS_UART_TransmitData(BT_UART_PORT,strADDR, len);
+
+
 
 }
 /****************************************************************************/

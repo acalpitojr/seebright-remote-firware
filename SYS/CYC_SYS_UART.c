@@ -236,7 +236,7 @@ USCI_UART_enableInterrupt(USCI_A1_BASE,
 
 
 GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN3);   /*CTS line. Should be HIGH when we are processing received data.  should be LOW when we are Ready to receive data*/
-GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN0);   /*RTS line. Should be LOW if it is OK to send data.  Will be HIGH when it is not ok to send data*/
+GPIO_setAsInputPin(GPIO_PORT_P4, GPIO_PIN0);   /*RTS line. Should be LOW if it is OK to send data.  Will be HIGH when it is not ok to send data*/
 GPIO_setOutputLowOnPin(GPIO_PORT_P4,GPIO_PIN3 );  /*make it low because we are ready to receive data*/
 
 
@@ -259,6 +259,7 @@ return lsReturnValue;
 uint8_t CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
 {
 	int portBase;
+	uint8_t flow_control = 0;
 
 	switch (port) {
 	case 0:
@@ -266,6 +267,7 @@ uint8_t CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
 		break;
 	case 1:
 		portBase = USCI_A1_BASE;
+		flow_control = 1;
 		break;
 	default:
 		return !SUCCESS;
@@ -277,7 +279,22 @@ uint8_t CYC_SYS_UART_TransmitData(UINT8 port, UINT8 *rpu8Data, UINT8 ru8DataLen)
 
 	for(lu8TxBufferLen = 0; lu8TxBufferLen < ru8DataLen; lu8TxBufferLen++)
 	{
-		USCI_UART_transmitData(portBase,rpu8Data[lu8TxBufferLen]);
+
+
+	    if(flow_control == 1)
+	    {
+	        while( GPIO_getInputPinValue(GPIO_PORT_P4, GPIO_PIN0) == 1)
+	            {
+	                /*this pin is high when bluetooth is not ready to receive data*/
+	            }
+	    }
+	    else
+	    {
+	        /*dont have to wait for pin to go low*/
+	    }
+
+
+	    USCI_UART_transmitData(portBase,rpu8Data[lu8TxBufferLen]);
 
 		//	Keep looping until the BUSY FLAG is set
 		while(USCI_UART_queryStatusFlags(portBase,USCI_UART_BUSY));

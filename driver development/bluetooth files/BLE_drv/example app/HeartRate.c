@@ -264,7 +264,8 @@ le_api_result_e eHRStartAdvertising(void* qHandle)
   stConfig.au8AdvData[13] = 0x48;
   stConfig.au8AdvData[14] = 0x49;
   stConfig.au8AdvData[15] = 0x42;
-  stConfig.au8AdvData[16] = 0x41;
+  stConfig.au8AdvData[16] = 'x';
+  //stConfig.au8AdvData[16] = 0x41;
   stConfig.au8AdvData[17] = 0x00;
   stConfig.au8AdvData[18] = 0x00;
   stConfig.au8AdvData[19] = 0x00;
