@@ -31,6 +31,227 @@
 **********************************************/
 
 //uint8_t au8SendBuff[UART_PACKET_LENGHT];
+
+//#define TCU_LE_ACCEPT                                                                                                             (CMD_CONCAT(0xD1, 0xF1, 0x0003))
+const tcu_packet_STRUCT   TCU_LE_ACCEPT_t =                                                                           {.service_id = 0xD1,        .opcode = 0xF1,     .length = 0x0003};
+
+//#define TCU_LE_NOT_ACCEPT                                                                                                 (CMD_CONCAT(0xD1, 0xF2, 0x0002))
+const tcu_packet_STRUCT   TCU_LE_NOT_ACCEPT_t =                                                                {.service_id = 0xD1,        .opcode = 0xF2,     .length = 0x0002};
+
+//#define TCU_LE_FATAL_ERROR                                                                                                (CMD_CONCAT(0xD1, 0xFE, 0x0001))
+const tcu_packet_STRUCT   TCU_LE_FATAL_ERROR_t =                                                              {.service_id = 0xD1,        .opcode = 0xFE,     .length = 0x0001};
+
+//#define TCU_MNG_LE_INIT_REQ                                                                                            (CMD_CONCAT(0xD1, 0x01, 0x00F9))
+const tcu_packet_STRUCT   TCU_MNG_LE_INIT_REQ_t =                                                             {.service_id = 0xD1,        .opcode = 0x01,     .length = 0x00F9};
+
+//#define TCU_MNG_LE_INIT_RESP                                                                                           (CMD_CONCAT(0xD1, 0x81, 0x0007))
+const tcu_packet_STRUCT  TCU_MNG_LE_INIT_RESP_t =                                                             {.service_id = 0xD1,        .opcode = 0x81,     .length = 0x0007};
+
+//#define TCU_MNG_LE_SET_SCAN_ENABLE_REQ                                                              (CMD_CONCAT(0xD1, 0x0A, 0x0009))
+const tcu_packet_STRUCT   TCU_MNG_LE_SET_SCAN_ENABLE_REQ_t =                              {.service_id = 0xD1,        .opcode = 0x0A,     .length = 0x0009};
+
+//#define TCU_MNG_LE_SET_SCAN_ENABLE_RESP                                                           (CMD_CONCAT(0xD1, 0x8A, 0x0001))
+const tcu_packet_STRUCT   TCU_MNG_LE_SET_SCAN_ENABLE_RESP_t =                             {.service_id = 0xD1,        .opcode = 0x8A,     .length = 0x0001};
+
+//#define TCU_MNG_LE_ADV_REPORT_EVENT                                                                       (CMD_CONCAT(0xD1, 0xC1, LEN_VAR))
+const tcu_packet_STRUCT   TCU_MNG_LE_ADV_REPORT_EVENT_t =                                     {.service_id = 0xD1,        .opcode = 0xC1,     .length = LEN_VAR};
+
+//#define TCU_MNG_LE_CREATE_CONNECTION_REQ                                                       (CMD_CONCAT(0xD1, 0x0C, 0x0019))
+const tcu_packet_STRUCT   TCU_MNG_LE_CREATE_CONNECTION_REQ_t =                        {.service_id = 0xD1,        .opcode = 0x0C,     .length = 0x0019};
+
+//#define TCU_MNG_LE_CONNECTION_COMPLETE_EVENT                                              (CMD_CONCAT(0xD1, 0x4C, 0x0012))
+const tcu_packet_STRUCT  TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_t =             {.service_id = 0xD1,        .opcode = 0x4C,     .length = 0x0012};
+
+//#define TCU_MNG_LE_CREATE_CONNECTION_CANCEL_REQ                                       (CMD_CONCAT(0xD1, 0x0D, NO_PARAM))
+const tcu_packet_STRUCT   TCU_MNG_LE_CREATE_CONNECTION_CANCEL_REQ_t =     {.service_id = 0xD1,        .opcode = 0x0D,     .length = NO_PARAM};
+
+//#define TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP                                  (CMD_CONCAT(0xD1, 0x8D, 0x0001))
+const      tcu_packet_STRUCT   TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_t = {.service_id = 0xD1,        .opcode = 0x8D,     .length = 0x0001};
+
+//#define TCU_MNG_LE_DISCONNECT_REQ                                                                         (CMD_CONCAT(0xD1, 0x13, 0x0008))
+const    tcu_packet_STRUCT   TCU_MNG_LE_DISCONNECT_REQ_t =                                   {.service_id = 0xD1,        .opcode = 0x13,     .length = 0x0008};
+
+//#define TCU_MNG_LE_DISCONNECT_EVENT                                                                    (CMD_CONCAT(0xD1, 0x93, 0x0002))
+const    tcu_packet_STRUCT  TCU_MNG_LE_DISCONNECT_EVENT_t =                              {.service_id = 0xD1,        .opcode = 0x93,     .length = 0x0002};
+
+//#define TCU_MNG_LE_SET_SCAN_DISABLE_REQ                                                            (CMD_CONCAT(0xD1, 0x0B, NO_PARAM))
+const tcu_packet_STRUCT   TCU_MNG_LE_SET_SCAN_DISABLE_REQ_t =                      {.service_id = 0xD1,        .opcode = 0x0B,     .length = NO_PARAM};
+
+//#define TCU_MNG_LE_SET_SCAN_DISABLE_RESP                                                          (CMD_CONCAT(0xD1, 0x8B, 0x0001))
+const  tcu_packet_STRUCT  TCU_MNG_LE_SET_SCAN_DISABLE_RESP_t =                 {.service_id = 0xD1,        .opcode = 0x8B,     .length = 0x0001};
+
+//#define TCU_MNG_LE_START_ADVERTISE_REQ                                                                (CMD_CONCAT(0xD1, 0x08, 0x004f))
+const   tcu_packet_STRUCT  TCU_MNG_LE_START_ADVERTISE_REQ_t =                       {.service_id = 0xD1,        .opcode = 0x08,     .length = 0x004f};
+
+//#define TCU_MNG_LE_START_ADVERTISE_RESP                                                           (CMD_CONCAT(0xD1, 0x88, 0x0001))
+const  tcu_packet_STRUCT   TCU_MNG_LE_START_ADVERTISE_RESP_t =                 {.service_id = 0xD1,        .opcode = 0x88,     .length = 0x0001};
+
+//#define TCU_MNG_LE_DISABLE_ADVERTISE_REQ                                                          (CMD_CONCAT(0xD1, 0x09, 0x0000))
+const  tcu_packet_STRUCT   TCU_MNG_LE_DISABLE_ADVERTISE_REQ_t =                {.service_id = 0xD1,        .opcode = 0x09,     .length = 0x0000};
+
+//#define TCU_MNG_LE_DISABLE_ADVERTISE_RESP                                                      (CMD_CONCAT(0xD1, 0x89, 0x0001))
+const   tcu_packet_STRUCT   TCU_MNG_LE_DISABLE_ADVERTISE_RESP_t =               {.service_id = 0xD1,        .opcode = 0x89,     .length = 0x0001};
+
+//#define TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ                                                      (CMD_CONCAT(0xD3, 0x20, 0x0011))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ_t =                {.service_id = 0xD3,        .opcode = 0x20,     .length = 0x0011};
+
+//#define TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP                                                      (CMD_CONCAT(0xD3, 0xA0, 0x0003))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_t =               {.service_id = 0xD3,        .opcode = 0xA0,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ                                                           (CMD_CONCAT(0xD3, 0x21, LEN_VAR))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ_t =                     {.service_id = 0xD3,        .opcode = 0x21,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP                                                          (CMD_CONCAT(0xD3, 0xA1, LEN_VAR))
+const   tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_t =                    {.service_id = 0xD3,        .opcode = 0xA1,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ                                                     (CMD_CONCAT(0xD3, 0x22, 0x0014))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ_t =               {.service_id = 0xD3,        .opcode = 0x22,     .length = 0x0014};
+
+//#define TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP                                                    (CMD_CONCAT(0xD3, 0xA2, 0x0003))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_t =              {.service_id = 0xD3,        .opcode = 0xA2,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ                                                          (CMD_CONCAT(0xD3, 0x23, 0xFFFE))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ_t =                    {.service_id = 0xD3,        .opcode = 0x23,     .length = 0xFFFE};
+
+//#define TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP                                                         (CMD_CONCAT(0xD3, 0xA3, 0x0003))
+const       tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_t =                   {.service_id = 0xD3,        .opcode = 0xA3,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ                                                          (CMD_CONCAT(0xD3, 0x25, LEN_VAR))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ_t =                 {.service_id = 0xD3,        .opcode = 0x25,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP                                                         (CMD_CONCAT(0xD3, 0xA5, 0x0001))
+const     tcu_packet_STRUCT  TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_t =                    {.service_id = 0xD3,        .opcode = 0xA5,     .length = 0x0001};
+
+//#define TCU_LE_GATT_SDB_ADD_INC_SVC_REQ                                                             (CMD_CONCAT(0xD3, 0x24, LEN_VAR))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_INC_SVC_REQ_t =                     {.service_id = 0xD3,        .opcode = 0x24,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SDB_ADD_INC_SVC_RESP                                                           (CMD_CONCAT(0xD3, 0xA4, LEN_VAR))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_t =                     {.service_id = 0xD3,        .opcode = 0xA4,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SDB_RET_END_GRP_HLE_REQ                                                   (CMD_CONCAT(0xD3, 0x26, 0x0002))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_RET_END_GRP_HLE_REQ_t =               {.service_id = 0xD3,        .opcode = 0x26,     .length = 0x0002};
+
+
+//#define TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP                                                  (CMD_CONCAT(0xD3, 0xA6, 0x0003))
+
+const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_t =         {.service_id = 0xD3,        .opcode = 0xA6,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SER_INIT_REQ                                                                                   (CMD_CONCAT(0xD3, 0x00, NO_PARAM))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_INIT_REQ_t =                                        { .service_id = 0xD3,        .opcode = 0x00,     .length = NO_PARAM};
+
+//#define TCU_LE_GATT_SER_INIT_RESP                                                                                  (CMD_CONCAT(0xD3, 0x80, 0x0001))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_INIT_RESP_t =                                       {.service_id = 0xD3,        .opcode = 0x80,     .length = 0x0001};
+
+//#define TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT                                             (CMD_CONCAT(0xD3, 0xC4, LEN_VAR))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_t =       {.service_id = 0xD3,        .opcode = 0xC4,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_REQ                                 (CMD_CONCAT(0xD3, 0x04, 0x0005))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_REQ_t = {.service_id = 0xD3,        .opcode = 0x04,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP                                (CMD_CONCAT(0xD3, 0x84, 0x0003))
+const       tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_t = {.service_id = 0xD3,        .opcode = 0x84,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_REQ                                      (CMD_CONCAT(0xD3, 0x02, 0x0005))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_REQ_t = {.service_id = 0xD3,        .opcode = 0x02,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP                                      (CMD_CONCAT(0xD3, 0x82, 0x0003))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_t = {.service_id = 0xD3,        .opcode = 0x82,     .length = 0x0003};
+
+//#define TCU_LE_GATT_CLI_EXG_MTU_REQ                                                                           (CMD_CONCAT(0xD2, 0x01, 0x0004))
+const     tcu_packet_STRUCT   TCU_LE_GATT_CLI_EXG_MTU_REQ_t =                                 {.service_id = 0xD2,        .opcode = 0x01,     .length = 0x0004};
+
+//#define TCU_LE_GATT_CLI_EXG_MTU_EVENT                                                                     (CMD_CONCAT(0xD2, 0x41, 0x0005))
+const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_EXG_MTU_EVENT_t =                             {.service_id = 0xD2,        .opcode = 0x41,     .length = 0x0005};
+
+//#define TCU_LE_GATT_CLI_DISCOVER_PRIM_SVC_BY_UUID_REQ                             (CMD_CONCAT(0xD2, 0x03, 0x0008))
+const      tcu_packet_STRUCT  TCU_LE_GATT_CLI_DISCOVER_PRIM_SVC_BY_UUID_REQ_t = {.service_id = 0xD2,        .opcode = 0x03,     .length = 0x0008};
+
+//#define TCU_LE_GATT_CLI_DISCOVER_PRIM_SVC_BY_UUID_EVENT                           (CMD_CONCAT(0xD2, 0x43, 0x0200))
+const     tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_PRIM_SVC_BY_UUID_EVENT_t = {.service_id = 0xD2,        .opcode = 0x43,     .length = 0x0200};
+
+//#define TCU_LE_GATT_CLI_DISCOVER_CHAR_DECL_REQ                                                 (CMD_CONCAT(0xD2, 0x05, 0x0006))
+const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_CHAR_DECL_REQ_t =      {.service_id = 0xD2,        .opcode = 0x05,     .length = 0x0006};
+
+//#define TCU_LE_GATT_CLI_DISCOVER_CHAR_DECL_EVENT                                          (CMD_CONCAT(0xD2, 0x45, 0x0200)) //lwi lenght ???
+const     tcu_packet_STRUCT  TCU_LE_GATT_CLI_DISCOVER_CHAR_DECL_EVENT_t =     {.service_id = 0xD2,        .opcode = 0x45,     .length = 0x0200};
+
+//#define TCU_LE_GATT_CLI_READ_CHAR_VAL_REQ                                                              (CMD_CONCAT(0xD2, 0x08, 0x0004))
+const   tcu_packet_STRUCT   TCU_LE_GATT_CLI_READ_CHAR_VAL_REQ_t =                       {.service_id = 0xD2,        .opcode = 0x08,     .length = 0x0004};
+
+//#define TCU_LE_GATT_CLI_READ_CHAR_VAL_EVENT                                                        (CMD_CONCAT(0xD2, 0x48, 0x0200))
+const   tcu_packet_STRUCT   TCU_LE_GATT_CLI_READ_CHAR_VAL_EVENT_t =                 {.service_id = 0xD2,        .opcode = 0x48,     .length = 0x0200};
+
+//#define TCU_LE_GATT_CLI_CHAR_VAL_NOTIFICATION_IND_EVENT                               (CMD_CONCAT(0xD2, 0xC0, LEN_VAR)) //???
+const   tcu_packet_STRUCT   TCU_LE_GATT_CLI_CHAR_VAL_NOTIFICATION_IND_EVENT_t = {.service_id = 0xD2,        .opcode = 0xC0,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SER_EXG_MTU_EVENT                                                                          (CMD_CONCAT(0xD3, 0xC1, 0x0004))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_EXG_MTU_EVENT_t =                               {.service_id = 0xD3,        .opcode = 0xC1,     .length = 0x0004};
+
+//#define TCU_LE_GATT_SER_EXG_MTU_ACCEPT_REQ                                                        (CMD_CONCAT(0xD3, 0x01, 0x0005)) //T.B.C.!!!
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_EXG_MTU_ACCEPT_REQ_t =                    {.service_id = 0xD3,        .opcode = 0x01,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP                                                           (CMD_CONCAT(0xD3, 0x81, 0x0005)) //T.B.C.!!!
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_t =                 {.service_id = 0xD3,        .opcode = 0x81,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT                                                        (CMD_CONCAT(0xD3, 0xC2, 0x0004))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_t =                 {.service_id = 0xD3,        .opcode = 0xC2,     .length = 0x0004};
+
+//#define TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT                                                       (CMD_CONCAT(0xD3, 0xC3, LEN_VAR))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_t =                {.service_id = 0xD3,        .opcode = 0xC3,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_REQ                                         (CMD_CONCAT(0xD3, 0x03, 0x0005))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_REQ_t = {.service_id = 0xD3,        .opcode = 0x03,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP                                        (CMD_CONCAT(0xD3, 0x83, 0x0003))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_t = {.service_id = 0xD3,        .opcode = 0x83,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT                                                       (CMD_CONCAT(0xD3, 0xC8, 0x0004))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_t =                {.service_id = 0xD3,        .opcode = 0xC8,     .length = 0x0004};
+
+//#define TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_REQ                                         (CMD_CONCAT(0xD3, 0x08, 0x0005))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_REQ_t = {.service_id = 0xD3,        .opcode = 0x08,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP                                         (CMD_CONCAT(0xD3, 0x88, 0x0003))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_t = {.service_id = 0xD3,        .opcode = 0x88,     .length = 0x0003};
+
+
+
+
+//#define TCU_LE_GATT_SER_READ_MULTIPLE_EVENT                                                           (CMD_CONCAT(0xD3, 0xCA, LEN_VAR))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_t =                     {.service_id = 0xD3,        .opcode = 0xCA,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_REQ                                              (CMD_CONCAT(0xD3, 0x0A, 0x0005))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_REQ_t =        {.service_id = 0xD3,        .opcode = 0x0A,     .length = 0x0005};
+
+//#define TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP                                             (CMD_CONCAT(0xD3, 0x8A, 0x0003))
+const      tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_t =        {.service_id = 0xD3,        .opcode = 0x8A,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ                                             (CMD_CONCAT(0xD3, 0x05, LEN_VAR))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ_t =       {.service_id = 0xD3,        .opcode = 0x05,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT                                        (CMD_CONCAT(0xD3, 0x45, 0x0002))
+const    tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_t = {.service_id = 0xD3,        .opcode = 0x45,     .length = 0x0002};
+
+//#define TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ                                                   (CMD_CONCAT(0xD3, 0x06, LEN_VAR))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ_t =              {.service_id = 0xD3,        .opcode = 0x06,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT                                                 (CMD_CONCAT(0xD3, 0x46, 0x0003))
+const     tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_t =       {.service_id = 0xD3,        .opcode = 0x46,     .length = 0x0003};
+
+//#define TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT                          (CMD_CONCAT(0xD3, 0xC9, LEN_VAR))
+const   tcu_packet_STRUCT  TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_t = {.service_id = 0xD3,        .opcode = 0xC9,     .length = LEN_VAR};
+
+
+
+//#define TCU_LE_GATT_CLI_INIT_RESP                                                                                          (CMD_CONCAT(0xD2, 0x80, 0x0001))
+const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_INIT_RESP_t =                                                        {.service_id = 0xD2,        .opcode = 0x80,     .length = 0x0001};
+
+//#define TCU_LE_GATT_CLI_DISCOVER_CHAR_DESP_EVENT                                                  (CMD_CONCAT(0xD2, 0x47, LEN_VAR))
+const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_CHAR_DESP_EVENT_t =             {.service_id = 0xD2,        .opcode = 0x47,     .length = LEN_VAR};
+
+//#define TCU_LE_GATT_CLI_DISCOVER_CHAR_DESP_REQ                                                         (CMD_CONCAT(0xD2, 0x07, 0x0006))
+const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_CHAR_DESP_REQ_t =                  {.service_id = 0xD2,        .opcode = 0x07,     .length = 0x0006};
+
 /**********************************************
 *                Functions                    *
 **********************************************/
@@ -262,16 +483,16 @@ le_func_status_e eSendData(uint8_t* pu8Data, uint32_t u32Len)
 
 /******************************************************************************/
 //le_func_status_e eIsCmdMatching(uint8_t* pu8Data, uint32_t u32Cmd)   /*WOW.*/
-le_func_status_e eIsCmdMatching(uint8_t* pu8Data, uint8_t*  pu8Cmd)
+le_func_status_e eIsCmdMatching(uint8_t* pu8Data, tcu_packet_STRUCT  command)
 {
     le_func_status_e eRes;
 
     /* Check if matches */
     //if(PARSE_CMD_SERVICE_ID(pu8Data) == GET_CMD_SERVICE_ID(u32Cmd))
-    if(PARSE_CMD_SERVICE_ID(pu8Data) == (pu8Cmd[0]))  /*BY DEFINITION, index 0 is the SERVICE ID*/
+    if(PARSE_CMD_SERVICE_ID(pu8Data) == command.service_id)  /*BY DEFINITION, index 0 is the SERVICE ID*/
     {
         //if(PARSE_CMD_OPCODE(pu8Data) == GET_CMD_OPCODE(u32Cmd))
-        if(PARSE_CMD_OPCODE(pu8Data) == (pu8Cmd[1]))  /*BY DEFINITION, index 0 is the OPCODE*/
+        if(PARSE_CMD_OPCODE(pu8Data) == (command.opcode))  /*BY DEFINITION, index 0 is the OPCODE*/
         {
             /* Command check OK */
             eRes = LE_FUNC_SUCCCESS;
@@ -301,20 +522,24 @@ void vGetCmdDetails(uint8_t* pu8Data, uint8_t* pu8ServID, uint8_t* pu8OpCode, ui
 }
 
 /******************************************************************************/
-uint16_t u16AutoSetCmdHeader(uint8_t* pu8Data, uint32_t u32Cmd,  uint16_t u16Offset)
+//uint16_t u16AutoSetCmdHeader(uint8_t* pu8Data, uint32_t u32Cmd,  uint16_t u16Offset)
+uint16_t u16AutoSetCmdHeader(uint8_t* pu8Data, tcu_packet_STRUCT command,  uint16_t u16Offset)
 {
     uint16_t u16DataCnt=0;
 
     /* Set service ID */
-    SET_CMD_SVC_ID(pu8Data, u32Cmd);
+   // SET_CMD_SVC_ID(pu8Data, u32Cmd);
+    SET_CMD_SVC_ID(pu8Data, command.service_id);
     u16DataCnt++;
 
     /* Set Opcode */
-    SET_CMD_OP_CODE(pu8Data, u32Cmd);
+    //SET_CMD_OP_CODE(pu8Data, u32Cmd);
+    SET_CMD_OP_CODE(pu8Data, command.opcode);
     u16DataCnt++;
 
     /* Set length */
-    vSetCmdLength(pu8Data, GET_PARAM_LENGTH(u32Cmd));
+    //vSetCmdLength(pu8Data, GET_PARAM_LENGTH(u32Cmd));
+    vSetCmdLength(pu8Data, command.length);
     u16DataCnt+=2;
 
     return (u16Offset + u16DataCnt);
@@ -332,16 +557,16 @@ void vCopyArrayParams(uint8_t* pu8Src, uint8_t* pu8Dst, uint8_t u8SrcOffs, uint8
 }
 
 /******************************************************************************/
-uint16_t u16SetCmdHeaderUserLen(uint8_t* pu8Data, t_tcu_event command, uint16_t u16Len, uint16_t u16Offset)
+uint16_t u16SetCmdHeaderUserLen(uint8_t* pu8Data, tcu_packet_STRUCT command, uint16_t u16Len, uint16_t u16Offset)
 {
     uint16_t u16DataCnt=0;
 
     /* Set service ID */
-    SET_CMD_SVC_ID(pu8Data, command.Service_ID);
+    SET_CMD_SVC_ID(pu8Data, command.service_id);
     u16DataCnt++;
 
     /* Set Opcode */
-    SET_CMD_OP_CODE(pu8Data, command.eventType);
+    SET_CMD_OP_CODE(pu8Data, command.opcode);
     u16DataCnt++;
 
     /* Set length */
@@ -375,9 +600,9 @@ le_func_status_e eGetLeAccept_Ack(uint8_t* pu8Data, le_accept_st* pstEvntData)
     uint16_t u16Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const TCU_LE_ACCEPT_SID_OP[] = {0xD1, 0xF1};
+
    // eResult = eIsCmdMatching(pu8Data,TCU_LE_ACCEPT);   /*matching */
-    eResult = eIsCmdMatching(pu8Data,TCU_LE_ACCEPT_SID_OP);   /*matching */
+    eResult = eIsCmdMatching(pu8Data,TCU_LE_ACCEPT_t);   /*matching */
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -398,9 +623,9 @@ le_func_status_e eGetLeNOTAcceptStatus_Ack(uint8_t* pu8Data, uint8_t* pu8ServID,
     uint16_t u16ParamLen =0;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_NOT_ACCEPT_SID_OP[] = {0xD1, 0xF2};
+
     //eResult = eIsCmdMatching(pu8Data,TCU_LE_NOT_ACCEPT);
-    eResult = eIsCmdMatching(pu8Data,TCU_LE_NOT_ACCEPT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data,TCU_LE_NOT_ACCEPT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -419,9 +644,9 @@ le_func_status_e eGetLeFatalError_Notfy(uint8_t* pu8Data, uint8_t* pu8ErrorCode)
     uint8_t u8OpCode;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_FATAL_ERROR_SID_OP[] = {0xD1, 0xFE};
+
 //    eResult = eIsCmdMatching(pu8Data,TCU_LE_FATAL_ERROR);
-    eResult = eIsCmdMatching(pu8Data,TCU_LE_FATAL_ERROR_SID_OP);
+    eResult = eIsCmdMatching(pu8Data,TCU_LE_FATAL_ERROR_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -445,13 +670,9 @@ le_func_status_e eSetLeMngInit_Req(uint8_t* pu8DevName, uint8_t u8NameLen)
     {
         /* Set command op-code service id and parameter length */
         /* HERE THEY ARE TAKING SERVICE_ID, OPCODE, AND LENGTH AND ADDING IT TO THE TX BUFFER TO THE BLUETOOTH*/
-        //TCU_MNG_LE_INIT_REQ = D1 01 FFFF
-        volatile t_tcu_event command = {   .eventType = 0x01,
-                                                                      .Service_ID = 0xD1,
 
-         };
         //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff,TCU_MNG_LE_INIT_REQ,(uint16_t) (u8NameLen+1), u16Offset);
-        u16Offset = u16SetCmdHeaderUserLen(au8SendBuff,command,(uint16_t) (u8NameLen+1), u16Offset);
+        u16Offset = u16SetCmdHeaderUserLen(au8SendBuff,TCU_MNG_LE_INIT_REQ_t, (uint16_t) (u8NameLen+1), u16Offset);
 
         /* Length of Device Name */
         au8SendBuff[u16Offset++] = u8NameLen;
@@ -477,9 +698,9 @@ le_func_status_e eGetLeMngInit_Resp(uint8_t* pu8Data, le_mnginit_resp_st* pstRes
     le_func_status_e eResult;
 
     /* Check if received command is matching */
-    const uint8_t TCU_MNG_LE_INIT_RESP_SID_OP[] = {0xD1, 0x81};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_INIT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_INIT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_INIT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -500,7 +721,8 @@ le_func_status_e eSetLeMngSetScanEnable_Req(set_scan_en_st stConfig)
     uint16_t u16Offset = UART_PACKET_OFFSET;
    // uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_SET_SCAN_ENABLE_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_SET_SCAN_ENABLE_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_SET_SCAN_ENABLE_REQ_t, u16Offset);
 
     au8SendBuff[u16Offset++] = GET_BYTE_MSB(stConfig.u16LE_Scan_Interval);
     au8SendBuff[u16Offset++] = GET_BYTE_LSB(stConfig.u16LE_Scan_Interval);
@@ -526,9 +748,9 @@ le_func_status_e eGetLeMngSetScanEnable_Resp(uint8_t* pu8Data, uint8_t* pu8Statu
    le_func_status_e eResult;
 
     /* Check if received command is matching */
-   const uint8_t TCU_MNG_LE_SET_SCAN_ENABLE_RESP_SID_OP[] = {0xD1, 0x8A};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_ENABLE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_ENABLE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_ENABLE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -548,9 +770,9 @@ le_func_status_e eGetLeAdvReport_Event(uint8_t* pu8Data, uint8_t* pu8Status, uin
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_MNG_LE_ADV_REPORT_EVENT_SID_OP[] = {0xD1, 0xC1};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_ADV_REPORT_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_ADV_REPORT_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_ADV_REPORT_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -581,7 +803,8 @@ le_func_status_e eGetLeAdvReport_Event(uint8_t* pu8Data, uint8_t* pu8Status, uin
     uint16_t u16Offset = UART_PACKET_OFFSET;
     uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_CREATE_CONNECTION_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_CREATE_CONNECTION_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_CREATE_CONNECTION_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, stConfig.u16ScanInterval, &u16Offset);
     vWrite2Array_16(au8SendBuff, stConfig.u16ScanWindow, &u16Offset);
@@ -614,9 +837,9 @@ le_func_status_e eGetLeMngConnComplete_Event(uint8_t* pu8Data, le_conn_evt_st* p
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OP[] = {0xD1, 0x4C};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CONNECTION_COMPLETE_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -650,7 +873,8 @@ le_func_status_e eGetLeMngConnComplete_Event(uint8_t* pu8Data, le_conn_evt_st* p
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_REQ_t, u16Offset);
 
     /* Send command */
     eResult = eSendData(au8SendBuff, u16Offset);
@@ -666,9 +890,9 @@ le_func_status_e eGetLeMngCreateConnCancel_Resp(uint8_t* pu8Data, uint8_t* puSta
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-const uint8_t TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_SID_OP[] = {0xD1, 0x8D};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP);
-eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_SID_OP);
+eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -686,7 +910,8 @@ le_func_status_e eSetLeDisconnect_Req(uint8_t* pu8BdAddr)
     uint16_t u16Offset = UART_PACKET_OFFSET;;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_DISCONNECT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_DISCONNECT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_DISCONNECT_REQ_t, u16Offset);
 
      vCopyArrayParams(pu8BdAddr,au8SendBuff ,0 ,u16Offset , BD_ADDR_SIZE);
 
@@ -704,9 +929,9 @@ le_func_status_e eGetLeDisconnect_Event(uint8_t* pu8Data, le_disconnect_st* pstE
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_MNG_LE_DISCONNECT_EVENT_SID_OP[] = {0xD1, 0x93};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISCONNECT_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISCONNECT_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISCONNECT_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -727,7 +952,8 @@ le_func_status_e eSetLeScanDisable_Req(void)
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_SET_SCAN_DISABLE_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_SET_SCAN_DISABLE_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_SET_SCAN_DISABLE_REQ_t, u16Offset);
 
     /* Send command */
     eResult = eSendData(au8SendBuff, u16Offset);
@@ -744,9 +970,9 @@ le_func_status_e eGetLeScanDisable_Resp(uint8_t* pu8Data, uint8_t* pu8Status)
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    uint8_t TCU_MNG_LE_SET_SCAN_DISABLE_RESP_SID_OP[] = {0xD1, 0x8B};
+
     //esult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_DISABLE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_DISABLE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_DISABLE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -765,7 +991,8 @@ le_func_status_e eSetLeStartAdvertise_Req(le_adv_req_st stConfig)
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_START_ADVERTISE_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_START_ADVERTISE_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_START_ADVERTISE_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, stConfig.u16AdvIntervalMin, &u16Offset);
     vWrite2Array_16(au8SendBuff, stConfig.u16AdvIntervalMax, &u16Offset);
@@ -801,9 +1028,9 @@ le_func_status_e eGetLeStartAdvertise_Resp(uint8_t* pu8Data, uint8_t* pu8Status)
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_MNG_LE_START_ADVERTISE_RESP_SID_OP[] = {0xD1, 0x88};
+
     //esult = eIsCmdMatching(pu8Data, TCU_MNG_LE_START_ADVERTISE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_START_ADVERTISE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_START_ADVERTISE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -820,7 +1047,8 @@ le_func_status_e eSetLeDisableAdvertise_Req(void)
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_DISABLE_ADVERTISE_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_DISABLE_ADVERTISE_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_MNG_LE_DISABLE_ADVERTISE_REQ_t, u16Offset);
 
     /* Send command */
     eResult = eSendData(au8SendBuff, u16Offset);
@@ -836,9 +1064,9 @@ le_func_status_e eGetLeDisableAdvertise_Resp(uint8_t* pu8Data, uint8_t* pu8Statu
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_MNG_LE_DISABLE_ADVERTISE_RESP_SID_OP[] = {0xD1, 0x89};
+
     //esult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISABLE_ADVERTISE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISABLE_ADVERTISE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISABLE_ADVERTISE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -857,14 +1085,11 @@ le_func_status_e eSetSdbGattAddPrimaryService_Req(uuid_type_e eUuidLen, uint8_t*
     //uint8_t au8SendBuff[64];
 
 
-    //TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ = D3 20 0011
-    t_tcu_event command;
-    command.Service_ID = 0xD3;
-    command.eventType = 0x20;
+
 
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ, (uint16_t)(eUuidLen) + 1, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, (uint16_t)(eUuidLen) + 1, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ_t, (uint16_t)(eUuidLen) + 1, u16Offset);
 
     vWrite2Array_8(au8SendBuff, eUuidLen, &u16Offset);
 
@@ -884,9 +1109,9 @@ le_func_status_e eGetSdbGattAddPrimaryService_Resp(uint8_t* pu8Data, uint8_t* pu
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_SID_OP[] = {0xD3, 0xA0};
+
     //esult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -905,13 +1130,10 @@ le_func_status_e eSetSdbGattAddSecondaryService_Req(uuid_type_e eUuidLen, uint16
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    //TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ = D3 21 FFFF
-    t_tcu_event command;
-        command.Service_ID = 0xD3;
-        command.eventType = 0x21;
+
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ, (uint16_t)(eUuidLen) + 1, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, (uint16_t)(eUuidLen) + 1, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ_t, (uint16_t)(eUuidLen) + 1, u16Offset);
     
     vWrite2Array_16(au8SendBuff, u16ParentSvcHandle, &u16Offset);
 
@@ -932,9 +1154,9 @@ le_func_status_e eGetSdbGattAddSecondaryService_Resp(uint8_t* pu8Data, uint8_t* 
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_SID_OP[] = {0xD3, 0xA1};
+
     //esult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -953,13 +1175,10 @@ le_func_status_e eSetSdbGattAddCharacterDecl_Req(uint16_t u16Handle, uint8_t u8P
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    //TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ = D3 22 0014
-    t_tcu_event command;
-           command.Service_ID = 0xD3;
-           command.eventType = 0x22;
+
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ, (uint16_t)(eUuidLen)+4, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, (uint16_t)(eUuidLen)+4, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ_t, (uint16_t)(eUuidLen)+4, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16Handle, &u16Offset);
     vWrite2Array_8(au8SendBuff, u8Properties, &u16Offset);
@@ -980,9 +1199,9 @@ le_func_status_e eGetSdbGattAddCharacterDecl_Resp(uint8_t* pu8Data, gatt_status_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_SID_OP[] = {0xD3, 0xA2};
+
     //esult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_t);
     if(LE_FUNC_SUCCCESS == eResult)
     {
         *peStatus = (gatt_status_code_e)pu8Data[u32Offset++];
@@ -999,14 +1218,11 @@ le_func_status_e eSetSdbGattAddCharacterEle_Req(uint16_t  u16Handle, char_el_req
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    //TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ = D3 23 FFFE
-    t_tcu_event command;
-              command.Service_ID = 0xD3;
-              command.eventType = 0x23;
+
 
 
    // u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ, stParams.eAttrLen + stParams.u16AttValLen + 7, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, stParams.eAttrLen + stParams.u16AttValLen + 7, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ_t, stParams.eAttrLen + stParams.u16AttValLen + 7, u16Offset);
 
     vWrite2Array_16(au8SendBuff,u16Handle, &u16Offset);
     vWrite2Array_8(au8SendBuff, (uint8_t)(stParams.eAttrLen), &u16Offset);
@@ -1031,9 +1247,9 @@ le_func_status_e eGetSdbGattAddCharacterEle_Resp(uint8_t* pu8Data, gatt_status_c
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_SID_OP[] = {0xD3, 0xA3};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1053,14 +1269,11 @@ le_func_status_e eSetSdbGattUpdateCharacterEle_Req(uint16_t u16Handle, uint16_t 
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    //TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ = D3 25 FFFF
-    t_tcu_event command;
-                  command.Service_ID = 0xD3;
-                  command.eventType = 0x25;
+
 
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ,  u16AttValLen + 4, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command,  u16AttValLen + 4, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ_t,  u16AttValLen + 4, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16Handle, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16AttValLen, &u16Offset);
@@ -1081,9 +1294,9 @@ le_func_status_e eGetSdbGattUpdateCharacterEle_Resp(uint8_t* pu8Data, gatt_statu
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_SID_OP[] = {0xD3, 0xA5};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1099,13 +1312,10 @@ le_func_status_e eSetSdbGattAddInclSvc_Req(uint16_t u16SvcHandle, uuid_type_e eA
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
 
-    //TCU_LE_GATT_SDB_ADD_INC_SVC_REQ = D3 24 FFFF
-    t_tcu_event command;
-      command.Service_ID = 0xD3;
-      command.eventType = 0x24;
+
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_INC_SVC_REQ,  eAttValLen + 4, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command,  eAttValLen + 4, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_INC_SVC_REQ_t,  eAttValLen + 4, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16SvcHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, eAttValLen, &u16Offset);
@@ -1126,9 +1336,9 @@ le_func_status_e eGetSdbGattAddInclSvc_Resp(uint8_t* pu8Data, le_resp_st* pstRes
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_SID_OP[] = {0xD3, 0xA4};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1146,7 +1356,8 @@ le_func_status_e eSetSdbGattReturnEndGroupHandle_Req(uint16_t u16Handle)
     uint16_t u16Offset= UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SDB_RET_END_GRP_HLE_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SDB_RET_END_GRP_HLE_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SDB_RET_END_GRP_HLE_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16Handle, &u16Offset);
 
@@ -1162,9 +1373,9 @@ le_func_status_e eGetSdbGattReturnEndGroupHandle_Resp(uint8_t* pu8Data, le_resp_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_SID_OP[] = {0xD3, 0xA6};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1182,7 +1393,8 @@ le_func_status_e eSetServerGattInit_Req(void)
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_INIT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_INIT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_INIT_REQ_t, u16Offset);
 
     /* Send command */
     eResult = eSendData(au8SendBuff, u16Offset);
@@ -1197,9 +1409,9 @@ le_func_status_e eGetServerGattInit_Resp(uint8_t* pu8Data, gatt_status_code_e* p
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_INIT_RESP_SID_OP[] = {0xD3, 0x80};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_INIT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_INIT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_INIT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1218,9 +1430,9 @@ le_func_status_e eGetServerGattWriteCharDesc_Event(uint8_t* pu8Data, le_srv_writ
     uint16_t u16paramLen = PARSE_CMD_PARAM_LENGTH(pu8Data) - 4;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OP[] = {0xD3, 0xC4};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1245,7 +1457,8 @@ le_func_status_e eSetServerGattWriteCharDescAccept_Req(uint16_t u16ConnHandle,ga
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, eStatus, &u16Offset);
@@ -1264,9 +1477,9 @@ le_func_status_e eGetServerGattReadCharVal_Event(uint8_t* pu8Data, le_srv_read_c
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_SID_OP[] = {0xD3, 0xC2};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1285,9 +1498,9 @@ le_func_status_e eGetServerGattWriteCharDespAccept_Resp(uint8_t* pu8Data, le_srv
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_SID_OP[] = {0xD3, 0x84};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1307,7 +1520,8 @@ le_func_status_e eSetServerGattReadCharValAccept_Req(uint16_t u16ConnHandle, gat
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, eStatus, &u16Offset);
@@ -1326,9 +1540,9 @@ le_func_status_e eSetServerGattReadCharValAccept_Resp(uint8_t* pu8Data, le_srv_r
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_SID_OP[] = {0xD3, 0x82};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1347,9 +1561,9 @@ le_func_status_e eGetServerGattExgMtu_Event(uint8_t* pu8Data, le_mtu_exchg_st* p
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OP[] = {0xD3, 0xC1};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1368,7 +1582,8 @@ le_func_status_e eGetServerGattExgMtuAccept_Req(uint16_t u16ConnHandle, uint8_t 
   uint16_t u16Offset = UART_PACKET_OFFSET;
 
 
-  u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_REQ, u16Offset);
+  //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_REQ, u16Offset);
+  u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_REQ_t, u16Offset);
     
   vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
   vWrite2Array_8(au8SendBuff, u8Status, &u16Offset);
@@ -1387,9 +1602,9 @@ le_func_status_e eGetServerGattExgMtuAccept_Resp(uint8_t* pu8Data, le_mtu_exchg_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_SID_OP[] = {0xD3, 0x81};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1410,9 +1625,9 @@ le_func_status_e eGetServerGattWriteCharVal_Event(uint8_t* pu8Data,le_srv_write_
     uint16_t u16paramLen = PARSE_CMD_PARAM_LENGTH(pu8Data) - 4;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_SID_OP[] = {0xD3, 0xC3};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1437,7 +1652,8 @@ le_func_status_e eSetServerGattWriteCharValAccept_Req(uint16_t u16ConnHandle, ga
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, eStatus, &u16Offset);
@@ -1456,9 +1672,9 @@ le_func_status_e eGetServerGattWriteCharValAccept_Resp(uint8_t* pu8Data, le_srv_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_SID_OP[] = {0xD3, 0x83};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1479,9 +1695,9 @@ le_func_status_e eGetServerGattReadMulti_Event(uint8_t* pu8Data, le_srv_multi_ev
      uint16_t u16ParamCnt;
 
     /* Check if received command is matching */
-     const uint8_t TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_SID_OP[] = {0xD3, 0xCA};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_EVENT);
-     eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_SID_OP);
+     eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1504,7 +1720,8 @@ le_func_status_e eSetServerGattReadMultiAccept_Req(uint16_t u16ConnHandle, gatt_
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_REQ_t, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, eStatus, &u16Offset);
@@ -1525,9 +1742,9 @@ le_func_status_e eGetServerGattReadMultiAccept_Resp(uint8_t* pu8Data, le_srv_mul
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_SID_OP[]= {0xD3, 0x8A};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1564,9 +1781,9 @@ le_func_status_e eGetServerGattValNotify_Event(uint8_t* pu8Data, uint16_t* pu16C
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_SID_OP[] = {0xD3, 0x45};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1583,9 +1800,9 @@ le_func_status_e eGetServerGattWriteWithoutRespCmd_Event(uint8_t* pu8Data, le_sr
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_SID_OP[] = {0xD3, 0xC9};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1610,15 +1827,12 @@ le_func_status_e eSetServerGattCharValNotification_Req(uint16_t u16ConnHandle, u
 
     u16ParamLen = 4 + u16CharValLen;
 
-    //TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ = D3 05 FFFF
-    t_tcu_event command;
-         command.Service_ID = 0xD3;
-         command.eventType = 0x05;
+
 
 
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ, u16ParamLen, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, u16ParamLen, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ_t, u16ParamLen, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16CharValHandle, &u16Offset);
@@ -1641,15 +1855,11 @@ le_func_status_e eSetServerGattCharValIndication_Req(uint16_t u16ConnHandle, uin
 
     u16ParamLen = 4 + u16CharValLen;
 
-    //TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ = D3 06 FFFF
-    t_tcu_event command;
-            command.Service_ID = 0xD3;
-            command.eventType = 0x06;
 
 
 
     //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ, u16ParamLen, u16Offset);
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, u16ParamLen, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ_t, u16ParamLen, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16CharValHandle, &u16Offset);
@@ -1670,9 +1880,9 @@ le_func_status_e eGetServerGattValIndication_Event(uint8_t* pu8Data, le_srv_char
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_SID_OP[] = {0xD3, 0x46};
+
 //    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1690,9 +1900,9 @@ le_func_status_e eGetServerGattReadCharDescriptor_Event(uint8_t* pu8Data, le_srv
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OP[] = {0xD3, 0xC8};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1710,7 +1920,8 @@ le_func_status_e eSetServerGattReadCharDescriptorAccept_Req(uint16_t u16ConnHand
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_REQ, u16Offset);
+    //u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_REQ, u16Offset);
+    u16Offset = u16AutoSetCmdHeader(au8SendBuff, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_REQ_t, u16Offset);
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, u8Status, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16DescHle, &u16Offset);
@@ -1728,9 +1939,9 @@ le_func_status_e eGetServerGattReadCharDescriptorAccept_Resp(uint8_t* pu8Data, l
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    const uint8_t TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_SID_OP[] = {0xD3, 0x88};
+
     //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP);
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_SID_OP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_t);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {

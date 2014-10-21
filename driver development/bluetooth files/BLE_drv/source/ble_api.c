@@ -61,10 +61,82 @@ le_api_result_e (*pUpdMultiCallback)(void*, uint16_t, uint16_t, uint8_t*);
 
 //t_tcu_event stTcuEvent;
 extern volatile t_tcu_event tcu_event;
+
+extern const tcu_packet_STRUCT   TCU_LE_ACCEPT_t;
+extern const tcu_packet_STRUCT   TCU_LE_NOT_ACCEPT_t;
+extern const tcu_packet_STRUCT   TCU_LE_FATAL_ERROR_t;
+extern const tcu_packet_STRUCT   TCU_MNG_LE_INIT_REQ_t ;
+extern const tcu_packet_STRUCT  TCU_MNG_LE_INIT_RESP_t ;
+extern const tcu_packet_STRUCT   TCU_MNG_LE_SET_SCAN_ENABLE_REQ_t ;
+extern const tcu_packet_STRUCT   TCU_MNG_LE_SET_SCAN_ENABLE_RESP_t ;
+extern const tcu_packet_STRUCT   TCU_MNG_LE_ADV_REPORT_EVENT_t ;
+extern const tcu_packet_STRUCT   TCU_MNG_LE_CREATE_CONNECTION_REQ_t ;
+extern const tcu_packet_STRUCT  TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_t ;
+extern const tcu_packet_STRUCT   TCU_MNG_LE_CREATE_CONNECTION_CANCEL_REQ_t ;
+extern const      tcu_packet_STRUCT   TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_t;
+extern const    tcu_packet_STRUCT   TCU_MNG_LE_DISCONNECT_REQ_t ;
+extern  const    tcu_packet_STRUCT  TCU_MNG_LE_DISCONNECT_EVENT_t ;
+extern   const tcu_packet_STRUCT   TCU_MNG_LE_SET_SCAN_DISABLE_REQ_t ;
+extern const  tcu_packet_STRUCT  TCU_MNG_LE_SET_SCAN_DISABLE_RESP_t ;
+extern const   tcu_packet_STRUCT  TCU_MNG_LE_START_ADVERTISE_REQ_t ;
+extern const  tcu_packet_STRUCT   TCU_MNG_LE_START_ADVERTISE_RESP_t ;
+extern const  tcu_packet_STRUCT   TCU_MNG_LE_DISABLE_ADVERTISE_REQ_t ;
+extern const   tcu_packet_STRUCT   TCU_MNG_LE_DISABLE_ADVERTISE_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ_t ;
+extern const   tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ_t ;
+extern const       tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ_t ;
+extern const     tcu_packet_STRUCT  TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_INC_SVC_REQ_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_RET_END_GRP_HLE_REQ_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SER_INIT_REQ_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_INIT_RESP_t ;
+extern    const     tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_REQ_t ;
+extern   const       tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_REQ_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_CLI_EXG_MTU_REQ_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_EXG_MTU_EVENT_t ;
+extern const      tcu_packet_STRUCT  TCU_LE_GATT_CLI_DISCOVER_PRIM_SVC_BY_UUID_REQ_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_PRIM_SVC_BY_UUID_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_CHAR_DECL_REQ_t ;
+extern  const     tcu_packet_STRUCT  TCU_LE_GATT_CLI_DISCOVER_CHAR_DECL_EVENT_t ;
+extern  const   tcu_packet_STRUCT   TCU_LE_GATT_CLI_READ_CHAR_VAL_REQ_t ;
+extern const   tcu_packet_STRUCT   TCU_LE_GATT_CLI_READ_CHAR_VAL_EVENT_t ;
+extern  const   tcu_packet_STRUCT   TCU_LE_GATT_CLI_CHAR_VAL_NOTIFICATION_IND_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_EXG_MTU_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_EXG_MTU_ACCEPT_REQ_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_REQ_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_REQ_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_REQ_t ;
+extern const      tcu_packet_STRUCT   TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_t ;
+extern  const     tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_t ;
+extern const     tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ_t ;
+extern  const     tcu_packet_STRUCT   TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_t ;
+extern  const   tcu_packet_STRUCT  TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_INIT_RESP_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_CHAR_DESP_EVENT_t ;
+extern const    tcu_packet_STRUCT   TCU_LE_GATT_CLI_DISCOVER_CHAR_DESP_REQ_t ;
 /**********************************************
 *                Functions                    *
 **********************************************/
-le_api_result_e eBleWaitForSpecificEvent(void* qHandle, t_tcu_event  ExpEvent, uint32_t u32TimeOut, void* pvRetData);
+le_api_result_e eBleWaitForSpecificEvent(void* qHandle, tcu_packet_STRUCT  ExpEvent, uint32_t u32TimeOut, void* pvRetData);
 /******************************************************************************/
 void vGetCommandCodeFromInputStream(uint8_t* pu8Buff, uint8_t* pu8SvcId, uint8_t* puCmdCode)
 {
@@ -498,7 +570,7 @@ le_api_result_e vSmartWaitForAnyEvent(void* qHandle, uint16_t* pu16Cmd)
 
 /******************************************************************************/
 //le_api_result_e eBleWaitForSpecificEvent(void* qHandle, uint32_t u32ExpEvent, uint32_t u32TimeOut, void* pvRetData)
-le_api_result_e eBleWaitForSpecificEvent(void* qHandle, t_tcu_event  ExpEvent, uint32_t u32TimeOut, void* pvRetData)
+le_api_result_e eBleWaitForSpecificEvent(void* qHandle, tcu_packet_STRUCT  ExpEvent, uint32_t u32TimeOut, void* pvRetData)
 {
   int32_t qResult = 0;
   le_api_result_e eResult = LE_API_SUCCCESS;
@@ -520,7 +592,7 @@ extern uint8_t DATA_FROM_BLUETOOTH_UART;
          DATA_FROM_BLUETOOTH_UART = 0;
       /* Check if event was expected and that was not a control message sent by application */
       //if(((  (ExpEvent.eventType) != stTcuEvent.eventType) || ((ExpEvent.Service_ID) != stTcuEvent.Service_ID)) && ( TCU_BT_CNTRL != stTcuEvent.Service_ID))
-      if(((  (ExpEvent.eventType) != tcu_event.eventType) || ((ExpEvent.Service_ID) != tcu_event.Service_ID)) && ( TCU_BT_CNTRL != tcu_event.Service_ID))
+      if(((  (ExpEvent.opcode) != tcu_event.eventType) || ((ExpEvent.service_id) != tcu_event.Service_ID)) && ( TCU_BT_CNTRL != tcu_event.Service_ID))
       {
         /* Unexpected command received (not control message),
           so notify application by invoking a callback function.
@@ -576,12 +648,9 @@ le_api_result_e eBleDeviceSrv_Init(void* qHandle, uint8_t* const pu8DevName, uin
     stInitResp.pu8BdAddr = pu8RetBd_Addr;
 
     /* Wait for event and extract data */
-    //TCU_MNG_LE_INIT_RESP = 0xD1   81   0007
-    volatile t_tcu_event  expected = { .eventType = 0x81,
-                                                                .Service_ID = 0xD1,
-    };
+
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_INIT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stInitResp));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stInitResp));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_INIT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stInitResp));
 
     /* Check if event received */
     if(eResTemp !=LE_API_SUCCCESS)
@@ -599,12 +668,8 @@ le_api_result_e eBleDeviceSrv_Init(void* qHandle, uint8_t* const pu8DevName, uin
     eSetServerGattInit_Req();
 
     /* Wait for TCU_LE_GATT_SER_INIT_RESP */
-    //TCU_LE_GATT_SER_INIT_RESP = 0xD3 0x80 0001
-    expected .eventType = 0x80;
-    expected .Service_ID = 0xD3;
-
-    //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_INIT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
+     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_INIT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_INIT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
 
     /* Check if event received */
     if(eResTemp !=LE_API_SUCCCESS)
@@ -636,14 +701,10 @@ le_api_result_e eBleSrv_GetEndGroupHandle(void* qHandle,
       return LE_API_ERR_DRV;
   }
 
-  //TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP = 0xD3  0xA6  0x0003
-  volatile t_tcu_event expected = {   .eventType = 0xA6,
-                                                               .Service_ID = 0xD3,
 
-  };
   /* Wait for response event and extract End group handle */
 //  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stResp));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stResp));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stResp));
 
   /* Check if event received */
   if(LE_API_SUCCCESS != eResTemp)
@@ -707,13 +768,9 @@ le_api_result_e eBleSrv_AddIncludeToSvc(void* qHandle,
     }
 
     /* Wait for event and extract data */
-    //TCU_LE_GATT_SDB_ADD_INC_SVC_RESP = 0xD3  A4  FFFF
-    volatile t_tcu_event expected = {
-                                                           .eventType = 0xA4,
-                                                           .Service_ID = 0xD3 ,
-    };
+
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stResp));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stResp));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stResp));
 
     /* Check if event received */
     if(LE_API_SUCCCESS != eResTemp)
@@ -755,15 +812,11 @@ le_api_result_e eBleSrv_AddPrimServiceAttributes(void* qHandle, uint16_t u16UUID
     }
 
     /* Wait for event and extract data */
-//TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP = 0xD3 A0 FFFF
-    volatile t_tcu_event expected = {
-                                                               .eventType = 0xA0,
-                                                               .Service_ID = 0xD3 ,
-        };
+
 
 
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stPrimSvcResp));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stPrimSvcResp));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stPrimSvcResp));
     /* Check if event received */
     if(LE_API_SUCCCESS != eResTemp)
     {
@@ -806,13 +859,9 @@ le_api_result_e eBleSrv_AddSecServiceAttributes(void* qHandle, uint16_t u16Paren
     }
 
     /* Wait for event and extract data */
-    //TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP = 0xD3 A1 FFFF
-    volatile t_tcu_event expected = {
-                                                               .eventType = 0xA1,
-                                                               .Service_ID = 0xD3 ,
-        };
+
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stSvcResp));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stSvcResp));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stSvcResp));
     /* Check if event received */
     if(LE_API_SUCCCESS != eResTemp)
     {
@@ -864,13 +913,9 @@ le_api_result_e eBleSrv_AddCharacteristic(void* qHandle,
     }
 
     /* Wait for event and extract data */
-    //TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP = 0xD3 A2 FFFF
-    volatile t_tcu_event expected = {
-                                                                  .eventType = 0xA2,
-                                                                  .Service_ID = 0xD3 ,
-           };
+
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDeclResp));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDeclResp));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDeclResp));
 
     /* Check if event received */
     if(eResTemp !=LE_API_SUCCCESS)
@@ -905,12 +950,10 @@ le_api_result_e eBleSrv_AddCharacteristic(void* qHandle,
     }
 
     /* Wait for event and extract data */
-    //TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP = 0xD3 A3 FFFF
-     expected.eventType = 0xA3,
-     expected.Service_ID = 0xD3 ,
+
 
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharEleResp));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharEleResp));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharEleResp));
     /* Check if event received */
     if(eResTemp !=LE_API_SUCCCESS)
     {
@@ -940,11 +983,9 @@ le_api_result_e eBleSrv_AddCharacteristic(void* qHandle,
       }
 
       /* Wait for event and extract data */
-      //TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP = 0xD3  0xA3 FFFF
-           expected.eventType = 0xA3,
-           expected.Service_ID = 0xD3 ,
+
       //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharEleResp));
-      eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharEleResp));
+      eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharEleResp));
       /* Check if event received */
       if(eResTemp !=LE_API_SUCCCESS)
       {
@@ -1142,13 +1183,10 @@ le_api_result_e eBlePerif_StartAdv(void* qHandle, le_adv_req_st stConfig)
     }
 
     /* Wait for event and extract data */
-    //TCU_MNG_LE_START_ADVERTISE_RESP = 0xD1 88 0001
-    volatile t_tcu_event expected = {
-                                                                    .eventType = 0x88,
-                                                                    .Service_ID = 0xD1 ,
-      };
+
+
 //    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_START_ADVERTISE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&u8Status));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&u8Status));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_START_ADVERTISE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&u8Status));
 
     /* Check if event received */
     if(eResTemp !=LE_API_SUCCCESS)
@@ -1188,12 +1226,9 @@ le_api_result_e eBlePerif_StopAdv(void* qHandle)
 
     /* Wait for event and extract data */
     //TCU_MNG_LE_DISABLE_ADVERTISE_RESP = 0xD1 89 FFFF
-    volatile t_tcu_event expected = {
-                                                                        .eventType = 0x89,
-                                                                        .Service_ID = 0xD1 ,
-          };
+
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_DISABLE_ADVERTISE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&u8Status));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&u8Status));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_DISABLE_ADVERTISE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&u8Status));
 
     /* Check if event received */
     if(eResTemp !=LE_API_SUCCCESS)
@@ -1232,14 +1267,9 @@ le_api_result_e eBleDevice_Disconnect(void* qHandle,  uint8_t* const pu8Bd_Addr,
       return LE_API_ERR_DRV;
   }
 
-  /* Wait for  TCU_LE_ACCEPT */
-  //TCU_LE_ACCEPT = 0xD1 F1 0003
-  volatile t_tcu_event expected = {
-                                                                         .eventType = 0xF1,
-                                                                         .Service_ID = 0xD1 ,
-           };
+
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT, TCU_MNG_NO_TIMEOUT, (void*)(&stEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT_t, TCU_MNG_NO_TIMEOUT, (void*)(&stEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1248,17 +1278,16 @@ le_api_result_e eBleDevice_Disconnect(void* qHandle,  uint8_t* const pu8Bd_Addr,
 
   /* Check if everything went fine */
 //  if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_MNG_LE_DISCONNECT_REQ))||   0x13
-  if((stEvntData.u8OpCode == 0x13)||
+  if((stEvntData.u8OpCode == TCU_MNG_LE_DISCONNECT_REQ_t.opcode)||
     // (stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_MNG_LE_DISCONNECT_REQ)) ||  0xD1
-          (stEvntData.u16ServiceId ==0xD1) ||
+          (stEvntData.u16ServiceId ==TCU_MNG_LE_DISCONNECT_REQ_t.service_id) ||
       stEvntData.eStatus == LE_SUCCESS)
   {
     /* Wait for  TCU_MNG_LE_DISCONNECT_EVENT */
       //TCU_MNG_LE_DISCONNECT_EVENT = 0xD1 93 0002
-      expected.eventType = 0x93;
-      expected.Service_ID = 0xD1;
+
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_DISCONNECT_EVENT, TCU_MNG_NO_TIMEOUT, (void*)(&stDisconnect));
-    eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stDisconnect));
+    eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_MNG_LE_DISCONNECT_EVENT_t, TCU_MNG_NO_TIMEOUT, (void*)(&stDisconnect));
 
     if(eResTemp !=LE_API_SUCCCESS)
     {
@@ -1333,13 +1362,9 @@ le_api_result_e eBleSrv_ClientMtuExchangeHndlr(void* qHandle,
   }
 
   /* Wait for MTU accept response */
-  //TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP = D3 81 0005
-  volatile t_tcu_event expected = {
-                                                                          .eventType = 0x81,
-                                                                          .Service_ID = 0xD3 ,
-            };
+
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(pstMtuSrvData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(pstMtuSrvData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(pstMtuSrvData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1422,15 +1447,11 @@ le_api_result_e eBleSrv_ReadMultiEventHndlr(void* qHandle, uint16_t u16ConnHandl
   eResTemp = LE_API_UNINITIALIZED;
 
   /* Wait until TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP commes */
-  //TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP = 0xD3 8A 0003
-  volatile t_tcu_event expected = {
-                                                                            .eventType = 0x8A,
-                                                                            .Service_ID = 0xD3 ,
-              };
+
 
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stDummyAccEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stDummyAccEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stDummyAccEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1508,14 +1529,10 @@ le_api_result_e eBleSrv_ReadCharValHndlr(void* qHandle, uint16_t u16ConnHandle, 
   }
 
   /* Wait for  TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP */
-  //TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP = 0xD3 82 0003
-  volatile t_tcu_event expected = {
-                                                                              .eventType = 0x82,
-                                                                              .Service_ID = 0xD3 ,
-                };
+
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharValAccEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharValAccEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharValAccEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1590,13 +1607,9 @@ le_api_result_e eBleSrv_ReadCharDescriptorHndlr(void* qHandle, uint16_t u16ConnH
   }
 
   /* Wait for  TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP */
-  //TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP = D3 88 0003
-  volatile t_tcu_event expected = {
-                                                                               .eventType = 0x88,
-                                                                               .Service_ID = 0xD3 ,
-                 };
+
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDescAccEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDescAccEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDescAccEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1634,16 +1647,10 @@ le_api_result_e eBleSrv_UpdateCharacteristic(void* qHandle, uint16_t u16CharEleH
     return LE_API_ERR_DRV;
   }
 
-  /* Wait for  TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP */
-  //TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP = D3 A5 0001
-  volatile t_tcu_event expected = {
-                                                                                .eventType = 0xA5,
-                                                                                .Service_ID = 0xD3 ,
-                  };
 
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1695,14 +1702,9 @@ le_api_result_e eBleSrv_WriteCharDescriptorHndlr(void* qHandle,
     return LE_API_ERR_DRV;
   }
 
-  /* Wait for  TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP */
-  //TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP = D3 A5 0001
-  volatile t_tcu_event expected = {
-                                                                                 .eventType = 0xA5,
-                                                                                 .Service_ID = 0xD3 ,
-                   };
+
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1726,13 +1728,10 @@ le_api_result_e eBleSrv_WriteCharDescriptorHndlr(void* qHandle,
   }
 
   /* Wait for  TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP */
-  //TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP = D3 84 0003
 
-          expected.eventType = 0x84,
-          expected.Service_ID = 0xD3 ,
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDesAccept));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDesAccept));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharDesAccept));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1790,15 +1789,10 @@ le_api_result_e eBleSrv_WriteCharValueHndlr(void* qHandle,
     return LE_API_ERR_DRV;
   }
 
-  /* Wait for  TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP */
-  //TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP = D3 A5 FFFF
-  volatile t_tcu_event expected = {
-                                                                                     .eventType = 0xA5,
-                                                                                     .Service_ID = 0xD3 ,
-                       };
+
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&eStatus));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1821,13 +1815,10 @@ le_api_result_e eBleSrv_WriteCharValueHndlr(void* qHandle,
   }
 
   /* Wait for  TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP */
-  //TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP = D3 83 0003
 
-          expected .eventType = 0x83,
-          expected .Service_ID = 0xD3 ,
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP, TCU_MNG_NO_TIMEOUT, (void*)(&stCharValAccept));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stCharValAccept));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_t, TCU_MNG_NO_TIMEOUT, (void*)(&stCharValAccept));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1875,13 +1866,10 @@ le_api_result_e eBleSrv_SendNotification(void* qHandle,
   }
 
   /* Wait for  TCU_LE_ACCEPT */
-  //TCU_LE_ACCEPT = D1 F1 0003
-  volatile t_tcu_event expected = {
-                                                                                         .eventType = 0xF1,
-                                                                                         .Service_ID = 0xD1 ,
-                           };
+
+
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT, TCU_MNG_TIMEOUT_1Sec, (void*)(&stEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_TIMEOUT_1Sec, (void*)(&stEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT_t, TCU_MNG_TIMEOUT_1Sec, (void*)(&stEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1897,14 +1885,10 @@ le_api_result_e eBleSrv_SendNotification(void* qHandle,
       stEvntData.eStatus == LE_SUCCESS)
   {
     // Wait for  TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT
-      //TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT = D3 45 0002
-      volatile t_tcu_event expected = {
-                                                                                               .eventType = 0x45,
-                                                                                               .Service_ID = 0xD3 ,
-                                 };
+
 
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT, TCU_MNG_TIMEOUT_10Sec, (void*)(&u16RetConnHandle));
-      eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_TIMEOUT_10Sec, (void*)(&u16RetConnHandle));
+      eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_t, TCU_MNG_TIMEOUT_10Sec, (void*)(&u16RetConnHandle));
 
     if(eResTemp ==LE_API_SUCCCESS)
     {
@@ -1948,14 +1932,10 @@ le_api_result_e eBleSrv_SendIndication(void* qHandle,
   }
 
   /* Wait for  TCU_LE_ACCEPT */
-  //TCU_LE_ACCEPT = D1 F1 FFFF
-  volatile t_tcu_event expected = {
-                                                                                                 .eventType = 0xF1,
-                                                                                                 .Service_ID = 0xD1 ,
-                                   };
+
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT, TCU_MNG_NO_TIMEOUT, (void*)(&stEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_NO_TIMEOUT, (void*)(&stEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT_t, TCU_MNG_NO_TIMEOUT, (void*)(&stEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1964,20 +1944,16 @@ le_api_result_e eBleSrv_SendIndication(void* qHandle,
 
   /* Check if everything went fine */
   //if((stEvntData.u8OpCode == GET_CMD_OPCODE(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ))|| 0x06
-  if((stEvntData.u8OpCode == 0x06)||
+  if((stEvntData.u8OpCode == TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ_t.opcode)||
      //(stEvntData.u16ServiceId == GET_CMD_SERVICE_ID(TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ)) || 0xD3
-     (stEvntData.u16ServiceId == 0xD3) ||
+     (stEvntData.u16ServiceId == TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ_t.service_id) ||
       stEvntData.eStatus == LE_SUCCESS)
   {
     /* Wait for  TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT */
-      //TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT = D3 46 0003
-      volatile t_tcu_event expected = {
-                                                                                                       .eventType = 0x46,
-                                                                                                       .Service_ID = 0xD3 ,
-                                         };
+
 
     //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT, TCU_MNG_TIMEOUT_10Sec, (void*)(&stIndData));
-      eResTemp = eBleWaitForSpecificEvent(qHandle, expected, TCU_MNG_TIMEOUT_10Sec, (void*)(&stIndData));
+      eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_t, TCU_MNG_TIMEOUT_10Sec, (void*)(&stIndData));
 
     if(eResTemp ==LE_API_SUCCCESS)
     {

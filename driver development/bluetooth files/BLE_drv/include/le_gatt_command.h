@@ -127,6 +127,11 @@
 #define SET_CMD_OP_CODE(data, op_code)(data[CMD_ARRAY_OPCODE_OFFS] = (op_code))
 
 
+typedef struct{
+                                uint8_t service_id;
+                                uint8_t opcode;
+                                uint16_t length;
+}tcu_packet_STRUCT;;
 
 
 /**********************************************
