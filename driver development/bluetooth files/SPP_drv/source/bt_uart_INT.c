@@ -523,11 +523,14 @@ void bt_uart_manager(uint8_t dataRX_)   /*we are going to just place this code i
       case 4:tcu_packet_format.OpCode=dataRX_;  break;
       case 5:tcu_packet_format.uLength.sLength.LengthByte[0]=dataRX_; break;
       case 6:tcu_packet_format.uLength.sLength.LengthByte[1]=dataRX_;                               
-        if((tcu_packet_format.uLength.Length) != 0L){
-        } else{
-        gReceivePacketCountINT=0;
-        RTS_high;
-        processPaketTCU((uint8_t *)&rxUARTbuff[(tcu_packet_format.OpCode+1)]);                         
+        if((tcu_packet_format.uLength.Length) != 0L)
+        {
+        }
+        else
+        {
+            gReceivePacketCountINT=0;
+            RTS_high;
+            processPaketTCU((uint8_t *)&rxUARTbuff[(tcu_packet_format.OpCode+1)]);
         }                                                
       break;						
       default:

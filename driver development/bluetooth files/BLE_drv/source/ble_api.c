@@ -59,8 +59,8 @@ le_api_result_e (*pCharDescUpdCallback)(void*, uint16_t, uint16_t);
 le_api_result_e (*pUpdMultiCallback)(void*, uint16_t, uint16_t, uint8_t*);
 
 
-t_tcu_event stTcuEvent;
-
+//t_tcu_event stTcuEvent;
+extern volatile t_tcu_event tcu_event;
 /**********************************************
 *                Functions                    *
 **********************************************/
@@ -462,7 +462,8 @@ le_api_result_e vSmartWaitForAnyEvent(void* qHandle, uint16_t* pu16Cmd)
   uint32_t timeout = 0xFFFFFFFF;
 
 
-  uint8_t* pu8Data = (uint8_t*)(stTcuEvent.ptEvent);
+  //uint8_t* pu8Data = (uint8_t*)(stTcuEvent.ptEvent);
+  uint8_t* pu8Data = (uint8_t*)(tcu_event.ptEvent);
 
 
   extern uint8_t DATA_FROM_BLUETOOTH_UART;
@@ -515,22 +516,26 @@ extern uint8_t DATA_FROM_BLUETOOTH_UART;
     //if(qResult == 1)
      if(DATA_FROM_BLUETOOTH_UART == 1)
     {
+         qResult = 1;  /*gets us out of the while loop*/
          DATA_FROM_BLUETOOTH_UART = 0;
       /* Check if event was expected and that was not a control message sent by application */
-      if(((  (ExpEvent.eventType) != stTcuEvent.eventType) || ((ExpEvent.Service_ID) != stTcuEvent.Service_ID)) && ( TCU_BT_CNTRL != stTcuEvent.Service_ID))
+      //if(((  (ExpEvent.eventType) != stTcuEvent.eventType) || ((ExpEvent.Service_ID) != stTcuEvent.Service_ID)) && ( TCU_BT_CNTRL != stTcuEvent.Service_ID))
+      if(((  (ExpEvent.eventType) != tcu_event.eventType) || ((ExpEvent.Service_ID) != tcu_event.Service_ID)) && ( TCU_BT_CNTRL != tcu_event.Service_ID))
       {
         /* Unexpected command received (not control message),
           so notify application by invoking a callback function.
           No parsing will be done at this level, app needs to take care.
         */
-        vAppCallback((uint8_t*)(stTcuEvent.ptEvent));
+        //vAppCallback((uint8_t*)(stTcuEvent.ptEvent));
+        vAppCallback((uint8_t*)(tcu_event.ptEvent));
 
       }else
       {
         /* Expected or control event */
 
         /* Extract Data */
-        eResult = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), pvRetData);
+//        eResult = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), pvRetData);
+          eResult = eBleExtractData((uint8_t*)(tcu_event.ptEvent), pvRetData);
 
         /* Check if user abort */
         if(LE_USR_ABORT == eResult)
@@ -1281,7 +1286,8 @@ le_api_result_e eBleSrv_ClientConnRequestHndlr(le_conn_evt_st* pstConnectInfo)
   printf(" eBleSrv_ClientConnRequestHndlr() \n");
 #endif
 
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstConnectInfo));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstConnectInfo));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(pstConnectInfo));
 
   return eResTemp;
 }
@@ -1302,7 +1308,8 @@ le_api_result_e eBleSrv_ClientMtuExchangeHndlr(void* qHandle,
 #endif
 
   /* Parse MTU exchange request from a client (TCU_LE_GATT_SER_EXG_MTU_EVENT) */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstMtuClientData));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstMtuClientData));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(pstMtuClientData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1373,7 +1380,8 @@ le_api_result_e eBleSrv_ReadMultiEventHndlr(void* qHandle, uint16_t u16ConnHandl
   stDummyEvntData.pu8HndlList = au8HndlrList;
 
   /* Wait until read multiple event comes from a client */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&stDummyEvntData));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&stDummyEvntData));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(&stDummyEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1459,7 +1467,8 @@ le_api_result_e eBleSrv_ReadCharValHndlr(void* qHandle, uint16_t u16ConnHandle, 
 #endif
 
   /* Wait for  TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&stCharValEvent));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&stCharValEvent));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(&stCharValEvent));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1541,7 +1550,8 @@ le_api_result_e eBleSrv_ReadCharDescriptorHndlr(void* qHandle, uint16_t u16ConnH
 #endif
 
   /* Wait for  TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&stCharDescEvent));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&stCharDescEvent));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(&stCharDescEvent));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1662,7 +1672,8 @@ le_api_result_e eBleSrv_WriteCharDescriptorHndlr(void* qHandle,
 #endif
 
   /* Wait for  TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstCharDespEvt));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstCharDespEvt));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(pstCharDespEvt));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -1756,7 +1767,8 @@ le_api_result_e eBleSrv_WriteCharValueHndlr(void* qHandle,
 #endif
 
   /* Wait for  TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstCharValEvt));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstCharValEvt));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(pstCharValEvt));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {
@@ -2000,7 +2012,8 @@ le_api_result_e eBleSrv_DisconnectHndlr(le_disconnect_st* pstDisconnInfo)
   printf(" eBleSrv_DisconnectHndlr() \n");
 #endif
 
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstDisconnInfo));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(pstDisconnInfo));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(pstDisconnInfo));
 
   return eResTemp;
 }
@@ -2015,7 +2028,8 @@ le_api_result_e eBleSrv_WriteWithoutRespHndlr(void* qHandle, le_srv_wrt_wo_evt_s
 #endif
 
   /* Extract data returned from TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT */
-  eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&pstEvtData));
+  //eResTemp = eBleExtractData((uint8_t*)(stTcuEvent.ptEvent), (void*)(&pstEvtData));
+  eResTemp = eBleExtractData((uint8_t*)(tcu_event.ptEvent), (void*)(&pstEvtData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {

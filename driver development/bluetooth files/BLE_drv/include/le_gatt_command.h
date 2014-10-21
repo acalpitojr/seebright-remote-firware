@@ -119,10 +119,12 @@
 #define GET_TOTAL_LE_MESSAGE_SIZE(data)(PARSE_CMD_PARAM_LENGTH(data) + BLE_MSG_HDR_SIZE)
 
 /*! Sets command service-id in the dest array */
-#define SET_CMD_SVC_ID(data, svc_id)(data[CMD_ARRAY_SER_ID_OFFS] = GET_CMD_SERVICE_ID(svc_id))
+//#define SET_CMD_SVC_ID(data, svc_id)(data[CMD_ARRAY_SER_ID_OFFS] = GET_CMD_SERVICE_ID(svc_id))
+#define SET_CMD_SVC_ID(data, svc_id)(data[CMD_ARRAY_SER_ID_OFFS] = (svc_id))
 
 /*! Sets comamnd op-code in the dest array */
-#define SET_CMD_OP_CODE(data, op_code)(data[CMD_ARRAY_OPCODE_OFFS] = GET_CMD_OPCODE(op_code))
+//#define SET_CMD_OP_CODE(data, op_code)(data[CMD_ARRAY_OPCODE_OFFS] = GET_CMD_OPCODE(op_code))
+#define SET_CMD_OP_CODE(data, op_code)(data[CMD_ARRAY_OPCODE_OFFS] = (op_code))
 
 
 

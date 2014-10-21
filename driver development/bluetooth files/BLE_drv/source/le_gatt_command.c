@@ -211,8 +211,13 @@ void vDebugRcvdCmdPrintf(uint8_t* pu8Data, uint16_t u16Count)
 /******************************************************************************/
 void vSetCmdLength(uint8_t* pu8Data, uint16_t u16Len)
 {
-    pu8Data[CMD_ARRAY_LEN_OFFS] = ((u16Len) & 0xFF);
-    pu8Data[CMD_ARRAY_LEN_OFFS+1] = ((u16Len)>>8 & 0xFF);
+
+    /*example:   LEN = 0xAABB
+     * data[0] = 0xBB;
+     * data[1] = 0xAA;
+     */
+    pu8Data[CMD_ARRAY_LEN_OFFS] = ((u16Len) & 0xFF);   /*LSB*/
+    pu8Data[CMD_ARRAY_LEN_OFFS+1] = ((u16Len)>>8 & 0xFF);  /*MSB*/
 }
 
 /******************************************************************************/
@@ -256,14 +261,17 @@ le_func_status_e eSendData(uint8_t* pu8Data, uint32_t u32Len)
 };
 
 /******************************************************************************/
-le_func_status_e eIsCmdMatching(uint8_t* pu8Data, uint32_t u32Cmd)
+//le_func_status_e eIsCmdMatching(uint8_t* pu8Data, uint32_t u32Cmd)   /*WOW.*/
+le_func_status_e eIsCmdMatching(uint8_t* pu8Data, uint8_t*  pu8Cmd)
 {
     le_func_status_e eRes;
 
     /* Check if matches */
-    if(PARSE_CMD_SERVICE_ID(pu8Data) == GET_CMD_SERVICE_ID(u32Cmd))
+    //if(PARSE_CMD_SERVICE_ID(pu8Data) == GET_CMD_SERVICE_ID(u32Cmd))
+    if(PARSE_CMD_SERVICE_ID(pu8Data) == (pu8Cmd[0]))  /*BY DEFINITION, index 0 is the SERVICE ID*/
     {
-        if(PARSE_CMD_OPCODE(pu8Data) == GET_CMD_OPCODE(u32Cmd))
+        //if(PARSE_CMD_OPCODE(pu8Data) == GET_CMD_OPCODE(u32Cmd))
+        if(PARSE_CMD_OPCODE(pu8Data) == (pu8Cmd[1]))  /*BY DEFINITION, index 0 is the OPCODE*/
         {
             /* Command check OK */
             eRes = LE_FUNC_SUCCCESS;
@@ -324,16 +332,16 @@ void vCopyArrayParams(uint8_t* pu8Src, uint8_t* pu8Dst, uint8_t u8SrcOffs, uint8
 }
 
 /******************************************************************************/
-uint16_t u16SetCmdHeaderUserLen(uint8_t* pu8Data, uint32_t u32Cmd, uint16_t u16Len, uint16_t u16Offset)
+uint16_t u16SetCmdHeaderUserLen(uint8_t* pu8Data, t_tcu_event command, uint16_t u16Len, uint16_t u16Offset)
 {
     uint16_t u16DataCnt=0;
 
     /* Set service ID */
-    SET_CMD_SVC_ID(pu8Data, u32Cmd);
+    SET_CMD_SVC_ID(pu8Data, command.Service_ID);
     u16DataCnt++;
 
     /* Set Opcode */
-    SET_CMD_OP_CODE(pu8Data, u32Cmd);
+    SET_CMD_OP_CODE(pu8Data, command.eventType);
     u16DataCnt++;
 
     /* Set length */
@@ -367,7 +375,9 @@ le_func_status_e eGetLeAccept_Ack(uint8_t* pu8Data, le_accept_st* pstEvntData)
     uint16_t u16Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data,TCU_LE_ACCEPT);
+    const TCU_LE_ACCEPT_SID_OP[] = {0xD1, 0xF1};
+   // eResult = eIsCmdMatching(pu8Data,TCU_LE_ACCEPT);   /*matching */
+    eResult = eIsCmdMatching(pu8Data,TCU_LE_ACCEPT_SID_OP);   /*matching */
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -388,7 +398,9 @@ le_func_status_e eGetLeNOTAcceptStatus_Ack(uint8_t* pu8Data, uint8_t* pu8ServID,
     uint16_t u16ParamLen =0;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data,TCU_LE_NOT_ACCEPT);
+    const uint8_t TCU_LE_NOT_ACCEPT_SID_OP[] = {0xD1, 0xF2};
+    //eResult = eIsCmdMatching(pu8Data,TCU_LE_NOT_ACCEPT);
+    eResult = eIsCmdMatching(pu8Data,TCU_LE_NOT_ACCEPT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -407,7 +419,9 @@ le_func_status_e eGetLeFatalError_Notfy(uint8_t* pu8Data, uint8_t* pu8ErrorCode)
     uint8_t u8OpCode;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data,TCU_LE_FATAL_ERROR);
+    const uint8_t TCU_LE_FATAL_ERROR_SID_OP[] = {0xD1, 0xFE};
+//    eResult = eIsCmdMatching(pu8Data,TCU_LE_FATAL_ERROR);
+    eResult = eIsCmdMatching(pu8Data,TCU_LE_FATAL_ERROR_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -430,7 +444,14 @@ le_func_status_e eSetLeMngInit_Req(uint8_t* pu8DevName, uint8_t u8NameLen)
     if((u8NameLen > 0) && (u8NameLen < 248))
     {
         /* Set command op-code service id and parameter length */
-        u16Offset = u16SetCmdHeaderUserLen(au8SendBuff,TCU_MNG_LE_INIT_REQ,(uint16_t) (u8NameLen+1), u16Offset);
+        /* HERE THEY ARE TAKING SERVICE_ID, OPCODE, AND LENGTH AND ADDING IT TO THE TX BUFFER TO THE BLUETOOTH*/
+        //TCU_MNG_LE_INIT_REQ = D1 01 FFFF
+        volatile t_tcu_event command = {   .eventType = 0x01,
+                                                                      .Service_ID = 0xD1,
+
+         };
+        //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff,TCU_MNG_LE_INIT_REQ,(uint16_t) (u8NameLen+1), u16Offset);
+        u16Offset = u16SetCmdHeaderUserLen(au8SendBuff,command,(uint16_t) (u8NameLen+1), u16Offset);
 
         /* Length of Device Name */
         au8SendBuff[u16Offset++] = u8NameLen;
@@ -456,7 +477,9 @@ le_func_status_e eGetLeMngInit_Resp(uint8_t* pu8Data, le_mnginit_resp_st* pstRes
     le_func_status_e eResult;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_INIT_RESP);
+    const uint8_t TCU_MNG_LE_INIT_RESP_SID_OP[] = {0xD1, 0x81};
+    //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_INIT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_INIT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -503,7 +526,9 @@ le_func_status_e eGetLeMngSetScanEnable_Resp(uint8_t* pu8Data, uint8_t* pu8Statu
    le_func_status_e eResult;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_ENABLE_RESP);
+   const uint8_t TCU_MNG_LE_SET_SCAN_ENABLE_RESP_SID_OP[] = {0xD1, 0x8A};
+    //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_ENABLE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_ENABLE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -523,7 +548,9 @@ le_func_status_e eGetLeAdvReport_Event(uint8_t* pu8Data, uint8_t* pu8Status, uin
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_ADV_REPORT_EVENT);
+    const uint8_t TCU_MNG_LE_ADV_REPORT_EVENT_SID_OP[] = {0xD1, 0xC1};
+    //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_ADV_REPORT_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_ADV_REPORT_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -587,7 +614,9 @@ le_func_status_e eGetLeMngConnComplete_Event(uint8_t* pu8Data, le_conn_evt_st* p
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CONNECTION_COMPLETE_EVENT);
+    const uint8_t TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OP[] = {0xD1, 0x4C};
+    //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CONNECTION_COMPLETE_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -637,7 +666,9 @@ le_func_status_e eGetLeMngCreateConnCancel_Resp(uint8_t* pu8Data, uint8_t* puSta
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP);
+const uint8_t TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_SID_OP[] = {0xD1, 0x8D};
+    //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP);
+eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_CREATE_CONNECTION_CANCEL_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -673,7 +704,9 @@ le_func_status_e eGetLeDisconnect_Event(uint8_t* pu8Data, le_disconnect_st* pstE
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISCONNECT_EVENT);
+    const uint8_t TCU_MNG_LE_DISCONNECT_EVENT_SID_OP[] = {0xD1, 0x93};
+    //eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISCONNECT_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISCONNECT_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -711,7 +744,9 @@ le_func_status_e eGetLeScanDisable_Resp(uint8_t* pu8Data, uint8_t* pu8Status)
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_DISABLE_RESP);
+    uint8_t TCU_MNG_LE_SET_SCAN_DISABLE_RESP_SID_OP[] = {0xD1, 0x8B};
+    //esult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_DISABLE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_SET_SCAN_DISABLE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -766,7 +801,9 @@ le_func_status_e eGetLeStartAdvertise_Resp(uint8_t* pu8Data, uint8_t* pu8Status)
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_START_ADVERTISE_RESP);
+    const uint8_t TCU_MNG_LE_START_ADVERTISE_RESP_SID_OP[] = {0xD1, 0x88};
+    //esult = eIsCmdMatching(pu8Data, TCU_MNG_LE_START_ADVERTISE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_START_ADVERTISE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -799,7 +836,9 @@ le_func_status_e eGetLeDisableAdvertise_Resp(uint8_t* pu8Data, uint8_t* pu8Statu
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISABLE_ADVERTISE_RESP);
+    const uint8_t TCU_MNG_LE_DISABLE_ADVERTISE_RESP_SID_OP[] = {0xD1, 0x89};
+    //esult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISABLE_ADVERTISE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_MNG_LE_DISABLE_ADVERTISE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -817,7 +856,15 @@ le_func_status_e eSetSdbGattAddPrimaryService_Req(uuid_type_e eUuidLen, uint8_t*
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ, (uint16_t)(eUuidLen) + 1, u16Offset);
+
+    //TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ = D3 20 0011
+    t_tcu_event command;
+    command.Service_ID = 0xD3;
+    command.eventType = 0x20;
+
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_PRIM_SVC_REQ, (uint16_t)(eUuidLen) + 1, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, (uint16_t)(eUuidLen) + 1, u16Offset);
 
     vWrite2Array_8(au8SendBuff, eUuidLen, &u16Offset);
 
@@ -837,7 +884,9 @@ le_func_status_e eGetSdbGattAddPrimaryService_Resp(uint8_t* pu8Data, uint8_t* pu
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP);
+    const uint8_t TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_SID_OP[] = {0xD3, 0xA0};
+    //esult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_PRIM_SVC_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -856,7 +905,13 @@ le_func_status_e eSetSdbGattAddSecondaryService_Req(uuid_type_e eUuidLen, uint16
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ, (uint16_t)(eUuidLen) + 1, u16Offset);
+    //TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ = D3 21 FFFF
+    t_tcu_event command;
+        command.Service_ID = 0xD3;
+        command.eventType = 0x21;
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_SEC_SVC_REQ, (uint16_t)(eUuidLen) + 1, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, (uint16_t)(eUuidLen) + 1, u16Offset);
     
     vWrite2Array_16(au8SendBuff, u16ParentSvcHandle, &u16Offset);
 
@@ -877,7 +932,9 @@ le_func_status_e eGetSdbGattAddSecondaryService_Resp(uint8_t* pu8Data, uint8_t* 
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP);
+    const uint8_t TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_SID_OP[] = {0xD3, 0xA1};
+    //esult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_SEC_SVC_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -896,7 +953,13 @@ le_func_status_e eSetSdbGattAddCharacterDecl_Req(uint16_t u16Handle, uint8_t u8P
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ, (uint16_t)(eUuidLen)+4, u16Offset);
+    //TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ = D3 22 0014
+    t_tcu_event command;
+           command.Service_ID = 0xD3;
+           command.eventType = 0x22;
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_DECL_REQ, (uint16_t)(eUuidLen)+4, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, (uint16_t)(eUuidLen)+4, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16Handle, &u16Offset);
     vWrite2Array_8(au8SendBuff, u8Properties, &u16Offset);
@@ -917,8 +980,9 @@ le_func_status_e eGetSdbGattAddCharacterDecl_Resp(uint8_t* pu8Data, gatt_status_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP);
-
+    const uint8_t TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_SID_OP[] = {0xD3, 0xA2};
+    //esult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_DECL_RESP_SID_OP);
     if(LE_FUNC_SUCCCESS == eResult)
     {
         *peStatus = (gatt_status_code_e)pu8Data[u32Offset++];
@@ -935,7 +999,14 @@ le_func_status_e eSetSdbGattAddCharacterEle_Req(uint16_t  u16Handle, char_el_req
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
     
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ, stParams.eAttrLen + stParams.u16AttValLen + 7, u16Offset);
+    //TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ = D3 23 FFFE
+    t_tcu_event command;
+              command.Service_ID = 0xD3;
+              command.eventType = 0x23;
+
+
+   // u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_CHAR_ELE_REQ, stParams.eAttrLen + stParams.u16AttValLen + 7, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, stParams.eAttrLen + stParams.u16AttValLen + 7, u16Offset);
 
     vWrite2Array_16(au8SendBuff,u16Handle, &u16Offset);
     vWrite2Array_8(au8SendBuff, (uint8_t)(stParams.eAttrLen), &u16Offset);
@@ -960,7 +1031,9 @@ le_func_status_e eGetSdbGattAddCharacterEle_Resp(uint8_t* pu8Data, gatt_status_c
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP);
+    const uint8_t TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_SID_OP[] = {0xD3, 0xA3};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_CHAR_ELE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -980,7 +1053,14 @@ le_func_status_e eSetSdbGattUpdateCharacterEle_Req(uint16_t u16Handle, uint16_t 
     uint16_t u16Offset = UART_PACKET_OFFSET;
     //uint8_t au8SendBuff[64];
 
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ,  u16AttValLen + 4, u16Offset);
+    //TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ = D3 25 FFFF
+    t_tcu_event command;
+                  command.Service_ID = 0xD3;
+                  command.eventType = 0x25;
+
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_UPD_CHAR_ELE_REQ,  u16AttValLen + 4, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command,  u16AttValLen + 4, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16Handle, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16AttValLen, &u16Offset);
@@ -1001,7 +1081,9 @@ le_func_status_e eGetSdbGattUpdateCharacterEle_Resp(uint8_t* pu8Data, gatt_statu
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP);
+    const uint8_t TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_SID_OP[] = {0xD3, 0xA5};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_UPD_CHAR_ELE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1017,7 +1099,13 @@ le_func_status_e eSetSdbGattAddInclSvc_Req(uint16_t u16SvcHandle, uuid_type_e eA
     le_func_status_e eResult;
     uint16_t u16Offset = UART_PACKET_OFFSET;
 
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_INC_SVC_REQ,  eAttValLen + 4, u16Offset);
+    //TCU_LE_GATT_SDB_ADD_INC_SVC_REQ = D3 24 FFFF
+    t_tcu_event command;
+      command.Service_ID = 0xD3;
+      command.eventType = 0x24;
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SDB_ADD_INC_SVC_REQ,  eAttValLen + 4, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command,  eAttValLen + 4, u16Offset);
 
     vWrite2Array_16(au8SendBuff, u16SvcHandle, &u16Offset);
     vWrite2Array_8(au8SendBuff, eAttValLen, &u16Offset);
@@ -1038,7 +1126,9 @@ le_func_status_e eGetSdbGattAddInclSvc_Resp(uint8_t* pu8Data, le_resp_st* pstRes
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP);
+    const uint8_t TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_SID_OP[] = {0xD3, 0xA4};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_ADD_INC_SVC_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1072,7 +1162,9 @@ le_func_status_e eGetSdbGattReturnEndGroupHandle_Resp(uint8_t* pu8Data, le_resp_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP);
+    const uint8_t TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_SID_OP[] = {0xD3, 0xA6};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SDB_RET_END_GRP_HLE_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1105,7 +1197,9 @@ le_func_status_e eGetServerGattInit_Resp(uint8_t* pu8Data, gatt_status_code_e* p
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_INIT_RESP);
+    const uint8_t TCU_LE_GATT_SER_INIT_RESP_SID_OP[] = {0xD3, 0x80};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_INIT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_INIT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1124,7 +1218,9 @@ le_func_status_e eGetServerGattWriteCharDesc_Event(uint8_t* pu8Data, le_srv_writ
     uint16_t u16paramLen = PARSE_CMD_PARAM_LENGTH(pu8Data) - 4;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT);
+    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OP[] = {0xD3, 0xC4};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1168,7 +1264,9 @@ le_func_status_e eGetServerGattReadCharVal_Event(uint8_t* pu8Data, le_srv_read_c
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT);
+    const uint8_t TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_SID_OP[] = {0xD3, 0xC2};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1187,7 +1285,9 @@ le_func_status_e eGetServerGattWriteCharDespAccept_Resp(uint8_t* pu8Data, le_srv
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP);
+    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_SID_OP[] = {0xD3, 0x84};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_DESP_ACCEPT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1226,7 +1326,9 @@ le_func_status_e eSetServerGattReadCharValAccept_Resp(uint8_t* pu8Data, le_srv_r
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP);
+    const uint8_t TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_SID_OP[] = {0xD3, 0x82};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_VAL_ACCEPT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1245,7 +1347,9 @@ le_func_status_e eGetServerGattExgMtu_Event(uint8_t* pu8Data, le_mtu_exchg_st* p
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_EVENT);
+    const uint8_t TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OP[] = {0xD3, 0xC1};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1283,7 +1387,9 @@ le_func_status_e eGetServerGattExgMtuAccept_Resp(uint8_t* pu8Data, le_mtu_exchg_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP);
+    const uint8_t TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_SID_OP[] = {0xD3, 0x81};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_EXG_MTU_ACCEPT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1304,7 +1410,9 @@ le_func_status_e eGetServerGattWriteCharVal_Event(uint8_t* pu8Data,le_srv_write_
     uint16_t u16paramLen = PARSE_CMD_PARAM_LENGTH(pu8Data) - 4;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT);
+    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_SID_OP[] = {0xD3, 0xC3};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1348,7 +1456,9 @@ le_func_status_e eGetServerGattWriteCharValAccept_Resp(uint8_t* pu8Data, le_srv_
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP);
+    const uint8_t TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_SID_OP[] = {0xD3, 0x83};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_CHAR_VAL_ACCEPT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1369,7 +1479,9 @@ le_func_status_e eGetServerGattReadMulti_Event(uint8_t* pu8Data, le_srv_multi_ev
      uint16_t u16ParamCnt;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_EVENT);
+     const uint8_t TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_SID_OP[] = {0xD3, 0xCA};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_EVENT);
+     eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1413,7 +1525,9 @@ le_func_status_e eGetServerGattReadMultiAccept_Resp(uint8_t* pu8Data, le_srv_mul
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP);
+    const uint8_t TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_SID_OP[]= {0xD3, 0x8A};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_MULTIPLE_ACCEPT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1450,7 +1564,9 @@ le_func_status_e eGetServerGattValNotify_Event(uint8_t* pu8Data, uint16_t* pu16C
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT);
+    const uint8_t TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_SID_OP[] = {0xD3, 0x45};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1467,7 +1583,9 @@ le_func_status_e eGetServerGattWriteWithoutRespCmd_Event(uint8_t* pu8Data, le_sr
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT);
+    const uint8_t TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_SID_OP[] = {0xD3, 0xC9};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1491,7 +1609,17 @@ le_func_status_e eSetServerGattCharValNotification_Req(uint16_t u16ConnHandle, u
     uint16_t u16ParamLen;
 
     u16ParamLen = 4 + u16CharValLen;
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ, u16ParamLen, u16Offset);
+
+    //TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ = D3 05 FFFF
+    t_tcu_event command;
+         command.Service_ID = 0xD3;
+         command.eventType = 0x05;
+
+
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_NOTIFICATION_REQ, u16ParamLen, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, u16ParamLen, u16Offset);
+
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16CharValHandle, &u16Offset);
 
@@ -1512,7 +1640,17 @@ le_func_status_e eSetServerGattCharValIndication_Req(uint16_t u16ConnHandle, uin
     uint16_t u16ParamLen;
 
     u16ParamLen = 4 + u16CharValLen;
-    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ, u16ParamLen, u16Offset);
+
+    //TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ = D3 06 FFFF
+    t_tcu_event command;
+            command.Service_ID = 0xD3;
+            command.eventType = 0x06;
+
+
+
+    //u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_REQ, u16ParamLen, u16Offset);
+    u16Offset = u16SetCmdHeaderUserLen(au8SendBuff, command, u16ParamLen, u16Offset);
+
     vWrite2Array_16(au8SendBuff, u16ConnHandle, &u16Offset);
     vWrite2Array_16(au8SendBuff, u16CharValHandle, &u16Offset);
 
@@ -1532,7 +1670,9 @@ le_func_status_e eGetServerGattValIndication_Event(uint8_t* pu8Data, le_srv_char
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT);
+    const uint8_t TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_SID_OP[] = {0xD3, 0x46};
+//    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_CHAR_VAL_INDICATION_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1550,7 +1690,9 @@ le_func_status_e eGetServerGattReadCharDescriptor_Event(uint8_t* pu8Data, le_srv
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT);
+    const uint8_t TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OP[] = {0xD3, 0xC8};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
@@ -1586,7 +1728,9 @@ le_func_status_e eGetServerGattReadCharDescriptorAccept_Resp(uint8_t* pu8Data, l
     uint32_t u32Offset = CMD_ARRAY_PARAM_OFFS;
 
     /* Check if received command is matching */
-    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP);
+    const uint8_t TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_SID_OP[] = {0xD3, 0x88};
+    //eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP);
+    eResult = eIsCmdMatching(pu8Data, TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_SID_OP);
 
     if(LE_FUNC_SUCCCESS == eResult)
     {
