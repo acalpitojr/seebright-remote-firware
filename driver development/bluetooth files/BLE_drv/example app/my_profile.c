@@ -537,9 +537,33 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
         break;
 
           case TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_SID_OC:
+          {
+#if 0
+              typedef struct tag_le_srv_write_char_desp_event_st
+              {
+                uint16_t u16ConnHandle;
+                uint16_t u16CharDescHandle;
+                uint16_t u16CharValueLen;
+                uint8_t*  pu8CharDescValue;
+              } le_srv_write_char_desp_event_st;
+              test
+#endif
+              le_srv_write_char_desp_event_st       characteristic_to_write;
+              eResult = eBleSrv_WriteCharValueHndlr(qHandle,   stInit->pstConnectInfo->u16ConnHandle,   &characteristic_to_write);
 
-              eResult = eBleSrv_WriteCharValueHndlr(qHandle,   stInit->pstConnectInfo->u16ConnHandle,   &stInit->stCharValEvt);
+              if(characteristic_to_write.u16CharDescHandle == stMPMChar.u16RetCharValDeclHandle)
+              {
+                 /*update our local variable with the value*/
+                  memcpy(stMPMChar.stCharValDecl.pu8AttVal, characteristic_to_write.pu8CharDescValue, characteristic_to_write.u16CharValueLen);
+              }
+              else
+              {
+                  /*unknown local varibale to write*/
+              }
 
+
+
+          }
               break;
 
       default:
