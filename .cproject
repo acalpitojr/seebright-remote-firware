@@ -96,7 +96,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="SYS/Bluetooth|driver development/bluetooth files/SPP_drv/example app|driver development/bluetooth files/SPP_drv/example app/bt_spp_acceptor_DEMO.c|driver development/bluetooth files/SPP_drv/example app/bt_spp_initiator_DEMO.c|SYS/Bluetooth/le_gatt_command.c|lnk_msp430f5438a.cmd|APP/CYC_BBU_APP_Demo_v1.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="driver development/bluetooth files/BLE_drv/example app/bt_le_peripherial_DEMO.c|driver development/bluetooth files/BLE_drv/example app/HeartRate.c|SYS/Bluetooth|driver development/bluetooth files/SPP_drv/example app|driver development/bluetooth files/SPP_drv/example app/bt_spp_acceptor_DEMO.c|driver development/bluetooth files/SPP_drv/example app/bt_spp_initiator_DEMO.c|SYS/Bluetooth/le_gatt_command.c|lnk_msp430f5438a.cmd|APP/CYC_BBU_APP_Demo_v1.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
