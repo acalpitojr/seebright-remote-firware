@@ -340,6 +340,7 @@ le_api_result_e eBleExtractDataEventGattSer(uint8_t* pu8Buff, void* pvRetData)
         TCU_LE_GATT_SER_WRITE_WITHOUT_RESPONSE_CMD_EVENT_OPCODE = 0xC9,
         TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_OPCODE = 0xC8,
         TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_OPCODE = 0x88,
+        TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_OPCODE = 0xC3,
 
 
     };
@@ -432,8 +433,9 @@ le_api_result_e eBleExtractDataEventGattSer(uint8_t* pu8Buff, void* pvRetData)
         case TCU_LE_GATT_SER_READ_CHAR_DESP_ACCEPT_RESP_OPCODE:
                 eLeDrvRes = eGetServerGattReadCharDescriptorAccept_Resp(pu8Buff, (le_srv_read_char_acc_event_st*)(pvRetData));
         break;
-//      case GET_CMD_OPCODE(): eLeDrvRes = (pu8Buff, (*)(pvRetData));
-//      break;
+      case TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_OPCODE:
+              eLeDrvRes = eGetServerGattWriteCharVal_Event(pu8Buff,  (le_srv_write_char_desp_event_st*)(pvRetData));
+      break;
 
         default:
         {
@@ -1020,7 +1022,7 @@ le_api_result_e eBleSrv_RegisterPrimaryService(void* qHandle, le_srv_service_def
   }
 
   /* Add Primary service Declaration */
-  __delay_cycles(0xfff);  /*when I added a break point here, this passed.  seems there is some timing issue if we run straight through the first time.*/
+  __delay_cycles(0xffff);  /*when I added a break point here, this passed.  seems there is some timing issue if we run straight through the first time.*/
   eResult = eBleSrv_AddPrimServiceAttributes(qHandle, pstSvcDef->u16SvcUUID, &(pstSvcDef->u16RetSvcHandle));
 
   /* Check if successful */

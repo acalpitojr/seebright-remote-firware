@@ -33,7 +33,7 @@ le_srv_char_st stMPMChar;
 uint8_t fMP_1HZ_tick = 0U;
 uint8_t MP_ready=0U;
 
-volatile uint8_t my_data = 0x00;
+volatile uint8_t my_data = 0x01;
 
 /******************************************************************************
 *
@@ -327,7 +327,29 @@ le_api_result_e eUpdateCharValue(void* qHandle,
                                       uint16_t u16ConnHandle,
                                       uint16_t u16CharValHandle)
 {
+
+  uint16_t length = 0;
+
+
   printf("Characteristic VALUE Update Callback Function!\n");
+  printf("| u16ConnHandle: 0x%.2x \n", u16ConnHandle);
+  printf("| u16CharValHandle: 0x%.2x \n", u16CharValHandle);
+
+  /*all we have is the "handle of the variable we want to udpate.  We need to match this to the local variable in our system.*/
+  if(u16CharValHandle == stMPMChar.u16RetCharValDeclHandle)
+  {
+      eBleSrv_UpdateCharacteristic(qHandle,   u16CharValHandle,  stMPMChar.stCharValDecl.u16AttValLen,  stMPMChar.stCharValDecl.pu8AttVal);
+  }
+  else
+  {
+      /*dont know what they want to update*/
+  }
+
+
+
+
+  // eBleSrv_UpdateCharacteristic(qHandle, pstEvtData->u16CharValHandle, pstEvtData->u16ValDataLen, pstEvtData->pu8CharValData);
+
 
   return LE_API_SUCCCESS;
 }
@@ -522,9 +544,9 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 
       default:
         {
-#ifdef DEBUG_OUT
+
           printf("MP Profile: Unhandled Message received() \n");
-#endif
+
         }
       }
   }else if (LE_API_ERR_TIMEOUT == eResult)

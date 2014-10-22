@@ -54,6 +54,8 @@ typedef struct tag_hr_init_st
   uint16_t* pu16RetDISvcHndl;                           /* Returned GATT Device Identification Service Return Handle */
   uint16_t* pu16RetDICharDeclHndl;                      /* Returned GATT Device Identification Characteristic Declaration Return Handle */
   uint16_t* pu16RetDICharValDeclHndl;                   /* Returned GATT Device Identification Characteristic VALUE Declaration Return Handle */
+
+
   uint16_t* pu16RetMPSvcHndl;                           /* Returned GATT Heart Rate Service Return Handle */
   uint16_t* pu16RetMPCharDeclHndl;                      /* Returned GATT Heart Rate Measurement Characteristic Declaration Return Handle */
   uint16_t* pu16RetMPCharValDeclHndl;                   /* Returned GATT Heart Rate Measurement Characteristic VALUE Declaration Return Handle */
