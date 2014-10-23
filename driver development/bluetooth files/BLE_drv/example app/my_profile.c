@@ -22,16 +22,16 @@
 le_srv_service_def_st stGAPService;
 
 /* GATT Heart Rate Service definition structure */
-le_srv_service_def_st stMPService;
+le_srv_service_def_st stMyService;
 
 /* GATT Device Identification Service definition structure */
 le_srv_service_def_st stDevIdService;
 
 /* Heart Rate Measurement Characteristic */
-le_srv_char_st stMPMChar;
+le_srv_char_st stMyCharacteristic;
 
 uint8_t fMP_1HZ_tick = 0U;
-uint8_t MP_ready=0U;
+uint8_t NOTIFY_CLIENT=0U;
 
 volatile uint8_t my_data[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 
@@ -164,42 +164,42 @@ le_api_result_e eMPAdd_controller_Service(void* qHandle, uint16_t* pu16SvcHandle
            Add  controller Service
   ********************************************
   *******************************************/
-  stMPService.u16SvcUUID = GATT_CONTROLLER_UUID;    /* GATT service   UUID */
-  stMPService.u8InclDefCount =0;                                                        /* No included services */
-  stMPService.pstIncludes = NULL;                                                       /* No included services */
-  stMPService.u8CharDefCount =1;                                                        /* One characteristic belong to this service */
-  stMPService.pstChars = &stMPMChar;                                                    /* Pointer to structure that describes characteristics. */
+  stMyService.u16SvcUUID = GATT_CONTROLLER_UUID;    /* GATT service   UUID */
+  stMyService.u8InclDefCount =0;                                                        /* No included services */
+  stMyService.pstIncludes = NULL;                                                       /* No included services */
+  stMyService.u8CharDefCount =1;                                                        /* One characteristic belong to this service */
+  stMyService.pstChars = &stMyCharacteristic;                                                    /* Pointer to structure that describes characteristics. */
 
   /********************************************
        Register controller. Characteristic
   ********************************************/
 
   /* Characteristic Declaration */
-  stMPMChar.u16CharUUID      = (uint16_t)GATT_CONTROLLER_DATA_UUID;                   /* Service Characteristic UUID */
+  stMyCharacteristic.u16CharUUID      = (uint16_t)GATT_CONTROLLER_DATA_UUID;                   /* Service Characteristic UUID */
 
-  stMPMChar.u8CharProperties = (uint8_t)(LE_WRITE | LE_READ|LE_NOTIFY);                                    /* Character can be notified */
-  stMPMChar.u8CharDescCnt = 1;                                                          /* Number of character descriptors */
-  stMPMChar.pstCharDesc = astCharElement;                                               /* Pointer to the array containing char descriptors */
-  stMPMChar.pu16RetCharDescHandles = au16ElementHandles;                                /* Pointer to the array where handles
+  stMyCharacteristic.u8CharProperties = (uint8_t)(LE_WRITE | LE_READ|LE_NOTIFY);                                    /* Character can be notified */
+  stMyCharacteristic.u8CharDescCnt = 1;                                                          /* Number of character descriptors */
+  stMyCharacteristic.pstCharDesc = astCharElement;                                               /* Pointer to the array containing char descriptors */
+  stMyCharacteristic.pu16RetCharDescHandles = au16ElementHandles;                                /* Pointer to the array where handles
                                                                                           of returned char descriptors shall be stored */
   /* Characteristic VALUE Declaration */
-  stMPService.pstChars->stCharValDecl.u16AttValLen = sizeof(my_data);
-  stMPService.pstChars->stCharValDecl.pu8AttVal = &my_data;
-  stMPService.pstChars->stCharValDecl.u16AttPermission = (uint16_t)LE_GATT_READ | LE_GATT_WRITE|LE_WRITABLE|LE_REDABLE;
+  stMyService.pstChars->stCharValDecl.u16AttValLen = sizeof(my_data);
+  stMyService.pstChars->stCharValDecl.pu8AttVal = &my_data;
+  stMyService.pstChars->stCharValDecl.u16AttPermission = (uint16_t)LE_GATT_READ | LE_GATT_WRITE|LE_WRITABLE|LE_REDABLE;
 
   /* Characteristic DESCRIPTOR Declaration (Client Characteristic Configuration) */
-  stMPService.pstChars->pstCharDesc->au8AttType[0] = GET_BYTE_LSB((uint16_t)GATT_CLI_CHARACT_CONFIGURATION);
-  stMPService.pstChars->pstCharDesc->au8AttType[1] = GET_BYTE_MSB((uint16_t)GATT_CLI_CHARACT_CONFIGURATION);
-  stMPService.pstChars->pstCharDesc->eAttrLen = LE_SHORT_UUID;
-  stMPService.pstChars->pstCharDesc->u16AttPermission = (uint16_t)(LE_GATT_READ | LE_GATT_WRITE);
-  stMPService.pstChars->pstCharDesc->u16AttValLen = sizeof(auCliProperties);
-  stMPService.pstChars->pstCharDesc->pu8AttVal = auCliProperties;
+  stMyService.pstChars->pstCharDesc->au8AttType[0] = GET_BYTE_LSB((uint16_t)GATT_CLI_CHARACT_CONFIGURATION);
+  stMyService.pstChars->pstCharDesc->au8AttType[1] = GET_BYTE_MSB((uint16_t)GATT_CLI_CHARACT_CONFIGURATION);
+  stMyService.pstChars->pstCharDesc->eAttrLen = LE_SHORT_UUID;
+  stMyService.pstChars->pstCharDesc->u16AttPermission = (uint16_t)(LE_GATT_READ | LE_GATT_WRITE);
+  stMyService.pstChars->pstCharDesc->u16AttValLen = sizeof(auCliProperties);
+  stMyService.pstChars->pstCharDesc->pu8AttVal = auCliProperties;
 
   /* Register as Primary Service */
-  eResTemp = eBleSrv_RegisterPrimaryService(qHandle, &stMPService);
+  eResTemp = eBleSrv_RegisterPrimaryService(qHandle, &stMyService);
 
   /* Return Characteristic declaration handle */
-  *pu16RetHandleCharValDecl = stMPMChar.u16RetCharValDeclHandle;
+  *pu16RetHandleCharValDecl = stMyCharacteristic.u16RetCharValDeclHandle;
 
   return eResTemp;
 
@@ -337,9 +337,9 @@ le_api_result_e eUpdateCharValue(void* qHandle,
   printf("| u16CharValHandle: 0x%.2x \n", u16CharValHandle);
 
   /*all we have is the "handle of the variable we want to udpate.  We need to match this to the local variable in our system.*/
-  if(u16CharValHandle == stMPMChar.u16RetCharValDeclHandle)
+  if(u16CharValHandle == stMyCharacteristic.u16RetCharValDeclHandle)
   {
-      eBleSrv_UpdateCharacteristic(qHandle,   u16CharValHandle,  stMPMChar.stCharValDecl.u16AttValLen,  stMPMChar.stCharValDecl.pu8AttVal);
+      eBleSrv_UpdateCharacteristic(qHandle,   u16CharValHandle,  stMyCharacteristic.stCharValDecl.u16AttValLen,  stMyCharacteristic.stCharValDecl.pu8AttVal);
   }
   else
   {
@@ -431,6 +431,9 @@ le_api_result_e eMPInitialise(void* qHandle, hr_init_st* stInit)
   return eResult;
 }
 
+
+uint8_t CONNECTED = 0; /*if connected to a BLE client*/
+
 /****************************************************************************/
 void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 {
@@ -453,7 +456,7 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
   };
 
   extern uint8_t DATA_FROM_BLUETOOTH_UART;
-  uint8_t CONNECTED = 0;
+
   /* Main MP-Profile Event Handler */
   while(1)
   {
@@ -543,7 +546,7 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 
               if(eResult==LE_API_SUCCCESS)
               {
-                 MP_ready=1;
+                 NOTIFY_CLIENT=1;
               }
           }
         break;
@@ -563,13 +566,15 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
               le_srv_write_char_desp_event_st       characteristic_to_write;
               uint8_t data_buffer[50] = {0x00};  /*this is used for storing the data from the bluetooth module*/
               characteristic_to_write.pu8CharDescValue = data_buffer;   /*point the buffer to this buffer we have just created*/
+
+              /*this takes the data received from the bluetooth, parses it, and udpates the characteristic value in the bluetooth.  It then returns the characteristic information that was modified.*/
               eResult = eBleSrv_WriteCharValueHndlr(qHandle,   stInit->pstConnectInfo->u16ConnHandle,   &characteristic_to_write);
 
-              if(characteristic_to_write.u16CharDescHandle == stMPMChar.u16RetCharValDeclHandle)
+              if(characteristic_to_write.u16CharDescHandle == stMyCharacteristic.u16RetCharValDeclHandle)  /*match the hanlde of the written characteristic with the handle of the locally stored variable before updating*/
               {
                  /*update our local variable with the value*/
-                  memcpy(stMPMChar.stCharValDecl.pu8AttVal, characteristic_to_write.pu8CharDescValue, characteristic_to_write.u16CharValueLen);
-                  //memcpy(stMPMChar.stCharValDecl.pu8AttVal, data_buffer, characteristic_to_write.u16CharValueLen);  this should do the same thing
+                  memcpy(stMyCharacteristic.stCharValDecl.pu8AttVal, characteristic_to_write.pu8CharDescValue, characteristic_to_write.u16CharValueLen);
+                  //memcpy(stMyCharacteristic.stCharValDecl.pu8AttVal, data_buffer, characteristic_to_write.u16CharValueLen);  this should do the same thing
               }
               else
               {
@@ -599,13 +604,12 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
     {
         delay = 0xFFFFF;  /*reload the timer*/
 
-        if(CONNECTED)
+        if(NOTIFY_CLIENT)
         {
-            eBleSrv_SendNotification(qHandle,
+            //eBleSrv_SendNotification(qHandle,   stInit->pstConnectInfo->u16ConnHandle,   stMyService.pstChars,   my_data);
 
-                                     stInit->pstConnectInfo->u16ConnHandle,
-                                     stMPService.pstChars,
-                                     &my_data);
+           transmit_bluetooth_packet(my_data);
+
         }
         else
         {
@@ -621,10 +625,9 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 
 
 
-
 #if 0
     else if (LE_API_ERR_TIMEOUT == eResult)
-    if(MP_ready == 1)
+    if(NOTIFY_CLIENT == 1)
     {
         /* Send notification with incremented Heart-Rate Value
          * in regular time intervals
@@ -632,12 +635,37 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
         au8MPValue[1] += 0x01;
         eBleSrv_SendNotification(qHandle,
                               stInit->pstConnectInfo->u16ConnHandle,
-                              stMPService.pstChars,
+                              stMyService.pstChars,
                               au8MPValue);
     }
 #endif
   }  /*while 1*/
 
+}
+
+
+/*transmit our 20 byte characteristic*/
+uint8_t transmit_bluetooth_packet(uint8_t data_packet[])
+{       void*qHandle;  /*used for freetos, unused for us*/
+        uint8_t result = 0;
+        le_api_result_e eResTemp;
+
+        extern le_srv_service_def_st stMyService;
+       extern le_conn_evt_st stConnectInfo;
+         eResTemp = eBleSrv_SendNotification(qHandle,   stConnectInfo.u16ConnHandle  ,    stMyService.pstChars,   data_packet);
+
+          if (eResTemp == LE_API_SUCCCESS)
+          {
+              result = 1;
+          }
+          else
+          {
+              result = 0;
+          }
+
+
+
+          return result;
 }
 
 

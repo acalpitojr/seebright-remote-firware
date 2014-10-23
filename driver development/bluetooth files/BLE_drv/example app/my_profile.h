@@ -150,5 +150,9 @@ le_api_result_e eMPAdd_controller_Service(void* qHandle, uint16_t* pu16SvcHandle
                                      uint16_t* pu16RetHandleCharValDecl);
 
 
+
+uint8_t transmit_bluetooth_packet(uint8_t data_packet[]);
+
+
 #endif /* _HEARTRATE_H */
 

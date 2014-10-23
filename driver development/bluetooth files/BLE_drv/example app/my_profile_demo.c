@@ -69,7 +69,7 @@ void error(void){
 /**************************************
 **************************************/
 
-
+le_conn_evt_st stConnectInfo;
 /********************************************************************************
  Function       app_BT_SPP_DEMO(void* pvParameters)
  Argumets       :pvParameters
@@ -90,7 +90,7 @@ void my_profile_DEMO(void)
   uint16_t au16MPCharValDeclHndl[4];
   uint16_t u16ConnHndl;
   uint16_t u16ClientRxMtuSize;
-  le_conn_evt_st stConnectInfo;
+  //
   le_mtu_exchg_st stMtuEvtData;                       /* MTU Event Data */
   le_mtu_exchg_acc_resp_st stMtuAccResp;              /* MTU Accept Response */
   uint8_t au8DummyCharDescEvntData[50];               /* placeholder for characteristic desc. update evnt. */
@@ -100,27 +100,7 @@ void my_profile_DEMO(void)
   char auDevName[]="MY MPS";
   uint8_t au8ManufName[7] = {0x54,0x4F,0x53,0x48,0x49,0x42,0x41}; /* "Toshiba" string in UTF8-format */
 
- /*initializing the RESET PIN, AND TAKING THE DEVICE OUT OF RESET*/
-#if 0
-  #if defined(BOARD_TOPASM369_BT)
-    /*RESET Chiron*/
-    GPIO_SetOpenDrain(GPIO_PD, GPIO_BIT_7, ENABLE);//set PD7 to Open-drain
-    GPIO_WriteDataBit(GPIO_PD, GPIO_BIT_7, 0);//set Reset signal to low
-    GPIO_SetOutputEnableReg(GPIO_PD, GPIO_BIT_7, ENABLE);
-    GPIO_SetInputEnableReg(GPIO_PD, GPIO_BIT_7, DISABLE);
-    for(loop=0; loop< 40000;loop++){
-    }
-    GPIO_WriteDataBit(GPIO_PD, GPIO_BIT_7, 1);//set Reset signal to high
-    for(loop=0; loop< 40000;loop++){
-    }
-    /*RESET Chiron*/
-  #endif
-#endif
 
-//  /*Initiate OS resources for BT SPP driver*/
- // if(BT_os_init() != API_SUCCESS){
-  //    while(1){};//endless loop
- // }
 
   /*Switch Chiron to TCU Compete mode*/
   //if(BT_hci_init((uint8_t *)(&BD_ADDR), (uint8_t *)&Device_Name) != API_SUCCESS){
@@ -170,3 +150,10 @@ void my_profile_DEMO(void)
   }
   while(1){};//endless loop
 }
+
+
+
+
+
+
+
