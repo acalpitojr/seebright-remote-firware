@@ -177,7 +177,7 @@ le_api_result_e eMPAdd_controller_Service(void* qHandle, uint16_t* pu16SvcHandle
   /* Characteristic Declaration */
   stMPMChar.u16CharUUID      = (uint16_t)GATT_CONTROLLER_DATA_UUID;                   /* Service Characteristic UUID */
 
-  stMPMChar.u8CharProperties = (uint8_t)(/*LE_WRITE*/ | LE_READ|LE_NOTIFY);                                    /* Character can be notified */
+  stMPMChar.u8CharProperties = (uint8_t)(/*LE_WRITE |*/ LE_READ|LE_NOTIFY);                                    /* Character can be notified */
   stMPMChar.u8CharDescCnt = 1;                                                          /* Number of character descriptors */
   stMPMChar.pstCharDesc = astCharElement;                                               /* Pointer to the array containing char descriptors */
   stMPMChar.pu16RetCharDescHandles = au16ElementHandles;                                /* Pointer to the array where handles
@@ -561,12 +561,15 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
               test
 #endif
               le_srv_write_char_desp_event_st       characteristic_to_write;
+              uint8_t data_buffer[50] = {0x00};  /*this is used for storing the data from the bluetooth module*/
+              characteristic_to_write.pu8CharDescValue = data_buffer;   /*point the buffer to this buffer we have just created*/
               eResult = eBleSrv_WriteCharValueHndlr(qHandle,   stInit->pstConnectInfo->u16ConnHandle,   &characteristic_to_write);
 
               if(characteristic_to_write.u16CharDescHandle == stMPMChar.u16RetCharValDeclHandle)
               {
                  /*update our local variable with the value*/
                   memcpy(stMPMChar.stCharValDecl.pu8AttVal, characteristic_to_write.pu8CharDescValue, characteristic_to_write.u16CharValueLen);
+                  //memcpy(stMPMChar.stCharValDecl.pu8AttVal, data_buffer, characteristic_to_write.u16CharValueLen);  this should do the same thing
               }
               else
               {
