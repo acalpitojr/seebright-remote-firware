@@ -33,7 +33,7 @@ le_srv_char_st stMPMChar;
 uint8_t fMP_1HZ_tick = 0U;
 uint8_t MP_ready=0U;
 
-volatile uint8_t my_data = 0x01;
+volatile uint8_t my_data= 0x01;
 
 /******************************************************************************
 *
@@ -210,6 +210,7 @@ le_api_result_e eMPAdd_controller_Service(void* qHandle, uint16_t* pu16SvcHandle
 *                               ADVERTIZING
 *
 ******************************************************************************/
+
 le_api_result_e eMPStartAdvertising(void* qHandle)
 {
   le_api_result_e eResult;
@@ -229,38 +230,40 @@ le_api_result_e eMPStartAdvertising(void* qHandle)
   stConfig.au8DirectAddr[5] = 0;
   stConfig.u8AdvChannelMap =0x07;
   stConfig.eAdvFilterPolicy = LE_SCAN_ANY_CONN_ANY;
+
   stConfig.u8AdvDataLen = 0x1f;
-  stConfig.au8AdvData[0] = 0x07;                                                        /* Length in bytes */
-  stConfig.au8AdvData[1] = GET_BYTE_LSB(LE_ADV_16_BIT_MORE);                            /* AD Type: More 16-bit Service UUIDs */
-  stConfig.au8AdvData[2] = GET_BYTE_LSB(GATT_CONTROLLER_UUID);                               /* made up Service UUID */
-  stConfig.au8AdvData[3] = GET_BYTE_MSB(GATT_CONTROLLER_UUID);
-  stConfig.au8AdvData[4] = GET_BYTE_LSB(GAP_SERVICE);                                   /* GAP Service UUID */
-  stConfig.au8AdvData[5] = GET_BYTE_MSB(GAP_SERVICE);
-  stConfig.au8AdvData[6] = GET_BYTE_LSB(GATT_DEV_INFO);                                 /* GATT Device Identification Service UUID */
-  stConfig.au8AdvData[7] = GET_BYTE_MSB(GATT_DEV_INFO);
-  stConfig.au8AdvData[8] = 0x08;                                                        /* Length in bytes */
-  stConfig.au8AdvData[9] = GET_BYTE_LSB(LE_ADV_COMPLETE_NAME);                          /* AD Type: Complete device name */
-  stConfig.au8AdvData[10] = '0';                                                       /* Device Name Data -Char0 */
-  stConfig.au8AdvData[11] = '1';                                                       /* Device Name Data -Char1 */
-  stConfig.au8AdvData[12] = '2';                                                       /* Device Name Data -Char2 */
-  stConfig.au8AdvData[13] = '3';
-  stConfig.au8AdvData[14] = '4';
-  stConfig.au8AdvData[15] = '5';
-  stConfig.au8AdvData[16] = '6';
-  stConfig.au8AdvData[17] = '7';
-  stConfig.au8AdvData[18] = '8';
-  stConfig.au8AdvData[19] = '9';
-  stConfig.au8AdvData[20] = '1';
-  stConfig.au8AdvData[21] = '2';
-  stConfig.au8AdvData[22] = '3';
-  stConfig.au8AdvData[23] = '4';
-  stConfig.au8AdvData[24] = '5';
-  stConfig.au8AdvData[25] = '6';
-  stConfig.au8AdvData[26] = '7';
-  stConfig.au8AdvData[27] = '8';
-  stConfig.au8AdvData[28] = '9';
-  stConfig.au8AdvData[29] = '0';
-  stConfig.au8AdvData[30] = '1';
+  stConfig.au8AdvData[0] = 0x08;                                                        /* Length in bytes */
+  stConfig.au8AdvData[1]  =  LE_ADV_COMPLETE_NAME;                          /* AD Type: Complete device name */
+  stConfig.au8AdvData[2] = 'R';
+  stConfig.au8AdvData[3] = 'e';
+  stConfig.au8AdvData[4] = 'm';
+  stConfig.au8AdvData[5] = 'o';
+  stConfig.au8AdvData[6] = 't';
+  stConfig.au8AdvData[7] = 'e';
+  stConfig.au8AdvData[8] = '1';
+
+  stConfig.au8AdvData[9] = 21;  /*data length*/
+  stConfig.au8AdvData[10] = LE_ADV_MANUF_SPECIFIC_DATA;
+  stConfig.au8AdvData[11] = '0';
+  stConfig.au8AdvData[12] = '1';
+  stConfig.au8AdvData[13] = '2';
+  stConfig.au8AdvData[14] = '3';
+  stConfig.au8AdvData[15] = '4';
+  stConfig.au8AdvData[16] = '5';
+  stConfig.au8AdvData[17] = '6';
+  stConfig.au8AdvData[18] = '7';
+  stConfig.au8AdvData[19] = '8';
+  stConfig.au8AdvData[20] = '9';
+  stConfig.au8AdvData[21] = 'A';
+  stConfig.au8AdvData[22] = 'B';
+  stConfig.au8AdvData[23] = 'C';
+  stConfig.au8AdvData[24] = 'D';
+  stConfig.au8AdvData[25] = 'E';
+  stConfig.au8AdvData[26] = 'F';
+  stConfig.au8AdvData[27] = 'G';
+  stConfig.au8AdvData[28] = 'H';
+  stConfig.au8AdvData[29] = 'I';
+  stConfig.au8AdvData[30] = 'J';
 
   stConfig.u8ScanRespDataLen = 0x1f;
 
@@ -301,8 +304,6 @@ le_api_result_e eMPStartAdvertising(void* qHandle)
   return eResult;
 
 }
-
-
 /******************************************************************************
 *
 *                           CALLBACK FUNCTIONS
@@ -437,7 +438,7 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
   le_api_result_e eResult;
   uint16_t u16RetConnHandle;
   uint8_t au8MPValue[2] = {0x00,0x30};
-
+  uint32_t delay = 0xFFFFF;  /*how many ms is this?*/
 
   enum serviceID_opcodes{   TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OC = 0xD14C,  /*taken from le_gatt_command.h*/
                                                      TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OC = 0xD3C1,
@@ -451,6 +452,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 
   };
 
+  extern uint8_t DATA_FROM_BLUETOOTH_UART;
+  uint8_t CONNECTED = 0;
   /* Main MP-Profile Event Handler */
   while(1)
   {
@@ -458,14 +461,22 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
     *  Comming from a client. */
 
     /* Wait for a message to be received (with time-out) */
-    eResult = vSmartWaitForAnyEvent(qHandle, &u16Command);
-    if (LE_API_SUCCCESS == eResult)
+   // eResult = vSmartWaitForAnyEvent(qHandle, &u16Command);
+
+    if(DATA_FROM_BLUETOOTH_UART == 1)
+   // if (LE_API_SUCCCESS == eResult)
     {
+        DATA_FROM_BLUETOOTH_UART = 0;
+
       /*   Message Handler.
        *
        *  Based on message type, the handler calls an appropriate routine
        *  implementing adequate handling.
        */
+
+        uint8_t* pu8Data = (uint8_t*)(tcu_event.ptEvent);
+        u16Command = PARSE_CMD_MESSAGE(pu8Data);
+
       switch(u16Command)
       {
         //case GET_CMD_MESSAGE(TCU_MNG_LE_CONNECTION_COMPLETE_EVENT):  /*omg who wrote this*/
@@ -474,6 +485,7 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
             /* Client has sent a Connection Request to the Server,
                therefore a connection handler will be called */
              eResult = eBleSrv_ClientConnRequestHndlr(stInit->pstConnectInfo);
+             CONNECTED = 1;
           }
         break;
        // case GET_CMD_MESSAGE(TCU_LE_GATT_SER_EXG_MTU_EVENT):
@@ -573,7 +585,42 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 
         }
       }
-  }else if (LE_API_ERR_TIMEOUT == eResult)
+  }
+    else
+    {
+        /*no bluetooth event from uart*/
+    }
+
+
+    if(delay == 0)
+    {
+        delay = 0xFFFFF;  /*reload the timer*/
+
+        if(CONNECTED)
+        {
+            eBleSrv_SendNotification(qHandle,
+
+                                     stInit->pstConnectInfo->u16ConnHandle,
+                                     stMPService.pstChars,
+                                     &my_data);
+        }
+        else
+        {
+            /*not connected cant send to anyone*/
+        }
+
+    }
+    else
+    {
+        delay--;
+    }
+
+
+
+
+
+#if 0
+    else if (LE_API_ERR_TIMEOUT == eResult)
     if(MP_ready == 1)
     {
         /* Send notification with incremented Heart-Rate Value
@@ -585,7 +632,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
                               stMPService.pstChars,
                               au8MPValue);
     }
-  }
+#endif
+  }  /*while 1*/
 
 }
 

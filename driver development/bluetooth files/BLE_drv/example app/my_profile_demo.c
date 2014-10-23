@@ -144,6 +144,9 @@ void my_profile_DEMO(void)
   stMPInit.pu16RetMPSvcHndl = &u16MPSvcHndl;                            /* GATT Heart Rate Service Return Handle */
   stMPInit.pu16RetMPCharDeclHndl = &u16MPCharDeclHndl;                  /* GATT Heart Rate Measurement Characteristic Declaration Return Handle */
   stMPInit.pu16RetMPCharValDeclHndl = au16MPCharValDeclHndl;            /* GATT Heart Rate Measurement Characteristic VALUE Declaration Return Handle */
+
+
+
   stMPInit.pstConnectInfo = &stConnectInfo;                             /* Connection Info. Structure */
   stMPInit.pstMtuEvtData = &stMtuEvtData;                               /* MTU Event Data */
   stMPInit.pstMtuAccResp = &stMtuAccResp;                               /* MTU Accept Response */
