@@ -177,7 +177,7 @@ le_api_result_e eMPAdd_controller_Service(void* qHandle, uint16_t* pu16SvcHandle
   /* Characteristic Declaration */
   stMPMChar.u16CharUUID      = (uint16_t)GATT_CONTROLLER_DATA_UUID;                   /* Service Characteristic UUID */
 
-  stMPMChar.u8CharProperties = (uint8_t)(/*LE_WRITE |*/ LE_READ|LE_NOTIFY);                                    /* Character can be notified */
+  stMPMChar.u8CharProperties = (uint8_t)(LE_WRITE | LE_READ|LE_NOTIFY);                                    /* Character can be notified */
   stMPMChar.u8CharDescCnt = 1;                                                          /* Number of character descriptors */
   stMPMChar.pstCharDesc = astCharElement;                                               /* Pointer to the array containing char descriptors */
   stMPMChar.pu16RetCharDescHandles = au16ElementHandles;                                /* Pointer to the array where handles
