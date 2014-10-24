@@ -53,6 +53,9 @@ STATUS CYC_IO_KEYS_ReadTriggerButtonStatus(UINT8 *rpu8TriggerButtonStatus);
 STATUS CYC_IO_KEYS_InitializeNavButton();
 STATUS CYC_IO_KEYS_ReadNavButtonStatus(UINT8 *rpu8NavButtonStatus);
 
+UINT8 ReadAllButtons(void);
+
+
 
 
 /* EXPORTED DATA DEFINITIONS/DECLARATIONS   ddddddd*/

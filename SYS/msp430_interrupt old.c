@@ -43,8 +43,6 @@ $DESCRIPTION		:
 //	Sudhi:
 //	Added the MACRO defintion __MSP430F5438A__
 
-static int MPU_9250_Interrupt_Flag = NO_DATA;
-
 #if !defined __MSP430F5528__ && !defined __MSP430F5529__ && \
     !defined __MSP430F5229__ && !defined __MSP430F5438A__ \
     && !defined __MSP430F5328__
@@ -67,17 +65,6 @@ struct msp430_int_s
 };
 static struct msp430_int_s msp_int = {0};
 
-int GetMPU_9250FlagStatus(void)
-{
-
-	return MPU_9250_Interrupt_Flag;
-}
-
-void ClearMPU_9250InterruptFlag (void)
-{
-	MPU_9250_Interrupt_Flag = NO_DATA;
-}
-
 static inline unsigned char int_pin_to_index(unsigned short pin)
 {
     /* Remove INT_PORT_Px from pin; index = pin/2 - 1. */
@@ -96,8 +83,6 @@ __interrupt void P1_ISR(void)
     unsigned char index, bit;
     index = int_pin_to_index(P1IV);
     bit = index_to_bit(index);
-
-    MPU_9250_Interrupt_Flag = NEW_DATA;
 
     if (msp_int.p1_cbs[index])
         msp_int.p1_cbs[index]();

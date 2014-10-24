@@ -26,6 +26,7 @@ NOTES:
 
 
 /* INCLUDE FILES: */
+#include "CYC_Config.h"
 
 
 /* EXPORTED CONSTANT DEFINITIONS            *ccccccccc*/

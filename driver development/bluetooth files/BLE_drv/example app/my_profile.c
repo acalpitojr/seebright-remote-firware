@@ -231,7 +231,10 @@ le_api_result_e eMPStartAdvertising(void* qHandle)
   stConfig.u8AdvChannelMap =0x07;
   stConfig.eAdvFilterPolicy = LE_SCAN_ANY_CONN_ANY;
 
+
+
   stConfig.u8AdvDataLen = 0x1f;
+
   stConfig.au8AdvData[0] = 0x08;                                                        /* Length in bytes */
   stConfig.au8AdvData[1]  =  LE_ADV_COMPLETE_NAME;                          /* AD Type: Complete device name */
   stConfig.au8AdvData[2] = 'R';
@@ -243,6 +246,7 @@ le_api_result_e eMPStartAdvertising(void* qHandle)
   stConfig.au8AdvData[8] = '1';
 
   stConfig.au8AdvData[9] = 21;  /*data length*/
+
   stConfig.au8AdvData[10] = LE_ADV_MANUF_SPECIFIC_DATA;
   stConfig.au8AdvData[11] = '0';
   stConfig.au8AdvData[12] = '1';
@@ -400,6 +404,9 @@ le_api_result_e eMPInitialise(void* qHandle, hr_init_st* stInit)
                                  stInit->u8DevNameLen,
                                  auMyBd_Addr);
 
+
+
+
   if(eResult == LE_API_SUCCCESS)
   {
     /* Add GAP Device Name Service */
@@ -450,6 +457,7 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
                                                      TCU_LE_GATT_SER_READ_CHAR_DESP_EVENT_SID_OC = 0xD3C8,
                                                      TCU_LE_GATT_SER_WRITE_CHAR_DESP_EVENT_SID_OC = 0xD3C4,
                                                      TCU_LE_GATT_SER_WRITE_CHAR_VAL_EVENT_SID_OC = 0xD3C3,
+                                                     TCU_MNG_LE_DISCONNECT_EVENT_SID_OP = 0xD193,
 
 
 
@@ -490,6 +498,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
              eResult = eBleSrv_ClientConnRequestHndlr(stInit->pstConnectInfo);
              CONNECTED = 1;
           }
+        break;
+          case  TCU_MNG_LE_DISCONNECT_EVENT_SID_OP:
         break;
        // case GET_CMD_MESSAGE(TCU_LE_GATT_SER_EXG_MTU_EVENT):
           case TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OC:
@@ -590,6 +600,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
         {
 
           printf("MP Profile: Unhandled Message received() \n");
+          printf("| u16Command: 0x%.4x \n", u16Command);
+
 
         }
       }

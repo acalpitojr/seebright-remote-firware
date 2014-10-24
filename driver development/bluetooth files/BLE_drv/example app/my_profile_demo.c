@@ -81,13 +81,20 @@ void my_profile_DEMO(void)
   uint32_t loop;
  // portBASE_TYPE queueRETURN;
   le_api_result_e eLeResult;
+
+  /*GAP HANDLES*/
   uint16_t u16GAPSvcHandle;
+
+  /*DEVICE INFORMATION HANDLES*/
   uint16_t u16DISvcHandle;
   uint16_t u16DICharDeclHndl;
   uint16_t u16DICharValDeclHndl;
+
+  /*MY PROFILE HANDLES*/
   uint16_t u16MPSvcHndl;
   uint16_t u16MPCharDeclHndl;
   uint16_t au16MPCharValDeclHndl[4];
+
   uint16_t u16ConnHndl;
   uint16_t u16ClientRxMtuSize;
   //

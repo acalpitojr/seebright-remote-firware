@@ -61,12 +61,18 @@ $DESCRIPTION		:
 #define INT_PIN_P26     (0x20E)
 #define INT_PIN_P27     (0x210)
 
+#define NEW_DATA	1
+#define NO_DATA		0
 /**
  *  @brief  Set up shared interrupt vectors.
  *  This function will automatically call @e msp430_int_enable before
  *  returning.
  *  @return 0 if successful.
  */
+
+
+
+
 int msp430_int_init(void);
 
 /**
@@ -94,6 +100,10 @@ int msp430_int_disable(void);
  */
 int msp430_reg_int_cb(void (*cb)(void), unsigned short pin,
     unsigned char lp_exit, unsigned char active_low);
+
+int GetMPU_9250FlagStatus(void);
+
+void ClearMPU_9250InterruptFlag (void);
 
 #endif  /* _MSP430_INT_H_ */
 

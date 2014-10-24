@@ -45,13 +45,7 @@ NOTES:
 /* MODULE INTERNAL FUNCTION PROTOTYPES     *fffffff*/
 
 /* MODULE INTERNAL DATA DEFINITIONS        *ddddddd*/
-UINT8 consolidatedAllButton = 0;
-/*
-bit7	bit6	bit5	bit4	bit3	bit2	bit1	bit0
-	 					NAV	TRIGGER	USER3	USER2	USER1
-			VALUE		= 0		->	Button is NOT pressed
-						= 1		->  Button is PRESSED
-*/
+
 /* EXPORTED (GLOBAL or External) FUNCTIONS *ggggggg*/
 
 
@@ -185,7 +179,6 @@ STATUS CYC_IO_KEYS_InitializeTriggerButton()
 	lu32StatusInfo = CYC_SYS_GPIO_SetAsInputPin (TRIGGER_BUTTON_PORT,
 												TRIGGER_BUTTON_PIN
 												);
-
 	return lu32StatusInfo;
 }
 
@@ -290,24 +283,6 @@ STATUS CYC_IO_KEYS_ReadNavButtonStatus(UINT8 *rpu8NavButtonStatus)
 
 	return lu32StatusInfo;
 }
-
-UINT8 ReadAllButtons(void)
-{
-	UINT8 userButtonStatus, triggerButtonStatus, navButtonStatus;
-
-	consolidatedAllButton = 0;
-
-	CYC_IO_KEYS_ReadUserButtonsStatus((UINT8*)&userButtonStatus);
-	CYC_IO_KEYS_ReadTriggerButtonStatus((UINT8*)&triggerButtonStatus);
-	CYC_IO_KEYS_ReadNavButtonStatus((UINT8*) &navButtonStatus);
-
-	consolidatedAllButton = userButtonStatus |
-							(triggerButtonStatus << 3) |
-							(navButtonStatus << 4);
-
-	return consolidatedAllButton;
-}
-
 
 
 /* MODULE INTERNAL FUNCTIONS               *fffffff*/
