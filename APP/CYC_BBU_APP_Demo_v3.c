@@ -71,6 +71,7 @@ SW4 - BACK BUTTON	- UER 3
 #include "..\SYS\CYC_SYS_ADC.h"
 #include "..\SYS\CYC_SYS_PWM.h"
 #include "..\driver development\Event_Handler.h"
+#include "my_profile.h"
 #include "stdio.h"
 
 /* MODULE EXTERNAL DATA DEFINITIONS        *ddddddd*/
@@ -113,7 +114,7 @@ error_t RunControllerFSM(MainEvent_t FSM_Event);
  *  Note         	 :
  ******************************************************************************
  */
-
+//my_profile_DEMO() /*INIT BLUETOOTH*/
 main()
 {
 	InitSeebrightController();
@@ -121,6 +122,7 @@ main()
 	while(1) {
 		//Main Loop
 		while (mainError == NO_ERROR) {
+		   my_profile_DEMO();
 			mainEvent = RunEventHandler();
 			mainError = RunControllerFSM(mainEvent);
 		}
@@ -139,10 +141,13 @@ main()
 	}
 }
 
+uint8_t TIME_TO_SEND = 0;  /*TEST*/
+static   uint8_t my_data[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 void InitSeebrightController(void)
 {
 
 	CYC_SYS_InitializeTarget();	//Initialize the target
+
 	CYC_IO_MOTS_Init();			//Initialize MPU-9250
 
 	InitEventHandler();
@@ -183,9 +188,14 @@ error_t RunControllerFSM(MainEvent_t FSM_Event)
 		case SAMPLE_TIMER:
 			break; //END SAMPLE_TIMER
 		case SEND_TIMER:
+		{
 			//Get Final Data
 			//Compile Send Report
-			FSM_State = SEND;
+		//	FSM_State = SEND;
+      // uint8_t data = 0x00;
+		   transmit_bluetooth_packet (my_data);
+		  // TIME_TO_SEND = 1;
+		}
 			break; //END SEND_TIMER
 		}
 		break; //END SAMPLE

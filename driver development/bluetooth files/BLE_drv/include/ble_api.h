@@ -33,6 +33,7 @@
 **********************************************/
 #include "stdint.h"
 #include "le_gatt_command.h"
+#include "bt_uart_transport.h"
 
 /**********************************************
 *               Defs                          *

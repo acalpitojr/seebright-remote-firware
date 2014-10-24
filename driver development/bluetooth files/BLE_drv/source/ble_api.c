@@ -1872,7 +1872,7 @@ le_api_result_e eBleSrv_SendNotification(void* qHandle,
 
 
   //eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT, TCU_MNG_TIMEOUT_1Sec, (void*)(&stEvntData));
-  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT_t, TCU_MNG_TIMEOUT_1Sec, (void*)(&stEvntData));
+  eResTemp = eBleWaitForSpecificEvent(qHandle, TCU_LE_ACCEPT_t, 0xFFFFFFFF, (void*)(&stEvntData));
 
   if(eResTemp !=LE_API_SUCCCESS)
   {

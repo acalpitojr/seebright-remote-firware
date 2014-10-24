@@ -70,6 +70,7 @@ void error(void){
 **************************************/
 
 le_conn_evt_st stConnectInfo;
+hr_init_st stMPInit;
 /********************************************************************************
  Function       app_BT_SPP_DEMO(void* pvParameters)
  Argumets       :pvParameters
@@ -78,8 +79,14 @@ le_conn_evt_st stConnectInfo;
 *********************************************************************************/
 void my_profile_DEMO(void)
 {
-  uint32_t loop;
- // portBASE_TYPE queueRETURN;
+
+
+  static uint8_t  init_complete = 0;
+ if(init_complete == 0)
+ {
+
+
+  // portBASE_TYPE queueRETURN;
   le_api_result_e eLeResult;
 
   /*GAP HANDLES*/
@@ -102,7 +109,7 @@ void my_profile_DEMO(void)
   le_mtu_exchg_acc_resp_st stMtuAccResp;              /* MTU Accept Response */
   uint8_t au8DummyCharDescEvntData[50];               /* placeholder for characteristic desc. update evnt. */
 
-  hr_init_st stMPInit;
+
 
   char auDevName[]="MY MPS";
   uint8_t au8ManufName[7] = {0x54,0x4F,0x53,0x48,0x49,0x42,0x41}; /* "Toshiba" string in UTF8-format */
@@ -152,10 +159,18 @@ void my_profile_DEMO(void)
      if(eLeResult == LE_API_SUCCCESS)
      {
         // Start MP Profile Event Handler
-        MPMainRoutine(btQueueEVENT, &stMPInit);
+         init_complete = 1;
+
      }
   }
-  while(1){};//endless loop
+ }
+
+ else{
+
+
+  MPMainRoutine(btQueueEVENT, &stMPInit);
+ }
+
 }
 
 

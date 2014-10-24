@@ -319,12 +319,13 @@ void vPrintUnexpectedCMD(uint8_t u8ServiceID,
                          uint16_t u16paramLen,
                          uint8_t* pu8ParamData)
 {
+#if 0
   printf(" ---------- MP PROFILE UNEXPECTED COMMAND RECEIVED - START -------------\n");
   printf("| ServiceID: 0x%.2x \n", u8ServiceID);
   printf("| u8CmdCode: 0x%.2x \n", u8CmdCode);
   printf("| ParamLen: 0x%.2x \n", u16paramLen);
   printf(" ---------- MP PROFILE UNEXPECTED COMMAND RECEIVED - END -------------\n");
-
+#endif
 }
 
 /******************************************************************************/
@@ -335,11 +336,11 @@ le_api_result_e eUpdateCharValue(void* qHandle,
 
   uint16_t length = 0;
 
-
+#if 0
   printf("Characteristic VALUE Update Callback Function!\n");
   printf("| u16ConnHandle: 0x%.2x \n", u16ConnHandle);
   printf("| u16CharValHandle: 0x%.2x \n", u16CharValHandle);
-
+#endif
   /*all we have is the "handle of the variable we want to udpate.  We need to match this to the local variable in our system.*/
   if(u16CharValHandle == stMyCharacteristic.u16RetCharValDeclHandle)
   {
@@ -364,7 +365,7 @@ le_api_result_e eUpdateCharDescriptor(void* qHandle,
                                       uint16_t u16ConnHandle,
                                       uint16_t u16CharValHandle)
 {
-  printf("Characteristic Descriptor Callback Function!\n");
+ // printf("Characteristic Descriptor Callback Function!\n");
 
   return LE_API_SUCCCESS;
 }
@@ -447,8 +448,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
   uint16_t u16Command;
   le_api_result_e eResult;
   uint16_t u16RetConnHandle;
-  uint8_t au8MPValue[2] = {0x00,0x30};
-  uint32_t delay = 0xFFFFF;  /*how many ms is this?*/
+
+  static uint32_t delay = 0xFFFFF;  /*how many ms is this?*/
 
   enum serviceID_opcodes{   TCU_MNG_LE_CONNECTION_COMPLETE_EVENT_SID_OC = 0xD14C,  /*taken from le_gatt_command.h*/
                                                      TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OC = 0xD3C1,
@@ -466,8 +467,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
   extern uint8_t DATA_FROM_BLUETOOTH_UART;
 
   /* Main MP-Profile Event Handler */
-  while(1)
-  {
+ // while(1)
+  //{
     /* At this stage initialization is done and we are waiting on events
     *  Comming from a client. */
 
@@ -487,7 +488,7 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
 
         uint8_t* pu8Data = (uint8_t*)(tcu_event.ptEvent);
         u16Command = PARSE_CMD_MESSAGE(pu8Data);
-
+        uint16_t connect_delay = 0xfffff;
       switch(u16Command)
       {
         //case GET_CMD_MESSAGE(TCU_MNG_LE_CONNECTION_COMPLETE_EVENT):  /*omg who wrote this*/
@@ -496,10 +497,13 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
             /* Client has sent a Connection Request to the Server,
                therefore a connection handler will be called */
              eResult = eBleSrv_ClientConnRequestHndlr(stInit->pstConnectInfo);
+            while(connect_delay--){}
              CONNECTED = 1;
           }
         break;
           case  TCU_MNG_LE_DISCONNECT_EVENT_SID_OP:
+              eMPStartAdvertising(qHandle);
+
         break;
        // case GET_CMD_MESSAGE(TCU_LE_GATT_SER_EXG_MTU_EVENT):
           case TCU_LE_GATT_SER_EXG_MTU_EVENT_SID_OC:
@@ -599,8 +603,8 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
       default:
         {
 
-          printf("MP Profile: Unhandled Message received() \n");
-          printf("| u16Command: 0x%.4x \n", u16Command);
+         // printf("MP Profile: Unhandled Message received() \n");
+          //printf("| u16Command: 0x%.4x \n", u16Command);
 
 
         }
@@ -611,59 +615,62 @@ void MPMainRoutine(void* qHandle, hr_init_st* stInit)
         /*no bluetooth event from uart*/
     }
 
+//#if 0
+   // if(delay == 0)
+   // {
 
-    if(delay == 0)
-    {
-        delay = 0xFFFFF;  /*reload the timer*/
 
-        if(NOTIFY_CLIENT)
-        {
+      //  if(NOTIFY_CLIENT)
+    //   {
             //eBleSrv_SendNotification(qHandle,   stInit->pstConnectInfo->u16ConnHandle,   stMyService.pstChars,   my_data);
 
-           transmit_bluetooth_packet(my_data);
+        //   transmit_bluetooth_packet(my_data);
+       //    NOTIFY_CLIENT  = 0;
 
-        }
-        else
-        {
+      //  }
+     //   else
+       // {
             /*not connected cant send to anyone*/
-        }
-
-    }
-    else
-    {
-        delay--;
-    }
+    //    }
 
 
+   // else
+  //  {
+       // delay--;
+ //   }
 
+      //#endif
+  // if(TIME_TO_SEND == 1)
+   //{
+      //     transmit_bluetooth_packet(my_data);
+   //}
 
-#if 0
-    else if (LE_API_ERR_TIMEOUT == eResult)
-    if(NOTIFY_CLIENT == 1)
-    {
-        /* Send notification with incremented Heart-Rate Value
-         * in regular time intervals
-         */
-        au8MPValue[1] += 0x01;
-        eBleSrv_SendNotification(qHandle,
-                              stInit->pstConnectInfo->u16ConnHandle,
-                              stMyService.pstChars,
-                              au8MPValue);
-    }
-#endif
-  }  /*while 1*/
+ // }  /*while 1*/
 
 }
 
 
 /*transmit our 20 byte characteristic*/
 uint8_t transmit_bluetooth_packet(uint8_t data_packet[])
-{       void*qHandle;  /*used for freetos, unused for us*/
+{
+    static uint8_t TRANSMITTING = 0;
+    uint8_t result = 0;
+
+
+    if(TRANSMITTING == 0)
+    {
+        TRANSMITTING = 1;
+       void*qHandle;  /*used for freetos, unused for us*/
         uint8_t result = 0;
         le_api_result_e eResTemp;
 
         extern le_srv_service_def_st stMyService;
        extern le_conn_evt_st stConnectInfo;
+
+
+
+       if( (CONNECTED == 1) && (NOTIFY_CLIENT == 1) )
+       {
          eResTemp = eBleSrv_SendNotification(qHandle,   stConnectInfo.u16ConnHandle  ,    stMyService.pstChars,   data_packet);
 
           if (eResTemp == LE_API_SUCCCESS)
@@ -674,7 +681,18 @@ uint8_t transmit_bluetooth_packet(uint8_t data_packet[])
           {
               result = 0;
           }
-
+          TRANSMITTING = 0;
+       }
+       else
+       {
+           result = 0;
+           TRANSMITTING = 0;
+       }
+    }
+    else /* still transmitting*/
+    {
+        result = 0;
+    }
 
 
           return result;
