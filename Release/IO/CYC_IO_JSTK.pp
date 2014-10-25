@@ -1,5 +1,0 @@
-# FIXED
-
-IO/CYC_IO_JSTK.obj: ../IO/CYC_IO_JSTK.c
-
-../IO/CYC_IO_JSTK.c: 

@@ -74,6 +74,10 @@ SW4 - BACK BUTTON	- UER 3
 #include "my_profile.h"
 #include "stdio.h"
 
+#define QUAT_X_AXIS_INDEX  3
+#define QUAT_Y_AXIS_INDEX   7
+#define QUAT_Z_AXIS_INDEX   11
+#define QUAT_W_AXIS_INDEX  15
 /* MODULE EXTERNAL DATA DEFINITIONS        *ddddddd*/
 
 /* MODULE INTERNAL CONSTANT DEFINITIONS    *ccccccc*/
@@ -98,6 +102,8 @@ typedef enum {
 static error_t mainError;
 
 static MainEvent_t mainEvent;
+
+mpu_data_STRUCT mpu;
 
 /* MODULE INTERNAL MACRO DEFINITIONS       *mmmmmmm*/
 
@@ -182,10 +188,51 @@ error_t RunControllerFSM(MainEvent_t FSM_Event)
 		case NO_EVENT:
 			break; //END NO-EVENT
 		case MPU_9250_DATA_READY:
+		    mpu = get_mpu_data();
+
+		    //  X-AXIS
+		            my_data[QUAT_X_AXIS_INDEX+0] = (uint8_t)((mpu.quat_data[0] & 0xFF));
+		            my_data[QUAT_X_AXIS_INDEX+1] = (uint8_t)((mpu.quat_data[0] >> 8 & 0xFF));
+		            my_data[QUAT_X_AXIS_INDEX+2] = (uint8_t)((mpu.quat_data[0] >> 16 & 0xFF));
+		            my_data[QUAT_X_AXIS_INDEX+3] = (uint8_t)((mpu.quat_data[0] >> 24 & 0xFF));
+
+		            //  Y-AXIS
+		            my_data[QUAT_Y_AXIS_INDEX+0] = (uint8_t)((mpu.quat_data[1] & 0xFF));
+		            my_data[QUAT_Y_AXIS_INDEX+1] = (uint8_t)((mpu.quat_data[1] >> 8 & 0xFF));
+		            my_data[QUAT_Y_AXIS_INDEX+2] = (uint8_t)((mpu.quat_data[1] >> 16 & 0xFF));
+		            my_data[QUAT_Y_AXIS_INDEX+3] = (uint8_t)((mpu.quat_data[1] >> 24 & 0xFF));
+
+		            //  Z-AXIS
+		            my_data[QUAT_Z_AXIS_INDEX+0] = (uint8_t)((mpu.quat_data[2] & 0xFF));
+		            my_data[QUAT_Z_AXIS_INDEX+1] = (uint8_t)((mpu.quat_data[2] >> 8 & 0xFF));
+		            my_data[QUAT_Z_AXIS_INDEX+2] = (uint8_t)((mpu.quat_data[2] >> 16 & 0xFF));
+		            my_data[QUAT_Z_AXIS_INDEX+3] = (uint8_t)((mpu.quat_data[2] >> 24 & 0xFF));
+
+		            //  W-AXIS
+		            my_data[QUAT_W_AXIS_INDEX+0] = (uint8_t)((mpu.quat_data[3] & 0xFF));
+		            my_data[QUAT_W_AXIS_INDEX+1] = (uint8_t)((mpu.quat_data[3] >> 8 & 0xFF));
+		            my_data[QUAT_W_AXIS_INDEX+2] = (uint8_t)((mpu.quat_data[3] >> 16 & 0xFF));
+		            my_data[QUAT_W_AXIS_INDEX+3] = (uint8_t)((mpu.quat_data[3] >> 24 & 0xFF));
 			break; //END MPU_9250_DATA_READY
 		case BUTTON_PRESSED:
+		{
+		    uint8_t buttons = ReadAllButtons();
+		    my_data[19] = buttons;
+		}
 			break; //END BUTTON_PRESSED
 		case SAMPLE_TIMER:
+		{
+		    int16_t joystick[2];
+
+
+		    CYC_IO_JSTK_ReadJoystickData(joystick);
+
+		    my_data[0] = (joystick[0] & 0xFF);
+		            //  MSB of X AXIS and MSB of Y AXIS
+		    my_data[1] = ((joystick[0] >> 4) & 0xF0) | ((joystick[1] >> 8) & 0x0F);
+		       //  Y-AXIS LSB
+		    my_data[2] = (joystick[1] & 0xFF);
+		}
 			break; //END SAMPLE_TIMER
 		case SEND_TIMER:
 		{

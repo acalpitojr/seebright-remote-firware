@@ -8,7 +8,25 @@ CG_TOOL_ROOT := c:/ti/ccsv6/tools/compiler/msp430_4.3.3
 
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
+"./driver development/bluetooth.obj" \
 "./driver development/eeprom.obj" \
+"./driver development/fuel_gauge.obj" \
+"./driver development/mpu_9250.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_OS.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_error.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_hci_drv.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_mng_drv.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_spp_api.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_spp_drv.obj" \
+"./driver development/bluetooth files/SPP_drv/source/bt_uart_INT.obj" \
+"./driver development/bluetooth files/SPP_drv/example app/bt_spp_acceptor_DEMO.obj" \
+"./driver development/bluetooth files/SPP_drv/example app/bt_spp_initiator_DEMO.obj" \
+"./driver development/bluetooth files/BLE_drv/source/ble_api.obj" \
+"./driver development/bluetooth files/BLE_drv/source/le_gatt_command.obj" \
+"./driver development/bluetooth files/BLE_drv/example app/HeartRate.obj" \
+"./driver development/bluetooth files/BLE_drv/example app/bt_le_peripherial_DEMO.obj" \
+"./driver development/bluetooth files/BLE_drv/example app/my_profile.obj" \
+"./driver development/bluetooth files/BLE_drv/example app/my_profile_demo.obj" \
 "./SYS/CYC_SYS_ADC.obj" \
 "./SYS/CYC_SYS_Clock.obj" \
 "./SYS/CYC_SYS_GPIO.obj" \
@@ -33,7 +51,6 @@ $(GEN_CMDS__FLAG) \
 "./SYS/MSP430Ware/usci_b_i2c.obj" \
 "./SYS/MSP430Ware/usci_i2c.obj" \
 "./SYS/MSP430Ware/usci_uart.obj" \
-"./SYS/Bluetooth/le_gatt_command.obj" \
 "./IO/eMPL/inv_mpu.obj" \
 "./IO/eMPL/inv_mpu_dmp_motion_driver.obj" \
 "./IO/CYC_IO_JSTK.obj" \
@@ -55,17 +72,23 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include driver\ development/subdir_vars.mk
+-include driver\ development/bluetooth\ files/SPP_drv/source/subdir_vars.mk
+-include driver\ development/bluetooth\ files/SPP_drv/example\ app/subdir_vars.mk
+-include driver\ development/bluetooth\ files/BLE_drv/source/subdir_vars.mk
+-include driver\ development/bluetooth\ files/BLE_drv/example\ app/subdir_vars.mk
 -include SYS/subdir_vars.mk
 -include SYS/MSP430Ware/subdir_vars.mk
--include SYS/Bluetooth/subdir_vars.mk
 -include IO/eMPL/subdir_vars.mk
 -include IO/subdir_vars.mk
 -include APP/subdir_vars.mk
 -include subdir_rules.mk
 -include driver\ development/subdir_rules.mk
+-include driver\ development/bluetooth\ files/SPP_drv/source/subdir_rules.mk
+-include driver\ development/bluetooth\ files/SPP_drv/example\ app/subdir_rules.mk
+-include driver\ development/bluetooth\ files/BLE_drv/source/subdir_rules.mk
+-include driver\ development/bluetooth\ files/BLE_drv/example\ app/subdir_rules.mk
 -include SYS/subdir_rules.mk
 -include SYS/MSP430Ware/subdir_rules.mk
--include SYS/Bluetooth/subdir_rules.mk
 -include IO/eMPL/subdir_rules.mk
 -include IO/subdir_rules.mk
 -include APP/subdir_rules.mk
@@ -176,8 +199,10 @@ Demo_KEY_LED_BLE.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "driver development\eeprom.pp" "SYS\CYC_SYS_ADC.pp" "SYS\CYC_SYS_Clock.pp" "SYS\CYC_SYS_GPIO.pp" "SYS\CYC_SYS_I2C.pp" "SYS\CYC_SYS_Init.pp" "SYS\CYC_SYS_PWM.pp" "SYS\CYC_SYS_Reset.pp" "SYS\CYC_SYS_Timer.pp" "SYS\CYC_SYS_UART.pp" "SYS\msp430_interrupt.pp" "SYS\MSP430Ware\adc12_a.pp" "SYS\MSP430Ware\dma.pp" "SYS\MSP430Ware\flash.pp" "SYS\MSP430Ware\gpio.pp" "SYS\MSP430Ware\pmm.pp" "SYS\MSP430Ware\sfr.pp" "SYS\MSP430Ware\sys.pp" "SYS\MSP430Ware\timer_a.pp" "SYS\MSP430Ware\timer_b.pp" "SYS\MSP430Ware\timer_d.pp" "SYS\MSP430Ware\ucs.pp" "SYS\MSP430Ware\usci_b_i2c.pp" "SYS\MSP430Ware\usci_i2c.pp" "SYS\MSP430Ware\usci_uart.pp" "SYS\Bluetooth\le_gatt_command.pp" "IO\eMPL\inv_mpu.pp" "IO\eMPL\inv_mpu_dmp_motion_driver.pp" "IO\CYC_IO_JSTK.pp" "IO\CYC_IO_KEYS.pp" "IO\CYC_IO_LEDS.pp" "IO\CYC_IO_MOTS_Config.pp" "APP\CYC_BBU_APP_Demo_v1.pp" "APP\CYC_BBU_APP_Demo_v2.pp" 
-	-$(RM) "driver development\eeprom.obj" "SYS\CYC_SYS_ADC.obj" "SYS\CYC_SYS_Clock.obj" "SYS\CYC_SYS_GPIO.obj" "SYS\CYC_SYS_I2C.obj" "SYS\CYC_SYS_Init.obj" "SYS\CYC_SYS_PWM.obj" "SYS\CYC_SYS_Reset.obj" "SYS\CYC_SYS_Timer.obj" "SYS\CYC_SYS_UART.obj" "SYS\msp430_interrupt.obj" "SYS\MSP430Ware\adc12_a.obj" "SYS\MSP430Ware\dma.obj" "SYS\MSP430Ware\flash.obj" "SYS\MSP430Ware\gpio.obj" "SYS\MSP430Ware\pmm.obj" "SYS\MSP430Ware\sfr.obj" "SYS\MSP430Ware\sys.obj" "SYS\MSP430Ware\timer_a.obj" "SYS\MSP430Ware\timer_b.obj" "SYS\MSP430Ware\timer_d.obj" "SYS\MSP430Ware\ucs.obj" "SYS\MSP430Ware\usci_b_i2c.obj" "SYS\MSP430Ware\usci_i2c.obj" "SYS\MSP430Ware\usci_uart.obj" "SYS\Bluetooth\le_gatt_command.obj" "IO\eMPL\inv_mpu.obj" "IO\eMPL\inv_mpu_dmp_motion_driver.obj" "IO\CYC_IO_JSTK.obj" "IO\CYC_IO_KEYS.obj" "IO\CYC_IO_LEDS.obj" "IO\CYC_IO_MOTS_Config.obj" "APP\CYC_BBU_APP_Demo_v1.obj" "APP\CYC_BBU_APP_Demo_v2.obj" 
+	-$(RM) "driver development\bluetooth.pp" "driver development\eeprom.pp" "driver development\fuel_gauge.pp" "driver development\mpu_9250.pp" "driver development\bluetooth files\SPP_drv\source\bt_OS.pp" "driver development\bluetooth files\SPP_drv\source\bt_error.pp" "driver development\bluetooth files\SPP_drv\source\bt_hci_drv.pp" "driver development\bluetooth files\SPP_drv\source\bt_mng_drv.pp" "driver development\bluetooth files\SPP_drv\source\bt_spp_api.pp" "driver development\bluetooth files\SPP_drv\source\bt_spp_drv.pp" "driver development\bluetooth files\SPP_drv\source\bt_uart_INT.pp" "driver development\bluetooth files\SPP_drv\example app\bt_spp_acceptor_DEMO.pp" "driver development\bluetooth files\SPP_drv\example app\bt_spp_initiator_DEMO.pp" "driver development\bluetooth files\BLE_drv\source\ble_api.pp" "driver development\bluetooth files\BLE_drv\source\le_gatt_command.pp" "driver development\bluetooth files\BLE_drv\example app\HeartRate.pp" "driver development\bluetooth files\BLE_drv\example app\bt_le_peripherial_DEMO.pp" 
+	-$(RM) "driver development\bluetooth files\BLE_drv\example app\my_profile.pp" "driver development\bluetooth files\BLE_drv\example app\my_profile_demo.pp" "SYS\CYC_SYS_ADC.pp" "SYS\CYC_SYS_Clock.pp" "SYS\CYC_SYS_GPIO.pp" "SYS\CYC_SYS_I2C.pp" "SYS\CYC_SYS_Init.pp" "SYS\CYC_SYS_PWM.pp" "SYS\CYC_SYS_Reset.pp" "SYS\CYC_SYS_Timer.pp" "SYS\CYC_SYS_UART.pp" "SYS\msp430_interrupt.pp" "SYS\MSP430Ware\adc12_a.pp" "SYS\MSP430Ware\dma.pp" "SYS\MSP430Ware\flash.pp" "SYS\MSP430Ware\gpio.pp" "SYS\MSP430Ware\pmm.pp" "SYS\MSP430Ware\sfr.pp" "SYS\MSP430Ware\sys.pp" "SYS\MSP430Ware\timer_a.pp" "SYS\MSP430Ware\timer_b.pp" "SYS\MSP430Ware\timer_d.pp" "SYS\MSP430Ware\ucs.pp" "SYS\MSP430Ware\usci_b_i2c.pp" "SYS\MSP430Ware\usci_i2c.pp" "SYS\MSP430Ware\usci_uart.pp" "IO\eMPL\inv_mpu.pp" "IO\eMPL\inv_mpu_dmp_motion_driver.pp" "IO\CYC_IO_JSTK.pp" "IO\CYC_IO_KEYS.pp" "IO\CYC_IO_LEDS.pp" "IO\CYC_IO_MOTS_Config.pp" "APP\CYC_BBU_APP_Demo_v1.pp" "APP\CYC_BBU_APP_Demo_v2.pp" 
+	-$(RM) "driver development\bluetooth.obj" "driver development\eeprom.obj" "driver development\fuel_gauge.obj" "driver development\mpu_9250.obj" "driver development\bluetooth files\SPP_drv\source\bt_OS.obj" "driver development\bluetooth files\SPP_drv\source\bt_error.obj" "driver development\bluetooth files\SPP_drv\source\bt_hci_drv.obj" "driver development\bluetooth files\SPP_drv\source\bt_mng_drv.obj" "driver development\bluetooth files\SPP_drv\source\bt_spp_api.obj" "driver development\bluetooth files\SPP_drv\source\bt_spp_drv.obj" "driver development\bluetooth files\SPP_drv\source\bt_uart_INT.obj" "driver development\bluetooth files\SPP_drv\example app\bt_spp_acceptor_DEMO.obj" "driver development\bluetooth files\SPP_drv\example app\bt_spp_initiator_DEMO.obj" "driver development\bluetooth files\BLE_drv\source\ble_api.obj" "driver development\bluetooth files\BLE_drv\source\le_gatt_command.obj" "driver development\bluetooth files\BLE_drv\example app\HeartRate.obj" "driver development\bluetooth files\BLE_drv\example app\bt_le_peripherial_DEMO.obj" 
+	-$(RM) "driver development\bluetooth files\BLE_drv\example app\my_profile.obj" "driver development\bluetooth files\BLE_drv\example app\my_profile_demo.obj" "SYS\CYC_SYS_ADC.obj" "SYS\CYC_SYS_Clock.obj" "SYS\CYC_SYS_GPIO.obj" "SYS\CYC_SYS_I2C.obj" "SYS\CYC_SYS_Init.obj" "SYS\CYC_SYS_PWM.obj" "SYS\CYC_SYS_Reset.obj" "SYS\CYC_SYS_Timer.obj" "SYS\CYC_SYS_UART.obj" "SYS\msp430_interrupt.obj" "SYS\MSP430Ware\adc12_a.obj" "SYS\MSP430Ware\dma.obj" "SYS\MSP430Ware\flash.obj" "SYS\MSP430Ware\gpio.obj" "SYS\MSP430Ware\pmm.obj" "SYS\MSP430Ware\sfr.obj" "SYS\MSP430Ware\sys.obj" "SYS\MSP430Ware\timer_a.obj" "SYS\MSP430Ware\timer_b.obj" "SYS\MSP430Ware\timer_d.obj" "SYS\MSP430Ware\ucs.obj" "SYS\MSP430Ware\usci_b_i2c.obj" "SYS\MSP430Ware\usci_i2c.obj" "SYS\MSP430Ware\usci_uart.obj" "IO\eMPL\inv_mpu.obj" "IO\eMPL\inv_mpu_dmp_motion_driver.obj" "IO\CYC_IO_JSTK.obj" "IO\CYC_IO_KEYS.obj" "IO\CYC_IO_LEDS.obj" "IO\CYC_IO_MOTS_Config.obj" "APP\CYC_BBU_APP_Demo_v1.obj" "APP\CYC_BBU_APP_Demo_v2.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

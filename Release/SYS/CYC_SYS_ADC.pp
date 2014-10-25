@@ -1,5 +1,0 @@
-# FIXED
-
-SYS/CYC_SYS_ADC.obj: ../SYS/CYC_SYS_ADC.c
-
-../SYS/CYC_SYS_ADC.c: 

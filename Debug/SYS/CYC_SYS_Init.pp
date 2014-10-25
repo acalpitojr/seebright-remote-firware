@@ -17,6 +17,7 @@ SYS/CYC_SYS_Init.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdint.h
 SYS/CYC_SYS_Init.obj: ../SYS/CYC_SYS_TargetConfig.h
 SYS/CYC_SYS_Init.obj: ../SYS/CYC_SYS_Clock.h
 SYS/CYC_SYS_Init.obj: ../SYS/CYC_SYS_Timer.h
+SYS/CYC_SYS_Init.obj: D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_Config.h
 SYS/CYC_SYS_Init.obj: ../SYS/CYC_SYS_PWM.h
 SYS/CYC_SYS_Init.obj: ../SYS/CYC_SYS_I2C.h
 SYS/CYC_SYS_Init.obj: ../SYS/CYC_SYS_UART.h
@@ -44,6 +45,7 @@ c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdint.h:
 ../SYS/CYC_SYS_TargetConfig.h: 
 ../SYS/CYC_SYS_Clock.h: 
 ../SYS/CYC_SYS_Timer.h: 
+D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_Config.h: 
 ../SYS/CYC_SYS_PWM.h: 
 ../SYS/CYC_SYS_I2C.h: 
 ../SYS/CYC_SYS_UART.h: 

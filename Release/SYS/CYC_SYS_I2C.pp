@@ -1,5 +1,0 @@
-# FIXED
-
-SYS/CYC_SYS_I2C.obj: ../SYS/CYC_SYS_I2C.c
-
-../SYS/CYC_SYS_I2C.c: 

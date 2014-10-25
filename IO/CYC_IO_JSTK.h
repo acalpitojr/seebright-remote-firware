@@ -37,7 +37,7 @@ NOTES:
 /* EXPORTED FUNCTIONS                       *ggggggggg*/
 STATUS	CYC_IO_JSTK_Init();
 
-STATUS	CYC_IO_JSTK_ReadJoystickData(INT16 *rpu16XYAxisValues);
+STATUS	CYC_IO_JSTK_ReadJoystickData(INT16 *joystick_output);
 
 /* EXPORTED DATA DEFINITIONS/DECLARATIONS   ddddddd*/
 

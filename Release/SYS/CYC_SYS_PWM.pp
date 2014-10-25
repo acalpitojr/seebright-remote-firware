@@ -1,5 +1,0 @@
-# FIXED
-
-SYS/CYC_SYS_PWM.obj: ../SYS/CYC_SYS_PWM.c
-
-../SYS/CYC_SYS_PWM.c: 

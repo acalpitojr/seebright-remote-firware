@@ -12,6 +12,7 @@ SYS/CYC_SYS_I2C.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.
 SYS/CYC_SYS_I2C.obj: D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_ERROR_CODES.h
 SYS/CYC_SYS_I2C.obj: ../SYS/CYC_SYS_I2C.h
 SYS/CYC_SYS_I2C.obj: ../SYS/CYC_SYS_Timer.h
+SYS/CYC_SYS_I2C.obj: D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_Config.h
 SYS/CYC_SYS_I2C.obj: ../SYS/CYC_SYS_TargetConfig.h
 SYS/CYC_SYS_I2C.obj: ../SYS/MSP430Ware/gpio.h
 SYS/CYC_SYS_I2C.obj: ../SYS/MSP430Ware/inc/hw_regaccess.h
@@ -30,6 +31,7 @@ c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h:
 D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_ERROR_CODES.h: 
 ../SYS/CYC_SYS_I2C.h: 
 ../SYS/CYC_SYS_Timer.h: 
+D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_Config.h: 
 ../SYS/CYC_SYS_TargetConfig.h: 
 ../SYS/MSP430Ware/gpio.h: 
 ../SYS/MSP430Ware/inc/hw_regaccess.h: 

@@ -29,6 +29,7 @@ NOTES:
 #include "CYC_IO_Common.h"
 #include "..\SYS\CYC_SYS_ADC.h"
 #include "CYC_IO_JSTK.h"
+#include "stdint.h"
 
 /* MODULE EXTERNAL DATA DEFINITIONS        *ddddddd*/
 
@@ -72,47 +73,27 @@ STATUS	CYC_IO_JSTK_Init()
  *  Note         	 :
  ******************************************************************************
  */
-STATUS	CYC_IO_JSTK_ReadJoystickData(INT16 *rps16XYAxisValues)
+STATUS	CYC_IO_JSTK_ReadJoystickData(INT16 *joystick_output)
 {
-	__IO UINT16 lu16RawXYAxisValues[2];
-	__IO UINT16 lu16RawPWRValues[3];
-	__IO INT16	ls16AmplifactionFactor;
-	__IO UINT16 ls16XAxisOffset, ls16YAxisOffset;
-	__IO UINT16	lu16MaxYAxisValue;
+        int16_t joystick_data[2];
+        int i;
 
-	//	This is the value to offset the voltage introduced by 28k resistor which
-	//	is in series with the potentiometer
-	ls16XAxisOffset = 500;
-	ls16YAxisOffset = 410;
+        joystick_data[0] = Read_ADC_Voltage(JOYSTICK_X);
+        joystick_data[1] = Read_ADC_Voltage(JOYSTICK_Y);
 
-	//	Read the input voltages for X and Y axis values
-	CYC_SYS_ADC_ReadInputVoltage((UINT16*)lu16RawXYAxisValues, (UINT16*) lu16RawPWRValues);
+        for (i=0;i<=1;i++) {
+            if (joystick_data[i] > 1023)
+                joystick_data[i] = 1023;
+            else if (joystick_data[i] < 0)
+                joystick_data[i] = 0;
 
-	//	Compensate for orientation. Joystick component on the board has been placed flipped around
-	//	Horizontal axis. So the Vertical axis values need to be compensated.
-	lu16MaxYAxisValue = 920;
-	lu16RawXYAxisValues[1] = lu16MaxYAxisValue - lu16RawXYAxisValues[1];
+            joystick_data[i] -=  511;
+        }
 
-	//	Compensate for the 28k resistance offset
-	rps16XYAxisValues[0] = lu16RawXYAxisValues[0] - ls16XAxisOffset;
-	rps16XYAxisValues[1] = lu16RawXYAxisValues[1] - ls16YAxisOffset;
+        joystick_data [1] *= (-1);
 
-	int i;
-	for (i=0; i<=1; i++) {
-		if (rps16XYAxisValues[i] > 500)
-			rps16XYAxisValues[i] = 500;
-		if (rps16XYAxisValues[i] < -500)
-			rps16XYAxisValues[i] = -500;
-	}
-
-#if 0
-	//	Host application is expecting the values to be in the range between -32768 and 32767.
-	//	But the actual values are changing between -480 and 440. Hence the values need to be scaled
-	//	Scale it by (32768 / 480) = 68.26. To play safe, scale it by a factor of 64
-	ls16AmplifactionFactor = 64;
-	rps16XYAxisValues[0] = rps16XYAxisValues[0] * ls16AmplifactionFactor;
-	rps16XYAxisValues[1] = rps16XYAxisValues[1] * ls16AmplifactionFactor;
-#endif
+        joystick_output[0]= joystick_data[0];
+        joystick_output[1]= joystick_data[1];
 
 	return SUCCESS;
 }

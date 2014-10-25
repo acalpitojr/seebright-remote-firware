@@ -111,7 +111,7 @@ STATUS CYC_SYS_InitializeTarget()
 	//CYC_IO_KEYS_InitializeNavButton();
 	//	Initialize Joystick
 	//CYC_IO_JSTK_Init();
-
+	CYC_SYS_ADC_Init();
 	//	Initialize and enable I2C port
 	//CYC_SYS_I2CB0_Enable();
 	//CYC_SYS_I2CB1_Enable();

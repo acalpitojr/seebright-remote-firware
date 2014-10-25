@@ -32,10 +32,10 @@ NOTES:
 
 
 
-#define JOYSTICK_X		0
+#define JOYSTICK_X		2
 #define JOYSTICK_Y		1
-#define	USB_PWR			2
-#define BATT_PWR		3
+#define	USB_PWR			6
+#define BATT_PWR		7
 #define	BT_PWR			4
 
 /* EXPORTED MACRO DEFINITIONS               *mmmmmmmmm*/

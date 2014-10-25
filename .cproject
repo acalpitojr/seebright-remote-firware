@@ -82,7 +82,7 @@
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.CINIT_HOLD_WDT.961826804" name="Hold watchdog timer during cinit auto-initialization (--cinit_hold_wdt)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.CINIT_HOLD_WDT" value="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.CINIT_HOLD_WDT.on" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.HEAP_SIZE.61563703" name="Heap size for C/C++ dynamic memory allocation (--heap_size, -heap)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.HEAP_SIZE" value="320" valueType="string"/>
-								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.STACK_SIZE.1734458832" name="Set C system stack size (--stack_size, -stack)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.STACK_SIZE" value="160" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.STACK_SIZE.1734458832" name="Set C system stack size (--stack_size, -stack)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.STACK_SIZE" value="320" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.USE_HW_MPY.747384110" name="Link in hardware version of RTS mpy routine (--use_hw_mpy)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.USE_HW_MPY" value="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.USE_HW_MPY.F5" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.OUTPUT_FILE.290718406" name="Specify output file name (--output_file, -o)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.OUTPUT_FILE" value="&quot;${ProjName}.out&quot;" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.MAP_FILE.1720630090" name="Input and output sections listed into &lt;file&gt; (--map_file, -m)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_4.2.linkerID.MAP_FILE" value="&quot;${ProjName}.map&quot;" valueType="string"/>
@@ -96,7 +96,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="driver development/bluetooth files/BLE_drv/example app/bt_le_peripherial_DEMO.c|driver development/bluetooth files/BLE_drv/example app/HeartRate.c|SYS/Bluetooth|driver development/bluetooth files/SPP_drv/example app|driver development/bluetooth files/SPP_drv/example app/bt_spp_acceptor_DEMO.c|driver development/bluetooth files/SPP_drv/example app/bt_spp_initiator_DEMO.c|SYS/Bluetooth/le_gatt_command.c|lnk_msp430f5438a.cmd|APP/CYC_BBU_APP_Demo_v1.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="SYS/msp430_interrupt old.c|IO/CYC_IO_KEYS_old.c|APP/CYC_BBU_APP_Demo_v2.c|driver development/bluetooth files/BLE_drv/example app/bt_le_peripherial_DEMO.c|driver development/bluetooth files/BLE_drv/example app/HeartRate.c|SYS/Bluetooth|driver development/bluetooth files/SPP_drv/example app|driver development/bluetooth files/SPP_drv/example app/bt_spp_acceptor_DEMO.c|driver development/bluetooth files/SPP_drv/example app/bt_spp_initiator_DEMO.c|SYS/Bluetooth/le_gatt_command.c|lnk_msp430f5438a.cmd|APP/CYC_BBU_APP_Demo_v1.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

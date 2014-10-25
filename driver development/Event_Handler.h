@@ -12,7 +12,7 @@
 #define SEND_BT_TIMER			1
 
 #define TIME_JOYSTICK_SAMPLE	3
-#define	TIME_BT_SEND			12
+#define	TIME_BT_SEND			15
 
 /*PUBLIC DATA*/
 typedef enum {

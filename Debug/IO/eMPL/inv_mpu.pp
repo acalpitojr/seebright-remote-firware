@@ -26,6 +26,7 @@ IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/MSP430Ware/gpio.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/MSP430Ware/inc/hw_regaccess.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/CYC_SYS_I2C.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/CYC_SYS_Timer.h
+IO/eMPL/inv_mpu.obj: D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_Config.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../SYS/msp430_interrupt.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/inv_mpu.h
 IO/eMPL/inv_mpu.obj: ../IO/eMPL/../../IO/CYC_IO_MOTS.h
@@ -56,6 +57,7 @@ c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/intrinsics.h:
 ../IO/eMPL/../../SYS/MSP430Ware/inc/hw_regaccess.h: 
 ../IO/eMPL/../../SYS/CYC_SYS_I2C.h: 
 ../IO/eMPL/../../SYS/CYC_SYS_Timer.h: 
+D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_Config.h: 
 ../IO/eMPL/../../SYS/msp430_interrupt.h: 
 ../IO/eMPL/inv_mpu.h: 
 ../IO/eMPL/../../IO/CYC_IO_MOTS.h: 

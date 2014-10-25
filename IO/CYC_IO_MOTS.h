@@ -37,7 +37,7 @@ typedef struct{
                     uint8_t accel_data[3];
                     uint8_t gyro_data[3];
                     uint8_t mag_data[3];
-                    uint32_t quat_data;
+                    uint32_t quat_data[4];
 }mpu_data_STRUCT;
 /* EXPORTED FUNCTIONS                       *ggggggggg*/
 STATUS CYC_IO_MOTS_Init();

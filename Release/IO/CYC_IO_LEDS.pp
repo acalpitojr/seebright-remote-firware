@@ -1,5 +1,0 @@
-# FIXED
-
-IO/CYC_IO_LEDS.obj: ../IO/CYC_IO_LEDS.c
-
-../IO/CYC_IO_LEDS.c: 

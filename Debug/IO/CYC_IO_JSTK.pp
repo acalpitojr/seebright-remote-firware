@@ -9,6 +9,7 @@ IO/CYC_IO_JSTK.obj: D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LE
 IO/CYC_IO_JSTK.obj: ../IO/CYC_IO_Common.h
 IO/CYC_IO_JSTK.obj: ../IO/../SYS/CYC_SYS_ADC.h
 IO/CYC_IO_JSTK.obj: ../IO/CYC_IO_JSTK.h
+IO/CYC_IO_JSTK.obj: c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdint.h
 
 ../IO/CYC_IO_JSTK.c: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430f5xx_6xxgeneric.h: 
@@ -19,3 +20,4 @@ D:/work\ projects/Seebright/Firmware\ and\ Tools/Demo_KEY_LED_BLE/Common/CYC_ERR
 ../IO/CYC_IO_Common.h: 
 ../IO/../SYS/CYC_SYS_ADC.h: 
 ../IO/CYC_IO_JSTK.h: 
+c:/ti/ccsv6/tools/compiler/msp430_4.3.3/include/stdint.h: 
