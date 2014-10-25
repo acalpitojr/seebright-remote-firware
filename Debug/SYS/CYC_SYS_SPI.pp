@@ -1,5 +1,0 @@
-# FIXED
-
-SYS/CYC_SYS_SPI.obj: ../SYS/CYC_SYS_SPI.c
-
-../SYS/CYC_SYS_SPI.c: 

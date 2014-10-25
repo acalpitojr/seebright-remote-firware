@@ -106,9 +106,9 @@ STATUS CYC_SYS_InitializeTarget()
 	CYC_SYS_PWM_InitPWMTimer();
 
 	//	Initialize user keys
-	//CYC_IO_KEYS_InitializeUserButtons();
-	//CYC_IO_KEYS_InitializeTriggerButton();
-	//CYC_IO_KEYS_InitializeNavButton();
+	CYC_IO_KEYS_InitializeUserButtons();
+	CYC_IO_KEYS_InitializeTriggerButton();
+	CYC_IO_KEYS_InitializeNavButton();
 	//	Initialize Joystick
 	//CYC_IO_JSTK_Init();
 	CYC_SYS_ADC_Init();
