@@ -102,13 +102,14 @@ typedef enum {
 static error_t mainError;
 
 static MainEvent_t mainEvent;
-
+static uint8_t DEMO_ON = 0;
 mpu_data_STRUCT mpu;
 
 /* MODULE INTERNAL MACRO DEFINITIONS       *mmmmmmm*/
 
 /* PRIVATE FUNCTION PROTOTYPES*/
 void InitSeebrightController(void);
+void led_color_changer(void);
 error_t RunControllerFSM(MainEvent_t FSM_Event);
 /*
 @@********************* main ***************************************
@@ -218,24 +219,46 @@ error_t RunControllerFSM(MainEvent_t FSM_Event)
 		{
 		    uint8_t buttons = ReadAllButtons();
 		    my_data[19] = buttons;
+
+		    if ( buttons == 0x18 )
+		    {
+		        DEMO_ON = 1;
+		    }
+
 		}
 			break; //END BUTTON_PRESSED
 		case SAMPLE_TIMER:
 		{
-		    int16_t joystick[2];
+		    if(DEMO_ON)
+		    {
+		        led_color_changer();
+		    }
+		    else
+		    {
+		        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, 0);
+                CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, 0);
+                CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, 0);
 
+                CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 0);
+                 CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 0);
+		    }
 
-		    CYC_IO_JSTK_ReadJoystickData(joystick);
-
-		    my_data[0] = (joystick[0] & 0xFF);
-		            //  MSB of X AXIS and MSB of Y AXIS
-		    my_data[1] = ((joystick[0] >> 4) & 0xF0) | ((joystick[1] >> 8) & 0x0F);
-		       //  Y-AXIS LSB
-		    my_data[2] = (joystick[1] & 0xFF);
 		}
 			break; //END SAMPLE_TIMER
 		case SEND_TIMER:
 		{
+		    int16_t joystick[2];
+
+
+		                CYC_IO_JSTK_ReadJoystickData(joystick);
+
+		                my_data[0] = (joystick[0] & 0xFF);
+		                        //  MSB of X AXIS and MSB of Y AXIS
+		                my_data[1] = ((joystick[0] >> 4) & 0xF0) | ((joystick[1] >> 8) & 0x0F);
+		                   //  Y-AXIS LSB
+		                my_data[2] = (joystick[1] & 0xFF);
+
+
 			//Get Final Data
 			//Compile Send Report
 		//	FSM_State = SEND;
@@ -272,3 +295,94 @@ error_t RunControllerFSM(MainEvent_t FSM_Event)
 	return FSM_returnError;
 }
     
+
+
+
+
+
+void led_color_changer(void)
+{
+    //RGB LED
+    const  uint16_t LED_PWM = 50;
+    static uint8_t  j = 0;
+    static uint8_t    i = 0;
+    if(i++ >21)
+    {
+        DEMO_ON = 0;
+        i = 0;
+    }
+    switch (j++) {
+
+    case 0:
+        //CYC_SYS_GPIO_SetOutputPinToHigh(RGB_RED_LED_PORT, RGB_RED_LED_PIN);
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, 0);
+         CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, 0);
+
+         CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 100);
+         CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 0);
+        break;
+    case 1:
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, 0);
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, 0);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 85);
+                 CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 15);
+        break;
+    case 2:
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, 0);
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, 0);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 70);
+                         CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 30);
+        break;
+    case 3:
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, 0);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 55);
+                                CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 45);
+        break;
+    case 4:
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, 0);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 40);
+                                CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 60);
+        break;
+    case 5:
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, 0);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 25);
+                                        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 75);
+        break;
+    case 6:
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, LED_PWM);
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, LED_PWM);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 5);
+                                                CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 90);
+        break;
+    case 7 :
+        CYC_SYS_PWM_SetDutyCycle(RGB_GREEN_LED_CHANNEL, 0);
+        CYC_SYS_PWM_SetDutyCycle(RGB_RED_LED_CHANNEL, 0);
+        CYC_SYS_PWM_SetDutyCycle(RGB_BLUE_LED_CHANNEL, 0);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 0);
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 100);
+
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_1_CHANNEL, 0);
+        CYC_SYS_PWM_SetDutyCycle(HAPTIC_MOTOR_2_CHANNEL, 100);
+        j = 0;
+    }
+}
+
+
+

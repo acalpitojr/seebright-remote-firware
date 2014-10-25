@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v4.3.3                      
 ******************************************************************************
->> Linked Fri Oct 24 18:54:35 2014
+>> Linked Fri Oct 24 19:43:07 2014
 
 OUTPUT FILE NAME:   <Demo_KEY_LED_BLE.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 0000582e
@@ -18,7 +18,7 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00002800  00000eb7  00001949  RWIX
+  RAM                   00001c00   00002800  00000ebb  00001945  RWIX
   FLASH                 00004400   0000bb80  0000151e  0000a662  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00014400  0000aed6  0000952a  RWIX
+  FLASH2                00010000   00014400  0000b16e  00009292  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -161,7 +161,7 @@ section   page    origin      length       input sections
 .TI.noinit 
 *          0    00001c00    00000000     UNINITIALIZED
 
-.data      0    0000247a    0000029e     UNINITIALIZED
+.data      0    0000247a    000002a2     UNINITIALIZED
                   0000247a    000000c8     rts430x_lc_rd_eabi.lib : defs.obj (.data:_ftable)
                   00002542    00000078                            : lowlev.obj (.data:_device)
                   000025ba    00000057     msp430_interrupt.obj (.data)
@@ -179,23 +179,24 @@ section   page    origin      length       input sections
                   000026f2    00000008     rts430x_lc_rd_eabi.lib : _lock.obj (.data)
                   000026fa    00000008     ucs.obj (.data)
                   00002702    00000005     my_profile_demo.obj (.data)
-                  00002707    00000001     bt_uart_INT.obj (.data)
-                  00002708    00000004     ble_api.obj (.data)
-                  0000270c    00000004     my_profile.obj (.data)
-                  00002710    00000002     CYC_SYS_UART.obj (.data)
-                  00002712    00000002     bt_spp_drv.obj (.data)
-                  00002714    00000002     rts430x_lc_rd_eabi.lib : defs.obj (.data)
-                  00002716    00000002                            : memory.obj (.data)
+                  00002707    00000004     CYC_BBU_APP_Demo_v3.obj (.data)
+                  0000270b    00000001     bt_uart_INT.obj (.data)
+                  0000270c    00000004     ble_api.obj (.data)
+                  00002710    00000004     my_profile.obj (.data)
+                  00002714    00000002     CYC_SYS_UART.obj (.data)
+                  00002716    00000002     bt_spp_drv.obj (.data)
+                  00002718    00000002     rts430x_lc_rd_eabi.lib : defs.obj (.data)
+                  0000271a    00000002                            : memory.obj (.data)
 
 .TI.persistent 
 *          0    0000247a    00000000     UNINITIALIZED
 
-.sysmem    0    00002718    00000140     UNINITIALIZED
-                  00002718    00000006     rts430x_lc_rd_eabi.lib : memory.obj (.sysmem)
-                  0000271e    0000013a     --HOLE--
+.sysmem    0    0000271c    00000140     UNINITIALIZED
+                  0000271c    00000006     rts430x_lc_rd_eabi.lib : memory.obj (.sysmem)
+                  00002722    0000013a     --HOLE--
 
-.cio       0    00002858    00000120     UNINITIALIZED
-                  00002858    00000120     rts430x_lc_rd_eabi.lib : trgmsg.obj (.cio)
+.cio       0    0000285c    00000120     UNINITIALIZED
+                  0000285c    00000120     rts430x_lc_rd_eabi.lib : trgmsg.obj (.cio)
 
 .stack     0    000042c0    00000140     UNINITIALIZED
                   000042c0    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
@@ -334,7 +335,7 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    0000aed6     
+.text      0    00010000    0000b16e     
                   00010000    00000520     bt_uart_INT.obj (.text:processPaketTCU)
                   00010520    00000452     rts430x_lc_rd_eabi.lib : frcdivd.obj (.text:__TI_frcdivd)
                   00010972    0000038e                            : llmath.obj (.text:__mspabi_divull)
@@ -351,349 +352,351 @@ SYSNMI     0    0000fffc    00000002
                   0001258e    0000021a                            : _printfi.obj (.text:fcvt)
                   000127a8    0000020c     inv_mpu.obj (.text:setup_compass)
                   000129b4    00000202     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:__TI_printfi)
-                  00012bb6    000001f8                            : _printfi.obj (.text:_pproc_fge)
-                  00012dae    000001d4     inv_mpu.obj (.text:mpu_reset_fifo)
-                  00012f82    000001aa     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_e)
-                  0001312c    0000019e     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_thresh)
-                  000132ca    0000019c     CYC_IO_MOTS_Config.obj (.text:CYC_IO_MOTS_Init)
-                  00013466    0000019a     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_orientation)
-                  00013600    00000188     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_getarg_diouxp)
-                  00013788    00000188     my_profile.obj (.text:eMPStartAdvertising)
-                  00013910    00000182     pmm.obj (.text:PMM_setVCoreUp)
-                  00013a92    00000178     bt_spp_api.obj (.text:BT_hci_init)
-                  00013c0a    00000154     inv_mpu.obj (.text:mpu_init)
-                  00013d5e    00000154     inv_mpu.obj (.text:mpu_set_sensors)
-                  00013eb2    0000014c     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_diouxp)
-                  00013ffe    0000013e     CYC_BBU_APP_Demo_v3.obj (.text:RunControllerFSM)
-                  0001413c    0000013e     ble_api.obj (.text:eBleSrv_RegisterPrimaryService)
-                  0001427a    0000013c     inv_mpu.obj (.text:mpu_set_bypass)
-                  000143b6    0000013c     ucs.obj (.text:privateUCSSourceClockFromDCO)
-                  000144f2    00000138     ble_api.obj (.text:eBleExtractDataEventGattSer)
-                  0001462a    00000134     ble_api.obj (.text:eBleSrv_AddCharacteristic)
-                  0001475e    00000130     my_profile_demo.obj (.text:my_profile_DEMO)
-                  0001488e    00000128     ucs.obj (.text:UCS_initFLL)
-                  000149b6    0000011e     ucs.obj (.text:privateUCSComputeCLKFrequency)
-                  00014ad4    00000114     le_gatt_command.obj (.text:eSetLeStartAdvertise_Req)
-                  00014be8    0000010e     my_profile.obj (.text:MPMainRoutine)
-                  00014cf6    0000010e     le_gatt_command.obj (.text:eGetLeMngConnComplete_Event)
-                  00014e04    0000010c     ucs.obj (.text:UCS_clockSignalInit)
-                  00014f10    0000010c     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_g)
-                  0001501c    0000010a     inv_mpu.obj (.text:mpu_lp_accel_mode)
-                  00015126    00000102     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_ltostr)
-                  00015228    000000fe     bt_error.obj (.text:errorCode)
-                  00015326    000000fa     pmm.obj (.text:PMM_setVCoreDown)
-                  00015420    000000fa     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_fwp)
-                  0001551a    000000f8     CYC_SYS_ADC.obj (.text:CYC_SYS_ADC_Init)
-                  00015612    000000f6     bt_uart_INT.obj (.text:bt_uart_manager)
-                  00015708    000000f4     CYC_SYS_Clock.obj (.text:CYC_SYS_CLK_SetSystemClock)
-                  000157fc    000000f0     rts430x_lc_rd_eabi.lib : fputs.obj (.text:fputs)
-                  000158ec    000000e4     usci_uart.obj (.text:USCI_UART_initAdvance)
-                  000159d0    000000e4     my_profile.obj (.text:eMPAddGAPDevName_Appearance_Service)
-                  00015ab4    000000e0     my_profile.obj (.text:eMPAdd_controller_Service)
-                  00015b94    000000e0     rts430x_lc_rd_eabi.lib : setvbuf.obj (.text:setvbuf)
-                  00015c74    000000d8                            : cmpd.obj (.text:__mspabi_cmpd)
-                  00015d4c    000000d8     msp430_interrupt.obj (.text:msp430_reg_int_cb)
-                  00015e24    000000c2     inv_mpu.obj (.text:mpu_load_firmware)
-                  00015ee6    000000c2     inv_mpu.obj (.text:mpu_read_fifo_stream)
-                  00015fa8    000000c0     le_gatt_command.obj (.text:eSetSdbGattAddCharacterEle_Req)
-                  00016068    000000be     gpio.obj (.text:GPIO_setAsInputPin)
-                  00016126    000000ba     ble_api.obj (.text:eBleSrv_ReadMultiEventHndlr)
-                  000161e0    000000ba     ble_api.obj (.text:eBleSrv_WriteCharDescriptorHndlr)
-                  0001629a    000000ba     ble_api.obj (.text:eBleSrv_WriteCharValueHndlr)
-                  00016354    000000ba     rts430x_lc_rd_eabi.lib : memory.obj (.text:malloc)
-                  0001640e    000000b8     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Enable)
-                  000164c6    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
-                  0001657c    000000b2                            : renormd.obj (.text:__TI_renormd)
-                  0001662e    000000b2     inv_mpu.obj (.text:mpu_set_sample_rate)
-                  000166e0    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Read)
-                  00016790    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Write)
-                  00016840    000000ae     CYC_SYS_ADC.obj (.text:Read_ADC_Voltage)
-                  000168ee    000000a8     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_str)
-                  00016996    000000a8     ble_api.obj (.text:eBleSrv_ReadCharDescriptorHndlr)
-                  00016a3e    000000a8     ble_api.obj (.text:eBleSrv_ReadCharValHndlr)
-                  00016ae6    000000a6     bt_hci_drv.obj (.text:hci_M2_SET_DeepSleep)
-                  00016b8c    000000a0     CYC_SYS_UART.obj (.text:CYC_SYS_UART1_Initialize)
-                  00016c2c    0000009e     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTlseek)
-                  00016cca    0000009a     gpio.obj (.text:GPIO_setAsOutputPin)
-                  00016d64    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionInputPin)
-                  00016dfe    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionOutputPin)
-                  00016e98    00000098     CYC_IO_JSTK.obj (.text:CYC_IO_JSTK_ReadJoystickData)
-                  00016f30    00000094     rts430x_lc_rd_eabi.lib : fltlid.obj (.text:__mspabi_fltlid)
-                  00016fc4    00000092     le_gatt_command.obj (.text:eGetServerGattWriteCharDesc_Event)
-                  00017056    00000092     le_gatt_command.obj (.text:eGetServerGattWriteCharVal_Event)
-                  000170e8    00000092     le_gatt_command.obj (.text:eGetServerGattWriteWithoutRespCmd_Event)
-                  0001717a    00000090     rts430x_lc_rd_eabi.lib : fputc.obj (.text:fputc)
-                  0001720a    0000008e     ble_api.obj (.text:eBleSrv_AddIncludeToSvc)
-                  00017298    0000008e     rts430x_lc_rd_eabi.lib : memory.obj (.text:free)
-                  00017326    0000008e                            : fs_div.obj (.text)
-                  000173b4    0000008a     CYC_SYS_UART.obj (.text:CYC_SYS_UART0_Initialize)
-                  0001743e    0000008a     ble_api.obj (.text:eBleWaitForSpecificEvent)
-                  000174c8    00000088     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_div)
-                  00017550    00000088                            : _printfi.obj (.text:_ecpy)
-                  000175d8    00000088     le_gatt_command.obj (.text:eGetServerGattReadMulti_Event)
-                  00017660    00000082     ble_api.obj (.text:eBleSrv_SendNotification)
-                  000176e2    00000082     my_profile.obj (.text:eMPInitialise)
-                  00017764    00000080     CYC_IO_MOTS_Config.obj (.text:get_mpu_data)
-                  000177e4    00000080     rts430x_lc_rd_eabi.lib : ltoa.obj (.text:ltoa)
-                  00017864    00000080     inv_mpu.obj (.text:mpu_set_dmp_state)
-                  000178e4    0000007e     ucs.obj (.text:UCS_LFXT1Start)
-                  00017962    0000007e     rts430x_lc_rd_eabi.lib : _io_perm.obj (.text:__TI_wrt_ok)
-                  000179e0    0000007e                            : _printfi.obj (.text:_mcpy)
-                  00017a5e    0000007e                            : _printfi.obj (.text:_pconv_f)
-                  00017adc    0000007e     inv_mpu.obj (.text:mpu_set_gyro_fsr)
-                  00017b5a    0000007c     ble_api.obj (.text:eBleSrv_ClientMtuExchangeHndlr)
-                  00017bd6    0000007c     inv_mpu.obj (.text:mpu_set_lpf)
-                  00017c52    0000007a     Event_Handler.obj (.text:RunEventHandler)
-                  00017ccc    0000007a     inv_mpu.obj (.text:mpu_read_mem)
-                  00017d46    0000007a     inv_mpu.obj (.text:mpu_write_mem)
-                  00017dc0    00000078     ble_api.obj (.text:eBleDeviceSrv_Init)
-                  00017e38    00000078     my_profile.obj (.text:eMPAddDevIdentService)
-                  00017eb0    00000078     inv_mpu.obj (.text:mpu_set_accel_fsr)
-                  00017f28    00000078     gpio.obj (.text:privateGPIOGetBaseAddress)
-                  00017fa0    00000076     gpio.obj (.text:GPIO_setOutputHighOnPin)
-                  00018016    00000076     gpio.obj (.text:GPIO_setOutputLowOnPin)
-                  0001808c    00000076     le_gatt_command.obj (.text:eSetSdbGattAddCharacterDecl_Req)
-                  00018102    00000074     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTrename)
-                  00018176    00000074     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_fifo_rate)
-                  000181ea    00000074     inv_mpu.obj (.text:set_int_enable)
-                  0001825e    00000072     bt_mng_drv.obj (.text:tcu_MNG_INIT_REQ)
-                  000182d0    00000070     rts430x_lc_rd_eabi.lib : fclose.obj (.text:__TI_closefile)
-                  00018340    0000006e                            : trgdrv.obj (.text:HOSTopen)
-                  000183ae    0000006e                            : autoinit.obj (.text:_auto_init_hold_wdt)
-                  0001841c    0000006e     le_gatt_command.obj (.text:eGetServerGattExgMtuAccept_Resp)
-                  0001848a    0000006c     CYC_SYS_UART.obj (.text:CYC_SYS_UART_TransmitData)
-                  000184f6    0000006c     gpio.obj (.text:GPIO_getInputPinValue)
-                  00018562    0000006c     le_gatt_command.obj (.text:eSetServerGattCharValNotification_Req)
-                  000185ce    0000006a     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTwrite)
-                  00018638    0000006a     le_gatt_command.obj (.text:eSetSdbGattAddInclSvc_Req)
-                  000186a2    0000006a     le_gatt_command.obj (.text:eSetSdbGattUpdateCharacterEle_Req)
-                  0001870c    0000006a     rts430x_lc_rd_eabi.lib : fseek.obj (.text:fseek)
-                  00018776    00000068                            : trgdrv.obj (.text:HOSTread)
-                  000187de    00000068                            : fixdul.obj (.text:__mspabi_fixdul)
-                  00018846    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
-                  000188ac    00000066     ble_api.obj (.text:eBleExtractDataEventMng)
-                  00018912    00000066     le_gatt_command.obj (.text:eSetServerGattReadMultiAccept_Req)
-                  00018978    00000066     inv_mpu.obj (.text:mpu_configure_fifo)
-                  000189de    00000064     rts430x_lc_rd_eabi.lib : fflush.obj (.text:__TI_doflush)
-                  00018a42    00000064     le_gatt_command.obj (.text:eGetServerGattExgMtu_Event)
-                  00018aa6    00000064     msp430_interrupt.obj (.text:msp430_int_enable)
-                  00018b0a    00000062     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  00018b6c    00000062                            : atoi.obj (.text:atoi)
-                  00018bce    00000060     CYC_SYS_PWM.obj (.text:CYC_SYS_PWM_InitPWMTimer)
-                  00018c2e    00000060     inv_mpu.obj (.text:mpu_set_int_latched)
-                  00018c8e    0000005e     le_gatt_command.obj (.text:eGetServerGattReadCharDescriptor_Event)
-                  00018cec    0000005e     le_gatt_command.obj (.text:eGetServerGattReadCharVal_Event)
-                  00018d4a    0000005e     le_gatt_command.obj (.text:eSetServerGattReadCharValAccept_Resp)
-                  00018da8    0000005c     ble_api.obj (.text:eBleSrv_AddPrimServiceAttributes)
-                  00018e04    0000005a     rts430x_lc_rd_eabi.lib : mult64_f5hw.obj (.text:__mpyll)
-                  00018e5e    0000005a                            : lowlev.obj (.text:close)
-                  00018eb8    0000005a     le_gatt_command.obj (.text:eGetLeDisconnect_Event)
-                  00018f12    0000005a     le_gatt_command.obj (.text:eSetLeMngInit_Req)
-                  00018f6c    0000005a     le_gatt_command.obj (.text:eSetSdbGattAddPrimaryService_Req)
-                  00018fc6    0000005a     rts430x_lc_rd_eabi.lib : lowlev.obj (.text:getdevice)
-                  00019020    0000005a     inv_mpu.obj (.text:mpu_set_compass_sample_rate)
-                  0001907a    00000058     adc12_a.obj (.text:ADC12_A_init)
-                  000190d2    00000058     rts430x_lc_rd_eabi.lib : div32u.obj (.text)
-                  0001912a    00000056     gpio.obj (.text:GPIO_interruptEdgeSelect)
-                  00019180    00000056     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_thresh)
-                  000191d6    00000052     ble_api.obj (.text:eBlePerif_StartAdv)
-                  00019228    00000050     rts430x_lc_rd_eabi.lib : xdclass.obj (.text:_Dclass)
-                  00019278    00000050     inv_mpu_dmp_motion_driver.obj (.text:decode_gesture)
-                  000192c8    0000004e     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_fcpy)
-                  00019316    0000004e     le_gatt_command.obj (.text:eGetSdbGattAddCharacterDecl_Resp)
-                  00019364    0000004e     le_gatt_command.obj (.text:eGetSdbGattAddCharacterEle_Resp)
-                  000193b2    0000004e     bt_hci_drv.obj (.text:hci_Get_Version)
-                  00019400    0000004e     bluetooth.obj (.text:init_bluetooth)
-                  0001944e    0000004c     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTclose)
-                  0001949a    0000004c     ble_api.obj (.text:eBleSrv_GetEndGroupHandle)
-                  000194e6    0000004c     le_gatt_command.obj (.text:eGetSdbGattAddInclSvc_Resp)
-                  00019532    0000004c     le_gatt_command.obj (.text:eGetSdbGattAddPrimaryService_Resp)
-                  0001957e    0000004c     le_gatt_command.obj (.text:eGetSdbGattReturnEndGroupHandle_Resp)
-                  000195ca    0000004c     le_gatt_command.obj (.text:eGetServerGattReadCharDescriptorAccept_Resp)
-                  00019616    0000004c     le_gatt_command.obj (.text:eGetServerGattReadMultiAccept_Resp)
-                  00019662    0000004c     le_gatt_command.obj (.text:eGetServerGattWriteCharDespAccept_Resp)
-                  000196ae    0000004c     le_gatt_command.obj (.text:eGetServerGattWriteCharValAccept_Resp)
-                  000196fa    0000004a     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_InitializeUserButtons)
-                  00019744    0000004a     rts430x_lc_rd_eabi.lib : printf.obj (.text:printf)
-                  0001978e    00000048     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_gyro_cal)
-                  000197d6    00000048     le_gatt_command.obj (.text:eGetServerGattExgMtuAccept_Req)
-                  0001981e    00000048     le_gatt_command.obj (.text:eSetServerGattReadCharDescriptorAccept_Req)
-                  00019866    00000048     le_gatt_command.obj (.text:eSetServerGattReadCharValAccept_Req)
-                  000198ae    00000048     le_gatt_command.obj (.text:eSetServerGattWriteCharDescAccept_Req)
-                  000198f6    00000048     le_gatt_command.obj (.text:eSetServerGattWriteCharValAccept_Req)
-                  0001993e    00000046     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_ReadUserButtonsStatus)
-                  00019984    00000046     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTunlink)
-                  000199ca    00000046                            : _printfi.obj (.text:_pproc_fflags)
-                  00019a10    00000046     le_gatt_command.obj (.text:eGetServerGattValIndication_Event)
-                  00019a56    00000046     rts430x_lc_rd_eabi.lib : fs_tou.obj (.text)
-                  00019a9c    00000044     gpio.obj (.text:GPIO_clearInterruptFlag)
-                  00019ae0    00000044     gpio.obj (.text:GPIO_enableInterrupt)
-                  00019b24    00000044     Event_Handler.obj (.text:GetEventFromQueue)
-                  00019b68    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_6x_lp_quat)
-                  00019bac    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_lp_quat)
-                  00019bf0    00000044     le_gatt_command.obj (.text:eGetLeAccept_Ack)
-                  00019c34    00000042     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_EnableTimer1)
-                  00019c76    00000042     rts430x_lc_rd_eabi.lib : memory.obj (.text:minit)
-                  00019cb8    00000040     adc12_a.obj (.text:ADC12_A_disableInterrupt)
-                  00019cf8    00000040     adc12_a.obj (.text:ADC12_A_enableInterrupt)
-                  00019d38    00000040     CYC_SYS_Init.obj (.text:CYC_SYS_InitializeTarget)
-                  00019d78    00000040     inv_mpu.obj (.text:mpu_get_accel_fsr)
-                  00019db8    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
-                  00019df8    0000003e     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_DelayInMilliSeconds)
-                  00019e36    0000003e     ble_api.obj (.text:eBleSrv_UpdateCharacteristic)
-                  00019e74    0000003e     bt_hci_drv.obj (.text:hci_Write_BD_ADDR)
-                  00019eb2    0000003e     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr_const)
-                  00019ef0    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00019f2e    0000003e                            : lsr32.obj (.text:l_lsr_const)
-                  00019f6c    0000003e                            : lowlev.obj (.text:lseek)
-                  00019faa    0000003c                            : lowlev.obj (.text:write)
-                  00019fe6    0000003a     pmm.obj (.text:PMM_setVCore)
-                  0001a020    0000003a     CYC_IO_KEYS.obj (.text:ReadAllButtons)
-                  0001a05a    0000003a     rts430x_lc_rd_eabi.lib : llmath.obj (.text:__mspabi_sllll)
-                  0001a094    0000003a                            : llmath.obj (.text:__mspabi_srlll)
-                  0001a0ce    0000003a     le_gatt_command.obj (.text:eGetLeMngInit_Resp)
-                  0001a108    0000003a     my_profile.obj (.text:transmit_bluetooth_packet)
-                  0001a142    00000038     Event_Handler.obj (.text:AddEventToQueue)
-                  0001a17a    00000038     ble_api.obj (.text:eBleExtractData)
-                  0001a1b2    00000038     le_gatt_command.obj (.text:eGetServerGattValNotify_Event)
-                  0001a1ea    00000036     ucs.obj (.text:UCS_initFLLSettle)
-                  0001a220    00000036     rts430x_lc_rd_eabi.lib : fopen.obj (.text:__TI_cleanup)
-                  0001a256    00000036                            : trgmsg.obj (.text:__TI_writemsg)
-                  0001a28c    00000034     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_axes)
-                  0001a2c0    00000034     le_gatt_command.obj (.text:eSetSdbGattReturnEndGroupHandle_Req)
-                  0001a2f4    00000032     adc12_a.obj (.text:ADC12_A_startConversion)
-                  0001a326    00000032     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_InitTimer1)
-                  0001a358    00000032     rts430x_lc_rd_eabi.lib : trgmsg.obj (.text:__TI_readmsg)
-                  0001a38a    00000032                            : subd.obj (.text:__mspabi_subd)
-                  0001a3bc    00000032     bt_hci_drv.obj (.text:hci_SET_MODE)
-                  0001a3ee    00000032     rts430x_lc_rd_eabi.lib : strncpy.obj (.text:strncpy)
-                  0001a420    00000030                            : lowlev.obj (.text:unlink)
-                  0001a450    0000002e     CYC_SYS_Timer.obj (.text:InitTimer)
-                  0001a47e    0000002e     rts430x_lc_rd_eabi.lib : negd.obj (.text:__mspabi_negd)
-                  0001a4ac    0000002e                            : exit.obj (.text:exit)
-                  0001a4da    0000002e                            : lowlev.obj (.text:finddevice)
-                  0001a508    0000002e     le_gatt_command.obj (.text:vCopyArrayParams)
-                  0001a536    0000002c     ble_api.obj (.text:eBleApiInit)
-                  0001a562    0000002c     le_gatt_command.obj (.text:eSendData)
-                  0001a58e    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
-                  0001a5ba    0000002a     adc12_a.obj (.text:ADC12_A_memoryConfigure)
-                  0001a5e4    00000028     adc12_a.obj (.text:ADC12_A_setupSamplingTimer)
-                  0001a60c    00000028     ucs.obj (.text:UCS_clearAllOscFlagsWithTimeout)
-                  0001a634    00000028     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_count)
-                  0001a65c    00000028     CYC_BBU_APP_Demo_v3.obj (.text:main)
-                  0001a684    00000026     usci_uart.obj (.text:USCI_UART_enableInterrupt)
-                  0001a6aa    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_time)
-                  0001a6d0    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_timeout)
-                  0001a6f6    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time)
-                  0001a71c    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time_multi)
-                  0001a742    00000026     le_gatt_command.obj (.text:eGetSdbGattUpdateCharacterEle_Resp)
-                  0001a768    00000026     le_gatt_command.obj (.text:eGetServerGattInit_Resp)
-                  0001a78e    00000026     rts430x_lc_rd_eabi.lib : memcmp.obj (.text:memcmp)
-                  0001a7b4    00000026     le_gatt_command.obj (.text:u16SetCmdHeaderUserLen)
-                  0001a7da    00000024     ucs.obj (.text:UCS_getACLK)
-                  0001a7fe    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  0001a822    00000024     le_gatt_command.obj (.text:eGetLeDisableAdvertise_Resp)
-                  0001a846    00000024     le_gatt_command.obj (.text:eGetLeStartAdvertise_Resp)
-                  0001a86a    00000024     rts430x_lc_rd_eabi.lib : fs_utof.obj (.text)
-                  0001a88e    00000022     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_GetInputPinStatus)
-                  0001a8b0    00000022     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Disable)
-                  0001a8d2    00000022     bt_hci_drv.obj (.text:hci_RESET)
-                  0001a8f4    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
-                  0001a916    00000022     le_gatt_command.obj (.text:u16AutoSetCmdHeader)
-                  0001a938    00000022     ble_api.obj (.text:vAppCallback)
-                  0001a95a    00000022     le_gatt_command.obj (.text:vWrite2Array_16)
-                  0001a97c    00000020     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_ReadNavButtonStatus)
-                  0001a99c    00000020     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_GetClockMs)
-                  0001a9bc    00000020     CYC_BBU_APP_Demo_v3.obj (.text:InitSeebrightController)
-                  0001a9dc    00000020     ucs.obj (.text:UCS_getSMCLK)
-                  0001a9fc    00000020     le_gatt_command.obj (.text:eIsCmdMatching)
-                  0001aa1c    00000020     bt_hci_drv.obj (.text:hci_Patch13_RF_LE_param)
-                  0001aa3c    00000020     bt_hci_drv.obj (.text:hci_Patch14_RF_LE_param)
-                  0001aa5c    00000020     bt_hci_drv.obj (.text:hci_Patch15_RF_LE_param)
-                  0001aa7c    00000020     rts430x_lc_rd_eabi.lib : memccpy.obj (.text:memccpy)
-                  0001aa9c    0000001e     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_ReadTriggerButtonStatus)
-                  0001aaba    0000001c     CYC_IO_LEDS.obj (.text:CYC_IO_LEDS_IntializeLEDs)
-                  0001aad6    0000001c     ucs.obj (.text:UCS_getMCLK)
-                  0001aaf2    0000001c     my_profile.obj (.text:eUpdateMulti)
-                  0001ab0e    0000001c     rts430x_lc_rd_eabi.lib : strcmp.obj (.text:strcmp)
-                  0001ab2a    0000001a     ucs.obj (.text:UCS_setExternalClockSource)
-                  0001ab44    0000001a     le_gatt_command.obj (.text:eSetServerGattInit_Req)
-                  0001ab5e    0000001a     rts430x_lc_rd_eabi.lib : strchr.obj (.text:strchr)
-                  0001ab78    00000018     Event_Handler.obj (.text:InitQueue)
-                  0001ab90    00000018     inv_mpu_dmp_motion_driver.obj (.text:dmp_load_motion_driver_firmware)
-                  0001aba8    00000018     my_profile.obj (.text:eUpdateCharValue)
-                  0001abc0    00000016     adc12_a.obj (.text:ADC12_A_setResolution)
-                  0001abd6    00000016     CYC_SYS_Timer.obj (.text:IsTimerExpired)
-                  0001abec    00000016     rts430x_lc_rd_eabi.lib : memchr.obj (.text:memchr)
-                  0001ac02    00000016                            : memset.obj (.text:memset)
-                  0001ac18    00000016                            : div16u.obj (.text)
-                  0001ac2e    00000016                            : mult16_f5hw.obj (.text)
-                  0001ac44    00000014     adc12_a.obj (.text:ADC12_A_setDataReadBackFormat)
-                  0001ac58    00000014     CYC_SYS_Timer.obj (.text:ClearTimerExpiredFlag)
-                  0001ac6c    00000014     ble_api.obj (.text:eBleRegisterCallback_CharDescUpdate)
-                  0001ac80    00000014     ble_api.obj (.text:eBleRegisterCallback_CharValUpdate)
-                  0001ac94    00000014     ble_api.obj (.text:eBleRegisterCallback_MultiUpdate)
-                  0001aca8    00000014     ble_api.obj (.text:eBleRegisterCallback_UnexpEvnt)
-                  0001acbc    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
-                  0001acd0    00000014     ble_api.obj (.text:vSmartProcessPacket)
-                  0001ace4    00000012     rts430x_lc_rd_eabi.lib : fixdu.obj (.text:__mspabi_fixdu)
-                  0001acf6    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  0001ad08    00000012                            : strcpy.obj (.text:strcpy)
-                  0001ad1a    00000012                            : toupper.obj (.text:toupper)
-                  0001ad2c    00000012     le_gatt_command.obj (.text:vWrite2Array_8)
-                  0001ad3e    00000010     adc12_a.obj (.text:ADC12_A_getResults)
-                  0001ad4e    00000010     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr)
-                  0001ad5e    00000010                            : lsl32.obj (.text:l_lsl)
-                  0001ad6e    00000010                            : lsr32.obj (.text:l_lsr)
-                  0001ad7e    0000000e     bt_uart_INT.obj (.text:send_tx)
-                  0001ad8c    0000000e     rts430x_lc_rd_eabi.lib : strlen.obj (.text:strlen)
-                  0001ad9a    0000000e     CYC_IO_MOTS_Config.obj (.text:tap_cb)
-                  0001ada8    0000000c     adc12_a.obj (.text:ADC12_A_clearInterrupt)
-                  0001adb4    0000000c     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_InitializeNavButton)
-                  0001adc0    0000000c     Event_Handler.obj (.text:InitEventHandler)
-                  0001adcc    0000000c     usci_uart.obj (.text:USCI_UART_clearInterruptFlag)
-                  0001add8    0000000c     ble_api.obj (.text:eBleSrv_ClientConnRequestHndlr)
-                  0001ade4    0000000c     le_gatt_command.obj (.text:vSetCmdLength)
-                  0001adf0    0000000a     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_InitializeTriggerButton)
-                  0001adfa    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_InterruptEdgeSelect)
-                  0001ae04    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetAsInputPin)
-                  0001ae0e    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetPeripheralPinAsInput)
-                  0001ae18    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetPeripheralPinAsOutput)
-                  0001ae22    0000000a     sfr.obj (.text:SFR_clearInterrupt)
-                  0001ae2c    0000000a     usci_uart.obj (.text:USCI_UART_queryStatusFlags)
-                  0001ae36    0000000a     usci_uart.obj (.text:USCI_UART_transmitData)
-                  0001ae40    0000000a     rts430x_lc_rd_eabi.lib : abs.obj (.text:abs)
-                  0001ae4a    0000000a     CYC_IO_MOTS_Config.obj (.text:gyro_data_ready_cb)
-                  0001ae54    0000000a     rts430x_lc_rd_eabi.lib : lsl16.obj (.text)
-                  0001ae5e    0000000a                            : lsr16.obj (.text)
-                  0001ae68    00000008     adc12_a.obj (.text:ADC12_A_enable)
-                  0001ae70    00000008     CYC_SYS_Reset.obj (.text:CYC_SYS_RST_StopWatchdog)
-                  0001ae78    00000008     usci_uart.obj (.text:USCI_UART_receiveData)
-                  0001ae80    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_android_orient_cb)
-                  0001ae88    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_tap_cb)
-                  0001ae90    00000006     msp430_interrupt.obj (.text:ClearMPU_9250InterruptFlag)
-                  0001ae96    00000006     msp430_interrupt.obj (.text:GetMPU_9250FlagStatus)
-                  0001ae9c    00000006     sfr.obj (.text:SFR_enableInterrupt)
-                  0001aea2    00000006     usci_uart.obj (.text:USCI_UART_enable)
-                  0001aea8    00000006     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:__TI_ISR_TRAP)
-                  0001aeae    00000006                            : printf.obj (.text:_outc)
-                  0001aeb4    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  0001aeba    00000006     ble_api.obj (.text:eBleExtractDataEventGattCli)
-                  0001aec0    00000004     rts430x_lc_rd_eabi.lib : printf.obj (.text:_outs)
-                  0001aec4    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  0001aec8    00000004                            : exit.obj (.text:abort)
-                  0001aecc    00000004     my_profile.obj (.text:eUpdateCharDescriptor)
-                  0001aed0    00000002     rts430x_lc_rd_eabi.lib : _lock.obj (.text:_nop)
-                  0001aed2    00000002     CYC_IO_MOTS_Config.obj (.text:android_orient_cb)
-                  0001aed4    00000002     my_profile.obj (.text:vPrintUnexpectedCMD)
+                  00012bb6    00000202     CYC_BBU_APP_Demo_v3.obj (.text:led_color_changer)
+                  00012db8    000001f8     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_fge)
+                  00012fb0    000001d4     inv_mpu.obj (.text:mpu_reset_fifo)
+                  00013184    000001aa     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_e)
+                  0001332e    0000019e     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_thresh)
+                  000134cc    0000019c     CYC_IO_MOTS_Config.obj (.text:CYC_IO_MOTS_Init)
+                  00013668    0000019a     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_orientation)
+                  00013802    00000188     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_getarg_diouxp)
+                  0001398a    00000188     my_profile.obj (.text:eMPStartAdvertising)
+                  00013b12    00000182     pmm.obj (.text:PMM_setVCoreUp)
+                  00013c94    00000182     CYC_BBU_APP_Demo_v3.obj (.text:RunControllerFSM)
+                  00013e16    00000178     bt_spp_api.obj (.text:BT_hci_init)
+                  00013f8e    00000154     inv_mpu.obj (.text:mpu_init)
+                  000140e2    00000154     inv_mpu.obj (.text:mpu_set_sensors)
+                  00014236    0000014c     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_diouxp)
+                  00014382    0000013e     ble_api.obj (.text:eBleSrv_RegisterPrimaryService)
+                  000144c0    0000013c     inv_mpu.obj (.text:mpu_set_bypass)
+                  000145fc    0000013c     ucs.obj (.text:privateUCSSourceClockFromDCO)
+                  00014738    00000138     ble_api.obj (.text:eBleExtractDataEventGattSer)
+                  00014870    00000134     ble_api.obj (.text:eBleSrv_AddCharacteristic)
+                  000149a4    00000130     my_profile_demo.obj (.text:my_profile_DEMO)
+                  00014ad4    00000128     ucs.obj (.text:UCS_initFLL)
+                  00014bfc    0000011e     ucs.obj (.text:privateUCSComputeCLKFrequency)
+                  00014d1a    00000114     le_gatt_command.obj (.text:eSetLeStartAdvertise_Req)
+                  00014e2e    0000010e     my_profile.obj (.text:MPMainRoutine)
+                  00014f3c    0000010e     le_gatt_command.obj (.text:eGetLeMngConnComplete_Event)
+                  0001504a    0000010c     ucs.obj (.text:UCS_clockSignalInit)
+                  00015156    0000010c     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_g)
+                  00015262    0000010a     inv_mpu.obj (.text:mpu_lp_accel_mode)
+                  0001536c    00000102     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_ltostr)
+                  0001546e    000000fe     bt_error.obj (.text:errorCode)
+                  0001556c    000000fa     pmm.obj (.text:PMM_setVCoreDown)
+                  00015666    000000fa     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_fwp)
+                  00015760    000000f8     CYC_SYS_ADC.obj (.text:CYC_SYS_ADC_Init)
+                  00015858    000000f6     bt_uart_INT.obj (.text:bt_uart_manager)
+                  0001594e    000000f4     CYC_SYS_Clock.obj (.text:CYC_SYS_CLK_SetSystemClock)
+                  00015a42    000000f0     rts430x_lc_rd_eabi.lib : fputs.obj (.text:fputs)
+                  00015b32    000000e4     usci_uart.obj (.text:USCI_UART_initAdvance)
+                  00015c16    000000e4     my_profile.obj (.text:eMPAddGAPDevName_Appearance_Service)
+                  00015cfa    000000e0     my_profile.obj (.text:eMPAdd_controller_Service)
+                  00015dda    000000e0     rts430x_lc_rd_eabi.lib : setvbuf.obj (.text:setvbuf)
+                  00015eba    000000d8                            : cmpd.obj (.text:__mspabi_cmpd)
+                  00015f92    000000d8     msp430_interrupt.obj (.text:msp430_reg_int_cb)
+                  0001606a    000000c2     inv_mpu.obj (.text:mpu_load_firmware)
+                  0001612c    000000c2     inv_mpu.obj (.text:mpu_read_fifo_stream)
+                  000161ee    000000c0     le_gatt_command.obj (.text:eSetSdbGattAddCharacterEle_Req)
+                  000162ae    000000be     gpio.obj (.text:GPIO_setAsInputPin)
+                  0001636c    000000ba     ble_api.obj (.text:eBleSrv_ReadMultiEventHndlr)
+                  00016426    000000ba     ble_api.obj (.text:eBleSrv_WriteCharDescriptorHndlr)
+                  000164e0    000000ba     ble_api.obj (.text:eBleSrv_WriteCharValueHndlr)
+                  0001659a    000000ba     rts430x_lc_rd_eabi.lib : memory.obj (.text:malloc)
+                  00016654    000000b8     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Enable)
+                  0001670c    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
+                  000167c2    000000b2                            : renormd.obj (.text:__TI_renormd)
+                  00016874    000000b2     inv_mpu.obj (.text:mpu_set_sample_rate)
+                  00016926    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Read)
+                  000169d6    000000b0     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Write)
+                  00016a86    000000ae     CYC_SYS_ADC.obj (.text:Read_ADC_Voltage)
+                  00016b34    000000a8     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pproc_str)
+                  00016bdc    000000a8     ble_api.obj (.text:eBleSrv_ReadCharDescriptorHndlr)
+                  00016c84    000000a8     ble_api.obj (.text:eBleSrv_ReadCharValHndlr)
+                  00016d2c    000000a6     bt_hci_drv.obj (.text:hci_M2_SET_DeepSleep)
+                  00016dd2    000000a0     CYC_SYS_UART.obj (.text:CYC_SYS_UART1_Initialize)
+                  00016e72    0000009e     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTlseek)
+                  00016f10    0000009a     gpio.obj (.text:GPIO_setAsOutputPin)
+                  00016faa    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionInputPin)
+                  00017044    0000009a     gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionOutputPin)
+                  000170de    00000098     CYC_IO_JSTK.obj (.text:CYC_IO_JSTK_ReadJoystickData)
+                  00017176    00000094     rts430x_lc_rd_eabi.lib : fltlid.obj (.text:__mspabi_fltlid)
+                  0001720a    00000092     le_gatt_command.obj (.text:eGetServerGattWriteCharDesc_Event)
+                  0001729c    00000092     le_gatt_command.obj (.text:eGetServerGattWriteCharVal_Event)
+                  0001732e    00000092     le_gatt_command.obj (.text:eGetServerGattWriteWithoutRespCmd_Event)
+                  000173c0    00000090     rts430x_lc_rd_eabi.lib : fputc.obj (.text:fputc)
+                  00017450    0000008e     ble_api.obj (.text:eBleSrv_AddIncludeToSvc)
+                  000174de    0000008e     rts430x_lc_rd_eabi.lib : memory.obj (.text:free)
+                  0001756c    0000008e                            : fs_div.obj (.text)
+                  000175fa    0000008a     CYC_SYS_UART.obj (.text:CYC_SYS_UART0_Initialize)
+                  00017684    0000008a     ble_api.obj (.text:eBleWaitForSpecificEvent)
+                  0001770e    00000088     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_div)
+                  00017796    00000088                            : _printfi.obj (.text:_ecpy)
+                  0001781e    00000088     le_gatt_command.obj (.text:eGetServerGattReadMulti_Event)
+                  000178a6    00000082     ble_api.obj (.text:eBleSrv_SendNotification)
+                  00017928    00000082     my_profile.obj (.text:eMPInitialise)
+                  000179aa    00000080     CYC_IO_MOTS_Config.obj (.text:get_mpu_data)
+                  00017a2a    00000080     rts430x_lc_rd_eabi.lib : ltoa.obj (.text:ltoa)
+                  00017aaa    00000080     inv_mpu.obj (.text:mpu_set_dmp_state)
+                  00017b2a    0000007e     ucs.obj (.text:UCS_LFXT1Start)
+                  00017ba8    0000007e     rts430x_lc_rd_eabi.lib : _io_perm.obj (.text:__TI_wrt_ok)
+                  00017c26    0000007e                            : _printfi.obj (.text:_mcpy)
+                  00017ca4    0000007e                            : _printfi.obj (.text:_pconv_f)
+                  00017d22    0000007e     inv_mpu.obj (.text:mpu_set_gyro_fsr)
+                  00017da0    0000007c     ble_api.obj (.text:eBleSrv_ClientMtuExchangeHndlr)
+                  00017e1c    0000007c     inv_mpu.obj (.text:mpu_set_lpf)
+                  00017e98    0000007a     Event_Handler.obj (.text:RunEventHandler)
+                  00017f12    0000007a     inv_mpu.obj (.text:mpu_read_mem)
+                  00017f8c    0000007a     inv_mpu.obj (.text:mpu_write_mem)
+                  00018006    00000078     ble_api.obj (.text:eBleDeviceSrv_Init)
+                  0001807e    00000078     my_profile.obj (.text:eMPAddDevIdentService)
+                  000180f6    00000078     inv_mpu.obj (.text:mpu_set_accel_fsr)
+                  0001816e    00000078     gpio.obj (.text:privateGPIOGetBaseAddress)
+                  000181e6    00000076     gpio.obj (.text:GPIO_setOutputHighOnPin)
+                  0001825c    00000076     gpio.obj (.text:GPIO_setOutputLowOnPin)
+                  000182d2    00000076     le_gatt_command.obj (.text:eSetSdbGattAddCharacterDecl_Req)
+                  00018348    00000074     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTrename)
+                  000183bc    00000074     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_fifo_rate)
+                  00018430    00000074     inv_mpu.obj (.text:set_int_enable)
+                  000184a4    00000072     bt_mng_drv.obj (.text:tcu_MNG_INIT_REQ)
+                  00018516    00000070     rts430x_lc_rd_eabi.lib : fclose.obj (.text:__TI_closefile)
+                  00018586    0000006e                            : trgdrv.obj (.text:HOSTopen)
+                  000185f4    0000006e                            : autoinit.obj (.text:_auto_init_hold_wdt)
+                  00018662    0000006e     le_gatt_command.obj (.text:eGetServerGattExgMtuAccept_Resp)
+                  000186d0    0000006c     CYC_SYS_UART.obj (.text:CYC_SYS_UART_TransmitData)
+                  0001873c    0000006c     gpio.obj (.text:GPIO_getInputPinValue)
+                  000187a8    0000006c     le_gatt_command.obj (.text:eSetServerGattCharValNotification_Req)
+                  00018814    0000006a     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTwrite)
+                  0001887e    0000006a     le_gatt_command.obj (.text:eSetSdbGattAddInclSvc_Req)
+                  000188e8    0000006a     le_gatt_command.obj (.text:eSetSdbGattUpdateCharacterEle_Req)
+                  00018952    0000006a     rts430x_lc_rd_eabi.lib : fseek.obj (.text:fseek)
+                  000189bc    00000068                            : trgdrv.obj (.text:HOSTread)
+                  00018a24    00000068                            : fixdul.obj (.text:__mspabi_fixdul)
+                  00018a8c    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
+                  00018af2    00000066     ble_api.obj (.text:eBleExtractDataEventMng)
+                  00018b58    00000066     le_gatt_command.obj (.text:eSetServerGattReadMultiAccept_Req)
+                  00018bbe    00000066     inv_mpu.obj (.text:mpu_configure_fifo)
+                  00018c24    00000064     rts430x_lc_rd_eabi.lib : fflush.obj (.text:__TI_doflush)
+                  00018c88    00000064     le_gatt_command.obj (.text:eGetServerGattExgMtu_Event)
+                  00018cec    00000064     msp430_interrupt.obj (.text:msp430_int_enable)
+                  00018d50    00000062     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  00018db2    00000062                            : atoi.obj (.text:atoi)
+                  00018e14    00000060     CYC_SYS_PWM.obj (.text:CYC_SYS_PWM_InitPWMTimer)
+                  00018e74    00000060     inv_mpu.obj (.text:mpu_set_int_latched)
+                  00018ed4    0000005e     le_gatt_command.obj (.text:eGetServerGattReadCharDescriptor_Event)
+                  00018f32    0000005e     le_gatt_command.obj (.text:eGetServerGattReadCharVal_Event)
+                  00018f90    0000005e     le_gatt_command.obj (.text:eSetServerGattReadCharValAccept_Resp)
+                  00018fee    0000005c     ble_api.obj (.text:eBleSrv_AddPrimServiceAttributes)
+                  0001904a    0000005a     rts430x_lc_rd_eabi.lib : mult64_f5hw.obj (.text:__mpyll)
+                  000190a4    0000005a                            : lowlev.obj (.text:close)
+                  000190fe    0000005a     le_gatt_command.obj (.text:eGetLeDisconnect_Event)
+                  00019158    0000005a     le_gatt_command.obj (.text:eSetLeMngInit_Req)
+                  000191b2    0000005a     le_gatt_command.obj (.text:eSetSdbGattAddPrimaryService_Req)
+                  0001920c    0000005a     rts430x_lc_rd_eabi.lib : lowlev.obj (.text:getdevice)
+                  00019266    0000005a     inv_mpu.obj (.text:mpu_set_compass_sample_rate)
+                  000192c0    00000058     adc12_a.obj (.text:ADC12_A_init)
+                  00019318    00000058     rts430x_lc_rd_eabi.lib : div32u.obj (.text)
+                  00019370    00000056     gpio.obj (.text:GPIO_interruptEdgeSelect)
+                  000193c6    00000056     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_thresh)
+                  0001941c    00000052     CYC_SYS_PWM.obj (.text:CYC_SYS_PWM_SetDutyCycle)
+                  0001946e    00000052     ble_api.obj (.text:eBlePerif_StartAdv)
+                  000194c0    00000050     rts430x_lc_rd_eabi.lib : xdclass.obj (.text:_Dclass)
+                  00019510    00000050     inv_mpu_dmp_motion_driver.obj (.text:decode_gesture)
+                  00019560    0000004e     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_fcpy)
+                  000195ae    0000004e     le_gatt_command.obj (.text:eGetSdbGattAddCharacterDecl_Resp)
+                  000195fc    0000004e     le_gatt_command.obj (.text:eGetSdbGattAddCharacterEle_Resp)
+                  0001964a    0000004e     bt_hci_drv.obj (.text:hci_Get_Version)
+                  00019698    0000004e     bluetooth.obj (.text:init_bluetooth)
+                  000196e6    0000004c     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTclose)
+                  00019732    0000004c     ble_api.obj (.text:eBleSrv_GetEndGroupHandle)
+                  0001977e    0000004c     le_gatt_command.obj (.text:eGetSdbGattAddInclSvc_Resp)
+                  000197ca    0000004c     le_gatt_command.obj (.text:eGetSdbGattAddPrimaryService_Resp)
+                  00019816    0000004c     le_gatt_command.obj (.text:eGetSdbGattReturnEndGroupHandle_Resp)
+                  00019862    0000004c     le_gatt_command.obj (.text:eGetServerGattReadCharDescriptorAccept_Resp)
+                  000198ae    0000004c     le_gatt_command.obj (.text:eGetServerGattReadMultiAccept_Resp)
+                  000198fa    0000004c     le_gatt_command.obj (.text:eGetServerGattWriteCharDespAccept_Resp)
+                  00019946    0000004c     le_gatt_command.obj (.text:eGetServerGattWriteCharValAccept_Resp)
+                  00019992    0000004a     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_InitializeUserButtons)
+                  000199dc    0000004a     rts430x_lc_rd_eabi.lib : printf.obj (.text:printf)
+                  00019a26    00000048     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_gyro_cal)
+                  00019a6e    00000048     le_gatt_command.obj (.text:eGetServerGattExgMtuAccept_Req)
+                  00019ab6    00000048     le_gatt_command.obj (.text:eSetServerGattReadCharDescriptorAccept_Req)
+                  00019afe    00000048     le_gatt_command.obj (.text:eSetServerGattReadCharValAccept_Req)
+                  00019b46    00000048     le_gatt_command.obj (.text:eSetServerGattWriteCharDescAccept_Req)
+                  00019b8e    00000048     le_gatt_command.obj (.text:eSetServerGattWriteCharValAccept_Req)
+                  00019bd6    00000046     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_ReadUserButtonsStatus)
+                  00019c1c    00000046     rts430x_lc_rd_eabi.lib : trgdrv.obj (.text:HOSTunlink)
+                  00019c62    00000046                            : _printfi.obj (.text:_pproc_fflags)
+                  00019ca8    00000046     le_gatt_command.obj (.text:eGetServerGattValIndication_Event)
+                  00019cee    00000046     rts430x_lc_rd_eabi.lib : fs_tou.obj (.text)
+                  00019d34    00000044     gpio.obj (.text:GPIO_clearInterruptFlag)
+                  00019d78    00000044     gpio.obj (.text:GPIO_enableInterrupt)
+                  00019dbc    00000044     Event_Handler.obj (.text:GetEventFromQueue)
+                  00019e00    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_6x_lp_quat)
+                  00019e44    00000044     inv_mpu_dmp_motion_driver.obj (.text:dmp_enable_lp_quat)
+                  00019e88    00000044     le_gatt_command.obj (.text:eGetLeAccept_Ack)
+                  00019ecc    00000042     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_EnableTimer1)
+                  00019f0e    00000042     rts430x_lc_rd_eabi.lib : memory.obj (.text:minit)
+                  00019f50    00000040     adc12_a.obj (.text:ADC12_A_disableInterrupt)
+                  00019f90    00000040     adc12_a.obj (.text:ADC12_A_enableInterrupt)
+                  00019fd0    00000040     CYC_SYS_Init.obj (.text:CYC_SYS_InitializeTarget)
+                  0001a010    00000040     inv_mpu.obj (.text:mpu_get_accel_fsr)
+                  0001a050    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
+                  0001a090    0000003e     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_DelayInMilliSeconds)
+                  0001a0ce    0000003e     ble_api.obj (.text:eBleSrv_UpdateCharacteristic)
+                  0001a10c    0000003e     bt_hci_drv.obj (.text:hci_Write_BD_ADDR)
+                  0001a14a    0000003e     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr_const)
+                  0001a188    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  0001a1c6    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  0001a204    0000003e                            : lowlev.obj (.text:lseek)
+                  0001a242    0000003c                            : lowlev.obj (.text:write)
+                  0001a27e    0000003a     pmm.obj (.text:PMM_setVCore)
+                  0001a2b8    0000003a     CYC_IO_KEYS.obj (.text:ReadAllButtons)
+                  0001a2f2    0000003a     rts430x_lc_rd_eabi.lib : llmath.obj (.text:__mspabi_sllll)
+                  0001a32c    0000003a                            : llmath.obj (.text:__mspabi_srlll)
+                  0001a366    0000003a     le_gatt_command.obj (.text:eGetLeMngInit_Resp)
+                  0001a3a0    0000003a     my_profile.obj (.text:transmit_bluetooth_packet)
+                  0001a3da    00000038     Event_Handler.obj (.text:AddEventToQueue)
+                  0001a412    00000038     ble_api.obj (.text:eBleExtractData)
+                  0001a44a    00000038     le_gatt_command.obj (.text:eGetServerGattValNotify_Event)
+                  0001a482    00000036     ucs.obj (.text:UCS_initFLLSettle)
+                  0001a4b8    00000036     rts430x_lc_rd_eabi.lib : fopen.obj (.text:__TI_cleanup)
+                  0001a4ee    00000036                            : trgmsg.obj (.text:__TI_writemsg)
+                  0001a524    00000034     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_axes)
+                  0001a558    00000034     le_gatt_command.obj (.text:eSetSdbGattReturnEndGroupHandle_Req)
+                  0001a58c    00000032     adc12_a.obj (.text:ADC12_A_startConversion)
+                  0001a5be    00000032     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_InitTimer1)
+                  0001a5f0    00000032     rts430x_lc_rd_eabi.lib : trgmsg.obj (.text:__TI_readmsg)
+                  0001a622    00000032                            : subd.obj (.text:__mspabi_subd)
+                  0001a654    00000032     bt_hci_drv.obj (.text:hci_SET_MODE)
+                  0001a686    00000032     rts430x_lc_rd_eabi.lib : strncpy.obj (.text:strncpy)
+                  0001a6b8    00000030                            : lowlev.obj (.text:unlink)
+                  0001a6e8    0000002e     CYC_SYS_Timer.obj (.text:InitTimer)
+                  0001a716    0000002e     rts430x_lc_rd_eabi.lib : negd.obj (.text:__mspabi_negd)
+                  0001a744    0000002e                            : exit.obj (.text:exit)
+                  0001a772    0000002e                            : lowlev.obj (.text:finddevice)
+                  0001a7a0    0000002e     le_gatt_command.obj (.text:vCopyArrayParams)
+                  0001a7ce    0000002c     ble_api.obj (.text:eBleApiInit)
+                  0001a7fa    0000002c     le_gatt_command.obj (.text:eSendData)
+                  0001a826    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
+                  0001a852    0000002a     adc12_a.obj (.text:ADC12_A_memoryConfigure)
+                  0001a87c    00000028     adc12_a.obj (.text:ADC12_A_setupSamplingTimer)
+                  0001a8a4    00000028     ucs.obj (.text:UCS_clearAllOscFlagsWithTimeout)
+                  0001a8cc    00000028     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_count)
+                  0001a8f4    00000028     CYC_BBU_APP_Demo_v3.obj (.text:main)
+                  0001a91c    00000026     usci_uart.obj (.text:USCI_UART_enableInterrupt)
+                  0001a942    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_time)
+                  0001a968    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_shake_reject_timeout)
+                  0001a98e    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time)
+                  0001a9b4    00000026     inv_mpu_dmp_motion_driver.obj (.text:dmp_set_tap_time_multi)
+                  0001a9da    00000026     le_gatt_command.obj (.text:eGetSdbGattUpdateCharacterEle_Resp)
+                  0001aa00    00000026     le_gatt_command.obj (.text:eGetServerGattInit_Resp)
+                  0001aa26    00000026     rts430x_lc_rd_eabi.lib : memcmp.obj (.text:memcmp)
+                  0001aa4c    00000026     le_gatt_command.obj (.text:u16SetCmdHeaderUserLen)
+                  0001aa72    00000024     ucs.obj (.text:UCS_getACLK)
+                  0001aa96    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  0001aaba    00000024     le_gatt_command.obj (.text:eGetLeDisableAdvertise_Resp)
+                  0001aade    00000024     le_gatt_command.obj (.text:eGetLeStartAdvertise_Resp)
+                  0001ab02    00000024     rts430x_lc_rd_eabi.lib : fs_utof.obj (.text)
+                  0001ab26    00000022     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_GetInputPinStatus)
+                  0001ab48    00000022     CYC_SYS_I2C.obj (.text:CYC_SYS_I2CB0_Disable)
+                  0001ab6a    00000022     bt_hci_drv.obj (.text:hci_RESET)
+                  0001ab8c    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  0001abae    00000022     le_gatt_command.obj (.text:u16AutoSetCmdHeader)
+                  0001abd0    00000022     ble_api.obj (.text:vAppCallback)
+                  0001abf2    00000022     le_gatt_command.obj (.text:vWrite2Array_16)
+                  0001ac14    00000020     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_ReadNavButtonStatus)
+                  0001ac34    00000020     CYC_SYS_Timer.obj (.text:CYC_SYS_TMR_GetClockMs)
+                  0001ac54    00000020     CYC_BBU_APP_Demo_v3.obj (.text:InitSeebrightController)
+                  0001ac74    00000020     ucs.obj (.text:UCS_getSMCLK)
+                  0001ac94    00000020     le_gatt_command.obj (.text:eIsCmdMatching)
+                  0001acb4    00000020     bt_hci_drv.obj (.text:hci_Patch13_RF_LE_param)
+                  0001acd4    00000020     bt_hci_drv.obj (.text:hci_Patch14_RF_LE_param)
+                  0001acf4    00000020     bt_hci_drv.obj (.text:hci_Patch15_RF_LE_param)
+                  0001ad14    00000020     rts430x_lc_rd_eabi.lib : memccpy.obj (.text:memccpy)
+                  0001ad34    0000001e     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_ReadTriggerButtonStatus)
+                  0001ad52    0000001c     CYC_IO_LEDS.obj (.text:CYC_IO_LEDS_IntializeLEDs)
+                  0001ad6e    0000001c     ucs.obj (.text:UCS_getMCLK)
+                  0001ad8a    0000001c     my_profile.obj (.text:eUpdateMulti)
+                  0001ada6    0000001c     rts430x_lc_rd_eabi.lib : strcmp.obj (.text:strcmp)
+                  0001adc2    0000001a     ucs.obj (.text:UCS_setExternalClockSource)
+                  0001addc    0000001a     le_gatt_command.obj (.text:eSetServerGattInit_Req)
+                  0001adf6    0000001a     rts430x_lc_rd_eabi.lib : strchr.obj (.text:strchr)
+                  0001ae10    00000018     Event_Handler.obj (.text:InitQueue)
+                  0001ae28    00000018     inv_mpu_dmp_motion_driver.obj (.text:dmp_load_motion_driver_firmware)
+                  0001ae40    00000018     my_profile.obj (.text:eUpdateCharValue)
+                  0001ae58    00000016     adc12_a.obj (.text:ADC12_A_setResolution)
+                  0001ae6e    00000016     CYC_SYS_Timer.obj (.text:IsTimerExpired)
+                  0001ae84    00000016     rts430x_lc_rd_eabi.lib : memchr.obj (.text:memchr)
+                  0001ae9a    00000016                            : memset.obj (.text:memset)
+                  0001aeb0    00000016                            : div16u.obj (.text)
+                  0001aec6    00000016                            : mult16_f5hw.obj (.text)
+                  0001aedc    00000014     adc12_a.obj (.text:ADC12_A_setDataReadBackFormat)
+                  0001aef0    00000014     CYC_SYS_Timer.obj (.text:ClearTimerExpiredFlag)
+                  0001af04    00000014     ble_api.obj (.text:eBleRegisterCallback_CharDescUpdate)
+                  0001af18    00000014     ble_api.obj (.text:eBleRegisterCallback_CharValUpdate)
+                  0001af2c    00000014     ble_api.obj (.text:eBleRegisterCallback_MultiUpdate)
+                  0001af40    00000014     ble_api.obj (.text:eBleRegisterCallback_UnexpEvnt)
+                  0001af54    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
+                  0001af68    00000014     ble_api.obj (.text:vSmartProcessPacket)
+                  0001af7c    00000012     rts430x_lc_rd_eabi.lib : fixdu.obj (.text:__mspabi_fixdu)
+                  0001af8e    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  0001afa0    00000012                            : strcpy.obj (.text:strcpy)
+                  0001afb2    00000012                            : toupper.obj (.text:toupper)
+                  0001afc4    00000012     le_gatt_command.obj (.text:vWrite2Array_8)
+                  0001afd6    00000010     adc12_a.obj (.text:ADC12_A_getResults)
+                  0001afe6    00000010     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr)
+                  0001aff6    00000010                            : lsl32.obj (.text:l_lsl)
+                  0001b006    00000010                            : lsr32.obj (.text:l_lsr)
+                  0001b016    0000000e     bt_uart_INT.obj (.text:send_tx)
+                  0001b024    0000000e     rts430x_lc_rd_eabi.lib : strlen.obj (.text:strlen)
+                  0001b032    0000000e     CYC_IO_MOTS_Config.obj (.text:tap_cb)
+                  0001b040    0000000c     adc12_a.obj (.text:ADC12_A_clearInterrupt)
+                  0001b04c    0000000c     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_InitializeNavButton)
+                  0001b058    0000000c     Event_Handler.obj (.text:InitEventHandler)
+                  0001b064    0000000c     usci_uart.obj (.text:USCI_UART_clearInterruptFlag)
+                  0001b070    0000000c     ble_api.obj (.text:eBleSrv_ClientConnRequestHndlr)
+                  0001b07c    0000000c     le_gatt_command.obj (.text:vSetCmdLength)
+                  0001b088    0000000a     CYC_IO_KEYS.obj (.text:CYC_IO_KEYS_InitializeTriggerButton)
+                  0001b092    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_InterruptEdgeSelect)
+                  0001b09c    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetAsInputPin)
+                  0001b0a6    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetPeripheralPinAsInput)
+                  0001b0b0    0000000a     CYC_SYS_GPIO.obj (.text:CYC_SYS_GPIO_SetPeripheralPinAsOutput)
+                  0001b0ba    0000000a     sfr.obj (.text:SFR_clearInterrupt)
+                  0001b0c4    0000000a     usci_uart.obj (.text:USCI_UART_queryStatusFlags)
+                  0001b0ce    0000000a     usci_uart.obj (.text:USCI_UART_transmitData)
+                  0001b0d8    0000000a     rts430x_lc_rd_eabi.lib : abs.obj (.text:abs)
+                  0001b0e2    0000000a     CYC_IO_MOTS_Config.obj (.text:gyro_data_ready_cb)
+                  0001b0ec    0000000a     rts430x_lc_rd_eabi.lib : lsl16.obj (.text)
+                  0001b0f6    0000000a                            : lsr16.obj (.text)
+                  0001b100    00000008     adc12_a.obj (.text:ADC12_A_enable)
+                  0001b108    00000008     CYC_SYS_Reset.obj (.text:CYC_SYS_RST_StopWatchdog)
+                  0001b110    00000008     usci_uart.obj (.text:USCI_UART_receiveData)
+                  0001b118    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_android_orient_cb)
+                  0001b120    00000008     inv_mpu_dmp_motion_driver.obj (.text:dmp_register_tap_cb)
+                  0001b128    00000006     msp430_interrupt.obj (.text:ClearMPU_9250InterruptFlag)
+                  0001b12e    00000006     msp430_interrupt.obj (.text:GetMPU_9250FlagStatus)
+                  0001b134    00000006     sfr.obj (.text:SFR_enableInterrupt)
+                  0001b13a    00000006     usci_uart.obj (.text:USCI_UART_enable)
+                  0001b140    00000006     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:__TI_ISR_TRAP)
+                  0001b146    00000006                            : printf.obj (.text:_outc)
+                  0001b14c    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  0001b152    00000006     ble_api.obj (.text:eBleExtractDataEventGattCli)
+                  0001b158    00000004     rts430x_lc_rd_eabi.lib : printf.obj (.text:_outs)
+                  0001b15c    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  0001b160    00000004                            : exit.obj (.text:abort)
+                  0001b164    00000004     my_profile.obj (.text:eUpdateCharDescriptor)
+                  0001b168    00000002     rts430x_lc_rd_eabi.lib : _lock.obj (.text:_nop)
+                  0001b16a    00000002     CYC_IO_MOTS_Config.obj (.text:android_orient_cb)
+                  0001b16c    00000002     my_profile.obj (.text:vPrintUnexpectedCMD)
 
 
 LINKER GENERATED COPY TABLES
 
 __TI_cinit_table @ 00005906 records: 3, size/record: 8, table size: 24
-	.data: load addr=0000584c, load size=000000a1 bytes, run addr=0000247a, run size=0000029e bytes, compression=rle
+	.data: load addr=0000584c, load size=000000a1 bytes, run addr=0000247a, run size=000002a2 bytes, compression=rle
 	.bss: load addr=000058fa, load size=00000006 bytes, run addr=00001c00, run size=00000879 bytes, compression=zero_init
-	.cio: load addr=00005900, load size=00000006 bytes, run addr=00002858, run size=00000120 bytes, compression=zero_init
+	.cio: load addr=00005900, load size=00000006 bytes, run addr=0000285c, run size=00000120 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
@@ -791,24 +794,24 @@ address    name
 00000733   ADC12MEM9_H
 00000732   ADC12MEM9_L
 0000550e   ADC12_A_ISR
-0001ada8   ADC12_A_clearInterrupt
-00019cb8   ADC12_A_disableInterrupt
-0001ae68   ADC12_A_enable
-00019cf8   ADC12_A_enableInterrupt
-0001ad3e   ADC12_A_getResults
-0001907a   ADC12_A_init
-0001a5ba   ADC12_A_memoryConfigure
-0001ac44   ADC12_A_setDataReadBackFormat
-0001abc0   ADC12_A_setResolution
-0001a5e4   ADC12_A_setupSamplingTimer
-0001a2f4   ADC12_A_startConversion
+0001b040   ADC12_A_clearInterrupt
+00019f50   ADC12_A_disableInterrupt
+0001b100   ADC12_A_enable
+00019f90   ADC12_A_enableInterrupt
+0001afd6   ADC12_A_getResults
+000192c0   ADC12_A_init
+0001a852   ADC12_A_memoryConfigure
+0001aedc   ADC12_A_setDataReadBackFormat
+0001ae58   ADC12_A_setResolution
+0001a87c   ADC12_A_setupSamplingTimer
+0001a58c   ADC12_A_startConversion
 000026e9   ADC_DATA_READY
-0001a142   AddEventToQueue
+0001a3da   AddEventToQueue
 00005430   BD_ADDR
-00002712   BT_Mode
-00013a92   BT_hci_init
-0001aec8   C$$EXIT
-0001a288   C$$IO$$
+00002716   BT_Mode
+00013e16   BT_hci_init
+0001b160   C$$EXIT
+0001a520   C$$IO$$
 000008c0   CBCTL0
 000008c1   CBCTL0_H
 000008c0   CBCTL0_L
@@ -825,7 +828,7 @@ address    name
 000008cd   CBINT_H
 000008cc   CBINT_L
 000008ce   CBIV
-0000270e   CONNECTED
+00002712   CONNECTED
 00000150   CRCDI
 00000152   CRCDIRB
 00000153   CRCDIRB_H
@@ -838,41 +841,42 @@ address    name
 00000156   CRCRESR
 00000157   CRCRESR_H
 00000156   CRCRESR_L
-00016e98   CYC_IO_JSTK_ReadJoystickData
-0001adb4   CYC_IO_KEYS_InitializeNavButton
-0001adf0   CYC_IO_KEYS_InitializeTriggerButton
-000196fa   CYC_IO_KEYS_InitializeUserButtons
-0001a97c   CYC_IO_KEYS_ReadNavButtonStatus
-0001aa9c   CYC_IO_KEYS_ReadTriggerButtonStatus
-0001993e   CYC_IO_KEYS_ReadUserButtonsStatus
-0001aaba   CYC_IO_LEDS_IntializeLEDs
-000132ca   CYC_IO_MOTS_Init
-0001551a   CYC_SYS_ADC_Init
-00015708   CYC_SYS_CLK_SetSystemClock
-0001a88e   CYC_SYS_GPIO_GetInputPinStatus
-0001adfa   CYC_SYS_GPIO_InterruptEdgeSelect
-0001ae04   CYC_SYS_GPIO_SetAsInputPin
-0001ae0e   CYC_SYS_GPIO_SetPeripheralPinAsInput
-0001ae18   CYC_SYS_GPIO_SetPeripheralPinAsOutput
-0001a8b0   CYC_SYS_I2CB0_Disable
-0001640e   CYC_SYS_I2CB0_Enable
-000166e0   CYC_SYS_I2CB0_Read
-00016790   CYC_SYS_I2CB0_Write
-00019d38   CYC_SYS_InitializeTarget
-00018bce   CYC_SYS_PWM_InitPWMTimer
+000170de   CYC_IO_JSTK_ReadJoystickData
+0001b04c   CYC_IO_KEYS_InitializeNavButton
+0001b088   CYC_IO_KEYS_InitializeTriggerButton
+00019992   CYC_IO_KEYS_InitializeUserButtons
+0001ac14   CYC_IO_KEYS_ReadNavButtonStatus
+0001ad34   CYC_IO_KEYS_ReadTriggerButtonStatus
+00019bd6   CYC_IO_KEYS_ReadUserButtonsStatus
+0001ad52   CYC_IO_LEDS_IntializeLEDs
+000134cc   CYC_IO_MOTS_Init
+00015760   CYC_SYS_ADC_Init
+0001594e   CYC_SYS_CLK_SetSystemClock
+0001ab26   CYC_SYS_GPIO_GetInputPinStatus
+0001b092   CYC_SYS_GPIO_InterruptEdgeSelect
+0001b09c   CYC_SYS_GPIO_SetAsInputPin
+0001b0a6   CYC_SYS_GPIO_SetPeripheralPinAsInput
+0001b0b0   CYC_SYS_GPIO_SetPeripheralPinAsOutput
+0001ab48   CYC_SYS_I2CB0_Disable
+00016654   CYC_SYS_I2CB0_Enable
+00016926   CYC_SYS_I2CB0_Read
+000169d6   CYC_SYS_I2CB0_Write
+00019fd0   CYC_SYS_InitializeTarget
+00018e14   CYC_SYS_PWM_InitPWMTimer
 0000584a   CYC_SYS_PWM_PWMTimer
-0001ae70   CYC_SYS_RST_StopWatchdog
-00019df8   CYC_SYS_TMR_DelayInMilliSeconds
-00019c34   CYC_SYS_TMR_EnableTimer1
-0001a99c   CYC_SYS_TMR_GetClockMs
-0001a326   CYC_SYS_TMR_InitTimer1
+0001941c   CYC_SYS_PWM_SetDutyCycle
+0001b108   CYC_SYS_RST_StopWatchdog
+0001a090   CYC_SYS_TMR_DelayInMilliSeconds
+00019ecc   CYC_SYS_TMR_EnableTimer1
+0001ac34   CYC_SYS_TMR_GetClockMs
+0001a5be   CYC_SYS_TMR_InitTimer1
 0000568a   CYC_SYS_TMR_Timer1ISR
-000173b4   CYC_SYS_UART0_Initialize
-00016b8c   CYC_SYS_UART1_Initialize
-0001848a   CYC_SYS_UART_TransmitData
-0001ae90   ClearMPU_9250InterruptFlag
-0001ac58   ClearTimerExpiredFlag
-00002707   DATA_FROM_BLUETOOTH_UART
+000175fa   CYC_SYS_UART0_Initialize
+00016dd2   CYC_SYS_UART1_Initialize
+000186d0   CYC_SYS_UART_TransmitData
+0001b128   ClearMPU_9250InterruptFlag
+0001aef0   ClearTimerExpiredFlag
+0000270b   DATA_FROM_BLUETOOTH_UART
 00000510   DMA0CTL
 00000511   DMA0CTL_H
 00000510   DMA0CTL_L
@@ -925,31 +929,31 @@ address    name
 00000146   FCTL4
 00000147   FCTL4_H
 00000146   FCTL4_L
-00019a9c   GPIO_clearInterruptFlag
-00019ae0   GPIO_enableInterrupt
-000184f6   GPIO_getInputPinValue
-0001912a   GPIO_interruptEdgeSelect
-00016068   GPIO_setAsInputPin
-00016cca   GPIO_setAsOutputPin
-00016d64   GPIO_setAsPeripheralModuleFunctionInputPin
-00016dfe   GPIO_setAsPeripheralModuleFunctionOutputPin
-00017fa0   GPIO_setOutputHighOnPin
-00018016   GPIO_setOutputLowOnPin
-00019b24   GetEventFromQueue
-0001ae96   GetMPU_9250FlagStatus
-0001944e   HOSTclose
-00016c2c   HOSTlseek
-00018340   HOSTopen
-00018776   HOSTread
-00018102   HOSTrename
-00019984   HOSTunlink
-000185ce   HOSTwrite
+00019d34   GPIO_clearInterruptFlag
+00019d78   GPIO_enableInterrupt
+0001873c   GPIO_getInputPinValue
+00019370   GPIO_interruptEdgeSelect
+000162ae   GPIO_setAsInputPin
+00016f10   GPIO_setAsOutputPin
+00016faa   GPIO_setAsPeripheralModuleFunctionInputPin
+00017044   GPIO_setAsPeripheralModuleFunctionOutputPin
+000181e6   GPIO_setOutputHighOnPin
+0001825c   GPIO_setOutputLowOnPin
+00019dbc   GetEventFromQueue
+0001b12e   GetMPU_9250FlagStatus
+000196e6   HOSTclose
+00016e72   HOSTlseek
+00018586   HOSTopen
+000189bc   HOSTread
+00018348   HOSTrename
+00019c1c   HOSTunlink
+00018814   HOSTwrite
 00005448   I2CB0_ISR
-0001adc0   InitEventHandler
-0001ab78   InitQueue
-0001a9bc   InitSeebrightController
-0001a450   InitTimer
-0001abd6   IsTimerExpired
+0001b058   InitEventHandler
+0001ae10   InitQueue
+0001ac54   InitSeebrightController
+0001a6e8   InitTimer
+0001ae6e   IsTimerExpired
 00000900   LDOKEYPID
 00000901   LDOKEYPID_H
 00000900   LDOKEYPID_L
@@ -974,7 +978,7 @@ address    name
 000004c6   MACS_L
 000004c5   MAC_H
 000004c4   MAC_L
-00014be8   MPMainRoutine
+00014e2e   MPMainRoutine
 000004c0   MPY
 000004ec   MPY32CTL0
 000004ed   MPY32CTL0_H
@@ -997,7 +1001,7 @@ address    name
 000004c1   MPY_H
 000004c0   MPY_L
 00005808   NMI_ISR
-0000270d   NOTIFY_CLIENT
+00002711   NOTIFY_CLIENT
 000004c8   OP2
 000004e2   OP2H
 000004e3   OP2H_H
@@ -1122,9 +1126,9 @@ address    name
 0000012e   PMMRIE
 0000012f   PMMRIE_H
 0000012e   PMMRIE_L
-00019fe6   PMM_setVCore
-00015326   PMM_setVCoreDown
-00013910   PMM_setVCoreUp
+0001a27e   PMM_setVCore
+0001556c   PMM_setVCoreDown
+00013b12   PMM_setVCoreUp
 00000904   PUCTL
 00000905   PUCTL_H
 00000904   PUCTL_L
@@ -1186,10 +1190,10 @@ address    name
 000004b6   RTCYEAR
 000004b7   RTCYEAR_H
 000004b6   RTCYEAR_L
-0001a020   ReadAllButtons
-00016840   Read_ADC_Voltage
-00013ffe   RunControllerFSM
-00017c52   RunEventHandler
+0001a2b8   ReadAllButtons
+00016a86   Read_ADC_Voltage
+00013c94   RunControllerFSM
+00017e98   RunEventHandler
 00000100   SFRIE1
 00000101   SFRIE1_H
 00000100   SFRIE1_L
@@ -1199,8 +1203,8 @@ address    name
 00000104   SFRRPCR
 00000105   SFRRPCR_H
 00000104   SFRRPCR_L
-0001ae22   SFR_clearInterrupt
-0001ae9c   SFR_enableInterrupt
+0001b0ba   SFR_clearInterrupt
+0001b134   SFR_enableInterrupt
 000004ce   SUMEXT
 000004cf   SUMEXT_H
 000004ce   SUMEXT_L
@@ -1369,6 +1373,7 @@ address    name
 0000500e   TCU_MNG_LE_SET_SCAN_ENABLE_RESP_t
 00005036   TCU_MNG_LE_START_ADVERTISE_REQ_t
 0000503a   TCU_MNG_LE_START_ADVERTISE_RESP_t
+00002708   TIME_TO_SEND
 000005d0   UCA0ABCTL
 000005c6   UCA0BRW
 000005c7   UCA0BRW_H
@@ -1470,31 +1475,31 @@ address    name
 00000170   UCSCTL8
 00000171   UCSCTL8_H
 00000170   UCSCTL8_L
-000178e4   UCS_LFXT1Start
+00017b2a   UCS_LFXT1Start
 000026fa   UCS_XT1ClockFrequency
 000026fe   UCS_XT2ClockFrequency
-0001a60c   UCS_clearAllOscFlagsWithTimeout
-00014e04   UCS_clockSignalInit
-0001a7da   UCS_getACLK
-0001aad6   UCS_getMCLK
-0001a9dc   UCS_getSMCLK
-0001488e   UCS_initFLL
-0001a1ea   UCS_initFLLSettle
-0001ab2a   UCS_setExternalClockSource
+0001a8a4   UCS_clearAllOscFlagsWithTimeout
+0001504a   UCS_clockSignalInit
+0001aa72   UCS_getACLK
+0001ad6e   UCS_getMCLK
+0001ac74   UCS_getSMCLK
+00014ad4   UCS_initFLL
+0001a482   UCS_initFLLSettle
+0001adc2   UCS_setExternalClockSource
 000057a4   USCI_A0_ISR
 000057de   USCI_A1_ISR
-0001adcc   USCI_UART_clearInterruptFlag
-0001aea2   USCI_UART_enable
-0001a684   USCI_UART_enableInterrupt
-000158ec   USCI_UART_initAdvance
-0001ae2c   USCI_UART_queryStatusFlags
-0001ae78   USCI_UART_receiveData
-0001ae36   USCI_UART_transmitData
+0001b064   USCI_UART_clearInterruptFlag
+0001b13a   USCI_UART_enable
+0001a91c   USCI_UART_enableInterrupt
+00015b32   USCI_UART_initAdvance
+0001b0c4   USCI_UART_queryStatusFlags
+0001b110   USCI_UART_receiveData
+0001b0ce   USCI_UART_transmitData
 0000015c   WDTCTL
 0000015d   WDTCTL_H
 0000015c   WDTCTL_L
-00002858   _CIOBUF_
-00019228   _Dclass
+0000285c   _CIOBUF_
+000194c0   _Dclass
 00004400   __STACK_END
 00000140   __STACK_SIZE
 00000140   __SYSMEM_SIZE
@@ -1504,20 +1509,20 @@ address    name
 000058fa   __TI_Handler_Table_Limit
 UNDEFED    __TI_INITARRAY_Base
 UNDEFED    __TI_INITARRAY_Limit
-0001aea8   __TI_ISR_TRAP
+0001b140   __TI_ISR_TRAP
 00000001   __TI_args_main
-0001a220   __TI_cleanup
+0001a4b8   __TI_cleanup
 0000241c   __TI_cleanup_ptr
-000182d0   __TI_closefile
-0001acf6   __TI_decompress_none
-0001aeb4   __TI_decompress_rle24
-000189de   __TI_doflush
+00018516   __TI_closefile
+0001af8e   __TI_decompress_none
+0001b14c   __TI_decompress_rle24
+00018c24   __TI_doflush
 00002420   __TI_dtors_ptr
 00000001   __TI_exit
 00011cc8   __TI_frcaddd
 00010520   __TI_frcdivd
 00010d00   __TI_frcmpyd
-00002714   __TI_ft_end
+00002718   __TI_ft_end
 0000ffd2   __TI_int41
 0000ffd4   __TI_int42
 0000ffd6   __TI_int43
@@ -1541,286 +1546,287 @@ UNDEFED    __TI_INITARRAY_Limit
 0000fffa   __TI_int61
 0000fffc   __TI_int62
 000129b4   __TI_printfi
-0001a358   __TI_readmsg
-0001657c   __TI_renormd
+0001a5f0   __TI_readmsg
+000167c2   __TI_renormd
 00002108   __TI_tmpnams
-0001a256   __TI_writemsg
-00017962   __TI_wrt_ok
-0001a7fe   __TI_zero_init
+0001a4ee   __TI_writemsg
+00017ba8   __TI_wrt_ok
+0001aa96   __TI_zero_init
 ffffffff   __binit__
 ffffffff   __c_args__
 000112c4   __mspabi_addd
-00015c74   __mspabi_cmpd
+00015eba   __mspabi_cmpd
 0001236c   __mspabi_divd
-00017326   __mspabi_divf
-0001a58e   __mspabi_divi
-00019db8   __mspabi_divli
-0001ac18   __mspabi_divu
-000190d2   __mspabi_divul
+0001756c   __mspabi_divf
+0001a826   __mspabi_divi
+0001a050   __mspabi_divli
+0001aeb0   __mspabi_divu
+00019318   __mspabi_divul
 00010972   __mspabi_divull
-00018846   __mspabi_fixdli
-0001ace4   __mspabi_fixdu
-000187de   __mspabi_fixdul
-00019a56   __mspabi_fixfu
-00016f30   __mspabi_fltlid
-0001a86a   __mspabi_fltuf
+00018a8c   __mspabi_fixdli
+0001af7c   __mspabi_fixdu
+00018a24   __mspabi_fixdul
+00019cee   __mspabi_fixfu
+00017176   __mspabi_fltlid
+0001ab02   __mspabi_fltuf
 0001159c   __mspabi_mpyd
-000164c6   __mspabi_mpyf
-0001ac2e   __mspabi_mpyi_f5hw
-0001a8f4   __mspabi_mpyl_f5hw
-00018e04   __mspabi_mpyll_f5hw
-0001a47e   __mspabi_negd
-0001a58e   __mspabi_remi
-00019db8   __mspabi_remli
-0001ac18   __mspabi_remu
-000190d2   __mspabi_remul
-0001ae54   __mspabi_slli
-0001ad5e   __mspabi_slll
-00019f28   __mspabi_slll_1
-00019f04   __mspabi_slll_10
-00019f00   __mspabi_slll_11
-00019efc   __mspabi_slll_12
-00019ef8   __mspabi_slll_13
-00019ef4   __mspabi_slll_14
-00019ef0   __mspabi_slll_15
-00019f24   __mspabi_slll_2
-00019f20   __mspabi_slll_3
-00019f1c   __mspabi_slll_4
-00019f18   __mspabi_slll_5
-00019f14   __mspabi_slll_6
-00019f10   __mspabi_slll_7
-00019f0c   __mspabi_slll_8
-00019f08   __mspabi_slll_9
-0001a05a   __mspabi_sllll
-0001ad4e   __mspabi_sral
-00019eea   __mspabi_sral_1
-00019ec6   __mspabi_sral_10
-00019ec2   __mspabi_sral_11
-00019ebe   __mspabi_sral_12
-00019eba   __mspabi_sral_13
-00019eb6   __mspabi_sral_14
-00019eb2   __mspabi_sral_15
-00019ee6   __mspabi_sral_2
-00019ee2   __mspabi_sral_3
-00019ede   __mspabi_sral_4
-00019eda   __mspabi_sral_5
-00019ed6   __mspabi_sral_6
-00019ed2   __mspabi_sral_7
-00019ece   __mspabi_sral_8
-00019eca   __mspabi_sral_9
-0001ae5e   __mspabi_srli
-0001ad6e   __mspabi_srll
-00019f66   __mspabi_srll_1
-00019f42   __mspabi_srll_10
-00019f3e   __mspabi_srll_11
-00019f3a   __mspabi_srll_12
-00019f36   __mspabi_srll_13
-00019f32   __mspabi_srll_14
-00019f2e   __mspabi_srll_15
-00019f62   __mspabi_srll_2
-00019f5e   __mspabi_srll_3
-00019f5a   __mspabi_srll_4
-00019f56   __mspabi_srll_5
-00019f52   __mspabi_srll_6
-00019f4e   __mspabi_srll_7
-00019f4a   __mspabi_srll_8
-00019f46   __mspabi_srll_9
-0001a094   __mspabi_srlll
-0001a38a   __mspabi_subd
-000183ae   _auto_init_hold_wdt
+0001670c   __mspabi_mpyf
+0001aec6   __mspabi_mpyi_f5hw
+0001ab8c   __mspabi_mpyl_f5hw
+0001904a   __mspabi_mpyll_f5hw
+0001a716   __mspabi_negd
+0001a826   __mspabi_remi
+0001a050   __mspabi_remli
+0001aeb0   __mspabi_remu
+00019318   __mspabi_remul
+0001b0ec   __mspabi_slli
+0001aff6   __mspabi_slll
+0001a1c0   __mspabi_slll_1
+0001a19c   __mspabi_slll_10
+0001a198   __mspabi_slll_11
+0001a194   __mspabi_slll_12
+0001a190   __mspabi_slll_13
+0001a18c   __mspabi_slll_14
+0001a188   __mspabi_slll_15
+0001a1bc   __mspabi_slll_2
+0001a1b8   __mspabi_slll_3
+0001a1b4   __mspabi_slll_4
+0001a1b0   __mspabi_slll_5
+0001a1ac   __mspabi_slll_6
+0001a1a8   __mspabi_slll_7
+0001a1a4   __mspabi_slll_8
+0001a1a0   __mspabi_slll_9
+0001a2f2   __mspabi_sllll
+0001afe6   __mspabi_sral
+0001a182   __mspabi_sral_1
+0001a15e   __mspabi_sral_10
+0001a15a   __mspabi_sral_11
+0001a156   __mspabi_sral_12
+0001a152   __mspabi_sral_13
+0001a14e   __mspabi_sral_14
+0001a14a   __mspabi_sral_15
+0001a17e   __mspabi_sral_2
+0001a17a   __mspabi_sral_3
+0001a176   __mspabi_sral_4
+0001a172   __mspabi_sral_5
+0001a16e   __mspabi_sral_6
+0001a16a   __mspabi_sral_7
+0001a166   __mspabi_sral_8
+0001a162   __mspabi_sral_9
+0001b0f6   __mspabi_srli
+0001b006   __mspabi_srll
+0001a1fe   __mspabi_srll_1
+0001a1da   __mspabi_srll_10
+0001a1d6   __mspabi_srll_11
+0001a1d2   __mspabi_srll_12
+0001a1ce   __mspabi_srll_13
+0001a1ca   __mspabi_srll_14
+0001a1c6   __mspabi_srll_15
+0001a1fa   __mspabi_srll_2
+0001a1f6   __mspabi_srll_3
+0001a1f2   __mspabi_srll_4
+0001a1ee   __mspabi_srll_5
+0001a1ea   __mspabi_srll_6
+0001a1e6   __mspabi_srll_7
+0001a1e2   __mspabi_srll_8
+0001a1de   __mspabi_srll_9
+0001a32c   __mspabi_srlll
+0001a622   __mspabi_subd
+000185f4   _auto_init_hold_wdt
 0000582e   _c_int00
 0000582e   _c_int00_noargs
 00005112   _ctypes_
 0000247a   _ftable
 000026f2   _lock
-0001aed0   _nop
+0001b168   _nop
 0000fffe   _reset_vector
 000042c0   _stack
-00002718   _sys_memory
-0001aec4   _system_pre_init
+0000271c   _sys_memory
+0001b15c   _system_pre_init
 000026f6   _unlock
-0001aec8   abort
-0001ae40   abs
-00018b6c   atoi
+0001b160   abort
+0001b0d8   abs
+00018db2   atoi
 00001e08   au8SendBuff
 ffffffff   binit
 00002702   btQueueEVENT
-00015612   bt_uart_manager
+00015858   bt_uart_manager
 00001f08   cSPP_DATA_RECEIVE_buff
 000026ea   clockValue
-00018e5e   close
+000190a4   close
 00002611   consolidatedAllButton
-00019b68   dmp_enable_6x_lp_quat
+00019e00   dmp_enable_6x_lp_quat
 00012146   dmp_enable_feature
-0001978e   dmp_enable_gyro_cal
-00019bac   dmp_enable_lp_quat
-0001ab90   dmp_load_motion_driver_firmware
+00019a26   dmp_enable_gyro_cal
+00019e44   dmp_enable_lp_quat
+0001ae28   dmp_load_motion_driver_firmware
 00010fe4   dmp_read_fifo
-0001ae80   dmp_register_android_orient_cb
-0001ae88   dmp_register_tap_cb
-00018176   dmp_set_fifo_rate
-00013466   dmp_set_orientation
-00019180   dmp_set_shake_reject_thresh
-0001a6aa   dmp_set_shake_reject_time
-0001a6d0   dmp_set_shake_reject_timeout
-0001a28c   dmp_set_tap_axes
-0001a634   dmp_set_tap_count
-0001312c   dmp_set_tap_thresh
-0001a6f6   dmp_set_tap_time
-0001a71c   dmp_set_tap_time_multi
-0001a536   eBleApiInit
-00017dc0   eBleDeviceSrv_Init
-0001a17a   eBleExtractData
-0001aeba   eBleExtractDataEventGattCli
-000144f2   eBleExtractDataEventGattSer
-000188ac   eBleExtractDataEventMng
-000191d6   eBlePerif_StartAdv
-0001ac6c   eBleRegisterCallback_CharDescUpdate
-0001ac80   eBleRegisterCallback_CharValUpdate
-0001ac94   eBleRegisterCallback_MultiUpdate
-0001aca8   eBleRegisterCallback_UnexpEvnt
-0001462a   eBleSrv_AddCharacteristic
-0001720a   eBleSrv_AddIncludeToSvc
-00018da8   eBleSrv_AddPrimServiceAttributes
-0001add8   eBleSrv_ClientConnRequestHndlr
-00017b5a   eBleSrv_ClientMtuExchangeHndlr
-0001949a   eBleSrv_GetEndGroupHandle
-00016996   eBleSrv_ReadCharDescriptorHndlr
-00016a3e   eBleSrv_ReadCharValHndlr
-00016126   eBleSrv_ReadMultiEventHndlr
-0001413c   eBleSrv_RegisterPrimaryService
-00017660   eBleSrv_SendNotification
-00019e36   eBleSrv_UpdateCharacteristic
-000161e0   eBleSrv_WriteCharDescriptorHndlr
-0001629a   eBleSrv_WriteCharValueHndlr
-0001743e   eBleWaitForSpecificEvent
-00019bf0   eGetLeAccept_Ack
-0001a822   eGetLeDisableAdvertise_Resp
-00018eb8   eGetLeDisconnect_Event
-00014cf6   eGetLeMngConnComplete_Event
-0001a0ce   eGetLeMngInit_Resp
-0001a846   eGetLeStartAdvertise_Resp
-00019316   eGetSdbGattAddCharacterDecl_Resp
-00019364   eGetSdbGattAddCharacterEle_Resp
-000194e6   eGetSdbGattAddInclSvc_Resp
-00019532   eGetSdbGattAddPrimaryService_Resp
-0001957e   eGetSdbGattReturnEndGroupHandle_Resp
-0001a742   eGetSdbGattUpdateCharacterEle_Resp
-000197d6   eGetServerGattExgMtuAccept_Req
-0001841c   eGetServerGattExgMtuAccept_Resp
-00018a42   eGetServerGattExgMtu_Event
-0001a768   eGetServerGattInit_Resp
-000195ca   eGetServerGattReadCharDescriptorAccept_Resp
-00018c8e   eGetServerGattReadCharDescriptor_Event
-00018cec   eGetServerGattReadCharVal_Event
-00019616   eGetServerGattReadMultiAccept_Resp
-000175d8   eGetServerGattReadMulti_Event
-00019a10   eGetServerGattValIndication_Event
-0001a1b2   eGetServerGattValNotify_Event
-00016fc4   eGetServerGattWriteCharDesc_Event
-00019662   eGetServerGattWriteCharDespAccept_Resp
-000196ae   eGetServerGattWriteCharValAccept_Resp
-00017056   eGetServerGattWriteCharVal_Event
-000170e8   eGetServerGattWriteWithoutRespCmd_Event
-0001a9fc   eIsCmdMatching
-00017e38   eMPAddDevIdentService
-000159d0   eMPAddGAPDevName_Appearance_Service
-00015ab4   eMPAdd_controller_Service
-000176e2   eMPInitialise
-00013788   eMPStartAdvertising
-0001a562   eSendData
-00018f12   eSetLeMngInit_Req
-00014ad4   eSetLeStartAdvertise_Req
-0001808c   eSetSdbGattAddCharacterDecl_Req
-00015fa8   eSetSdbGattAddCharacterEle_Req
-00018638   eSetSdbGattAddInclSvc_Req
-00018f6c   eSetSdbGattAddPrimaryService_Req
-0001a2c0   eSetSdbGattReturnEndGroupHandle_Req
-000186a2   eSetSdbGattUpdateCharacterEle_Req
-00018562   eSetServerGattCharValNotification_Req
-0001ab44   eSetServerGattInit_Req
-0001981e   eSetServerGattReadCharDescriptorAccept_Req
-00019866   eSetServerGattReadCharValAccept_Req
-00018d4a   eSetServerGattReadCharValAccept_Resp
-00018912   eSetServerGattReadMultiAccept_Req
-000198ae   eSetServerGattWriteCharDescAccept_Req
-000198f6   eSetServerGattWriteCharValAccept_Req
-0001aecc   eUpdateCharDescriptor
-0001aba8   eUpdateCharValue
-0001aaf2   eUpdateMulti
+0001b118   dmp_register_android_orient_cb
+0001b120   dmp_register_tap_cb
+000183bc   dmp_set_fifo_rate
+00013668   dmp_set_orientation
+000193c6   dmp_set_shake_reject_thresh
+0001a942   dmp_set_shake_reject_time
+0001a968   dmp_set_shake_reject_timeout
+0001a524   dmp_set_tap_axes
+0001a8cc   dmp_set_tap_count
+0001332e   dmp_set_tap_thresh
+0001a98e   dmp_set_tap_time
+0001a9b4   dmp_set_tap_time_multi
+0001a7ce   eBleApiInit
+00018006   eBleDeviceSrv_Init
+0001a412   eBleExtractData
+0001b152   eBleExtractDataEventGattCli
+00014738   eBleExtractDataEventGattSer
+00018af2   eBleExtractDataEventMng
+0001946e   eBlePerif_StartAdv
+0001af04   eBleRegisterCallback_CharDescUpdate
+0001af18   eBleRegisterCallback_CharValUpdate
+0001af2c   eBleRegisterCallback_MultiUpdate
+0001af40   eBleRegisterCallback_UnexpEvnt
+00014870   eBleSrv_AddCharacteristic
+00017450   eBleSrv_AddIncludeToSvc
+00018fee   eBleSrv_AddPrimServiceAttributes
+0001b070   eBleSrv_ClientConnRequestHndlr
+00017da0   eBleSrv_ClientMtuExchangeHndlr
+00019732   eBleSrv_GetEndGroupHandle
+00016bdc   eBleSrv_ReadCharDescriptorHndlr
+00016c84   eBleSrv_ReadCharValHndlr
+0001636c   eBleSrv_ReadMultiEventHndlr
+00014382   eBleSrv_RegisterPrimaryService
+000178a6   eBleSrv_SendNotification
+0001a0ce   eBleSrv_UpdateCharacteristic
+00016426   eBleSrv_WriteCharDescriptorHndlr
+000164e0   eBleSrv_WriteCharValueHndlr
+00017684   eBleWaitForSpecificEvent
+00019e88   eGetLeAccept_Ack
+0001aaba   eGetLeDisableAdvertise_Resp
+000190fe   eGetLeDisconnect_Event
+00014f3c   eGetLeMngConnComplete_Event
+0001a366   eGetLeMngInit_Resp
+0001aade   eGetLeStartAdvertise_Resp
+000195ae   eGetSdbGattAddCharacterDecl_Resp
+000195fc   eGetSdbGattAddCharacterEle_Resp
+0001977e   eGetSdbGattAddInclSvc_Resp
+000197ca   eGetSdbGattAddPrimaryService_Resp
+00019816   eGetSdbGattReturnEndGroupHandle_Resp
+0001a9da   eGetSdbGattUpdateCharacterEle_Resp
+00019a6e   eGetServerGattExgMtuAccept_Req
+00018662   eGetServerGattExgMtuAccept_Resp
+00018c88   eGetServerGattExgMtu_Event
+0001aa00   eGetServerGattInit_Resp
+00019862   eGetServerGattReadCharDescriptorAccept_Resp
+00018ed4   eGetServerGattReadCharDescriptor_Event
+00018f32   eGetServerGattReadCharVal_Event
+000198ae   eGetServerGattReadMultiAccept_Resp
+0001781e   eGetServerGattReadMulti_Event
+00019ca8   eGetServerGattValIndication_Event
+0001a44a   eGetServerGattValNotify_Event
+0001720a   eGetServerGattWriteCharDesc_Event
+000198fa   eGetServerGattWriteCharDespAccept_Resp
+00019946   eGetServerGattWriteCharValAccept_Resp
+0001729c   eGetServerGattWriteCharVal_Event
+0001732e   eGetServerGattWriteWithoutRespCmd_Event
+0001ac94   eIsCmdMatching
+0001807e   eMPAddDevIdentService
+00015c16   eMPAddGAPDevName_Appearance_Service
+00015cfa   eMPAdd_controller_Service
+00017928   eMPInitialise
+0001398a   eMPStartAdvertising
+0001a7fa   eSendData
+00019158   eSetLeMngInit_Req
+00014d1a   eSetLeStartAdvertise_Req
+000182d2   eSetSdbGattAddCharacterDecl_Req
+000161ee   eSetSdbGattAddCharacterEle_Req
+0001887e   eSetSdbGattAddInclSvc_Req
+000191b2   eSetSdbGattAddPrimaryService_Req
+0001a558   eSetSdbGattReturnEndGroupHandle_Req
+000188e8   eSetSdbGattUpdateCharacterEle_Req
+000187a8   eSetServerGattCharValNotification_Req
+0001addc   eSetServerGattInit_Req
+00019ab6   eSetServerGattReadCharDescriptorAccept_Req
+00019afe   eSetServerGattReadCharValAccept_Req
+00018f90   eSetServerGattReadCharValAccept_Resp
+00018b58   eSetServerGattReadMultiAccept_Req
+00019b46   eSetServerGattWriteCharDescAccept_Req
+00019b8e   eSetServerGattWriteCharValAccept_Req
+0001b164   eUpdateCharDescriptor
+0001ae40   eUpdateCharValue
+0001ad8a   eUpdateMulti
 00002424   err
-00015228   errorCode
+0001546e   errorCode
 0000224c   eventArray
-0001a4ac   exit
-0000270c   fMP_1HZ_tick
-0001717a   fputc
-000157fc   fputs
-00017298   free
-0001870c   fseek
+0001a744   exit
+00002710   fMP_1HZ_tick
+000173c0   fputc
+00015a42   fputs
+000174de   free
+00018952   fseek
 000021a8   gasTimerInfo
-00017764   get_mpu_data
+000179aa   get_mpu_data
 00002610   gu8InterruptCount
 000025bc   gu8PowerOffMode
 000022b8   gu8Rx0Buffer
-00002710   gu8RxData
-00002711   gu8RxDataCount
-000193b2   hci_Get_Version
-00016ae6   hci_M2_SET_DeepSleep
-0001aa1c   hci_Patch13_RF_LE_param
-0001aa3c   hci_Patch14_RF_LE_param
-0001aa5c   hci_Patch15_RF_LE_param
-0001a8d2   hci_RESET
-0001a3bc   hci_SET_MODE
-00019e74   hci_Write_BD_ADDR
+00002714   gu8RxData
+00002715   gu8RxDataCount
+0001964a   hci_Get_Version
+00016d2c   hci_M2_SET_DeepSleep
+0001acb4   hci_Patch13_RF_LE_param
+0001acd4   hci_Patch14_RF_LE_param
+0001acf4   hci_Patch15_RF_LE_param
+0001ab6a   hci_RESET
+0001a654   hci_SET_MODE
+0001a10c   hci_Write_BD_ADDR
 00002428   hci_event
 00005330   hw
-00019400   init_bluetooth
-00019f6c   lseek
-000177e4   ltoa
-0001a65c   main
-00016354   malloc
-0001aa7c   memccpy
-0001abec   memchr
-0001a78e   memcmp
-0001acbc   memcpy
-0001ac02   memset
-00019c76   minit
+00019698   init_bluetooth
+00012bb6   led_color_changer
+0001a204   lseek
+00017a2a   ltoa
+0001a8f4   main
+0001659a   malloc
+0001ad14   memccpy
+0001ae84   memchr
+0001aa26   memcmp
+0001af54   memcpy
+0001ae9a   memset
+00019f0e   minit
 000022f4   mpu
-00018978   mpu_configure_fifo
-00019d78   mpu_get_accel_fsr
-00013c0a   mpu_init
-00015e24   mpu_load_firmware
-0001501c   mpu_lp_accel_mode
-00015ee6   mpu_read_fifo_stream
-00017ccc   mpu_read_mem
-00012dae   mpu_reset_fifo
-00017eb0   mpu_set_accel_fsr
-0001427a   mpu_set_bypass
-00019020   mpu_set_compass_sample_rate
-00017864   mpu_set_dmp_state
-00017adc   mpu_set_gyro_fsr
-00018c2e   mpu_set_int_latched
-00017bd6   mpu_set_lpf
-0001662e   mpu_set_sample_rate
-00013d5e   mpu_set_sensors
-00017d46   mpu_write_mem
-00018aa6   msp430_int_enable
-00015d4c   msp430_reg_int_cb
+00018bbe   mpu_configure_fifo
+0001a010   mpu_get_accel_fsr
+00013f8e   mpu_init
+0001606a   mpu_load_firmware
+00015262   mpu_lp_accel_mode
+0001612c   mpu_read_fifo_stream
+00017f12   mpu_read_mem
+00012fb0   mpu_reset_fifo
+000180f6   mpu_set_accel_fsr
+000144c0   mpu_set_bypass
+00019266   mpu_set_compass_sample_rate
+00017aaa   mpu_set_dmp_state
+00017d22   mpu_set_gyro_fsr
+00018e74   mpu_set_int_latched
+00017e1c   mpu_set_lpf
+00016874   mpu_set_sample_rate
+000140e2   mpu_set_sensors
+00017f8c   mpu_write_mem
+00018cec   msp430_int_enable
+00015f92   msp430_reg_int_cb
 000026b0   my_data
-0001475e   my_profile_DEMO
+000149a4   my_profile_DEMO
 0000242c   pCharDescUpdCallback
 00002430   pCharValUpdCallback
 00002434   pUpdMultiCallback
-00019744   printf
+000199dc   printf
 00011a74   processPaketHCI
 00010000   processPaketTCU
-00002708   ptUnexEvtCallBack
+0000270c   ptUnexEvtCallBack
 00002438   pt_hci_event
 00005306   reg
-0001a420   remove
+0001a6b8   remove
 00002008   rxUARTbuff
-0001ad7e   send_tx
-00015b94   setvbuf
+0001b016   send_tx
+00015dda   setvbuf
 00002342   stConnectInfo
 00002388   stDevIdService
 00002396   stGAPService
@@ -1828,12 +1834,12 @@ ffffffff   binit
 00002328   stMyCharacteristic
 000023a4   stMyService
 000026ee   status
-0001ab5e   strchr
-0001ab0e   strcmp
-0001ad08   strcpy
-0001ad8c   strlen
-0001a3ee   strncpy
-0001825e   tcu_MNG_INIT_REQ
+0001adf6   strchr
+0001ada6   strcmp
+0001afa0   strcpy
+0001b024   strlen
+0001a686   strncpy
+000184a4   tcu_MNG_INIT_REQ
 00002406   tcu_event
 00002448   tcu_mng_connection_accept_resp
 000023be   tcu_mng_connection_request_event
@@ -1858,19 +1864,19 @@ ffffffff   binit
 00002460   tcu_spp_shutdown_resp
 00002464   tcu_spp_uuid_assign_resp
 0000533e   test
-0001ad1a   toupper
-0001a108   transmit_bluetooth_packet
-0001a916   u16AutoSetCmdHeader
-0001a7b4   u16SetCmdHeaderUserLen
-0001a420   unlink
-0001a938   vAppCallback
-0001a508   vCopyArrayParams
-0001aed4   vPrintUnexpectedCMD
-0001ade4   vSetCmdLength
-0001acd0   vSmartProcessPacket
-0001a95a   vWrite2Array_16
-0001ad2c   vWrite2Array_8
-00019faa   write
+0001afb2   toupper
+0001a3a0   transmit_bluetooth_packet
+0001abae   u16AutoSetCmdHeader
+0001aa4c   u16SetCmdHeaderUserLen
+0001a6b8   unlink
+0001abd0   vAppCallback
+0001a7a0   vCopyArrayParams
+0001b16c   vPrintUnexpectedCMD
+0001b07c   vSetCmdLength
+0001af68   vSmartProcessPacket
+0001abf2   vWrite2Array_16
+0001afc4   vWrite2Array_8
+0001a242   write
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -2538,17 +2544,18 @@ address    name
 000026fa   UCS_XT1ClockFrequency
 000026fe   UCS_XT2ClockFrequency
 00002702   btQueueEVENT
-00002707   DATA_FROM_BLUETOOTH_UART
-00002708   ptUnexEvtCallBack
-0000270c   fMP_1HZ_tick
-0000270d   NOTIFY_CLIENT
-0000270e   CONNECTED
-00002710   gu8RxData
-00002711   gu8RxDataCount
-00002712   BT_Mode
-00002714   __TI_ft_end
-00002718   _sys_memory
-00002858   _CIOBUF_
+00002708   TIME_TO_SEND
+0000270b   DATA_FROM_BLUETOOTH_UART
+0000270c   ptUnexEvtCallBack
+00002710   fMP_1HZ_tick
+00002711   NOTIFY_CLIENT
+00002712   CONNECTED
+00002714   gu8RxData
+00002715   gu8RxDataCount
+00002716   BT_Mode
+00002718   __TI_ft_end
+0000271c   _sys_memory
+0000285c   _CIOBUF_
 000042c0   _stack
 00004400   __STACK_END
 00004ff6   TCU_LE_ACCEPT_t
@@ -2678,367 +2685,369 @@ address    name
 00012146   dmp_enable_feature
 0001236c   __mspabi_divd
 000129b4   __TI_printfi
-00012dae   mpu_reset_fifo
-0001312c   dmp_set_tap_thresh
-000132ca   CYC_IO_MOTS_Init
-00013466   dmp_set_orientation
-00013788   eMPStartAdvertising
-00013910   PMM_setVCoreUp
-00013a92   BT_hci_init
-00013c0a   mpu_init
-00013d5e   mpu_set_sensors
-00013ffe   RunControllerFSM
-0001413c   eBleSrv_RegisterPrimaryService
-0001427a   mpu_set_bypass
-000144f2   eBleExtractDataEventGattSer
-0001462a   eBleSrv_AddCharacteristic
-0001475e   my_profile_DEMO
-0001488e   UCS_initFLL
-00014ad4   eSetLeStartAdvertise_Req
-00014be8   MPMainRoutine
-00014cf6   eGetLeMngConnComplete_Event
-00014e04   UCS_clockSignalInit
-0001501c   mpu_lp_accel_mode
-00015228   errorCode
-00015326   PMM_setVCoreDown
-0001551a   CYC_SYS_ADC_Init
-00015612   bt_uart_manager
-00015708   CYC_SYS_CLK_SetSystemClock
-000157fc   fputs
-000158ec   USCI_UART_initAdvance
-000159d0   eMPAddGAPDevName_Appearance_Service
-00015ab4   eMPAdd_controller_Service
-00015b94   setvbuf
-00015c74   __mspabi_cmpd
-00015d4c   msp430_reg_int_cb
-00015e24   mpu_load_firmware
-00015ee6   mpu_read_fifo_stream
-00015fa8   eSetSdbGattAddCharacterEle_Req
-00016068   GPIO_setAsInputPin
-00016126   eBleSrv_ReadMultiEventHndlr
-000161e0   eBleSrv_WriteCharDescriptorHndlr
-0001629a   eBleSrv_WriteCharValueHndlr
-00016354   malloc
-0001640e   CYC_SYS_I2CB0_Enable
-000164c6   __mspabi_mpyf
-0001657c   __TI_renormd
-0001662e   mpu_set_sample_rate
-000166e0   CYC_SYS_I2CB0_Read
-00016790   CYC_SYS_I2CB0_Write
-00016840   Read_ADC_Voltage
-00016996   eBleSrv_ReadCharDescriptorHndlr
-00016a3e   eBleSrv_ReadCharValHndlr
-00016ae6   hci_M2_SET_DeepSleep
-00016b8c   CYC_SYS_UART1_Initialize
-00016c2c   HOSTlseek
-00016cca   GPIO_setAsOutputPin
-00016d64   GPIO_setAsPeripheralModuleFunctionInputPin
-00016dfe   GPIO_setAsPeripheralModuleFunctionOutputPin
-00016e98   CYC_IO_JSTK_ReadJoystickData
-00016f30   __mspabi_fltlid
-00016fc4   eGetServerGattWriteCharDesc_Event
-00017056   eGetServerGattWriteCharVal_Event
-000170e8   eGetServerGattWriteWithoutRespCmd_Event
-0001717a   fputc
-0001720a   eBleSrv_AddIncludeToSvc
-00017298   free
-00017326   __mspabi_divf
-000173b4   CYC_SYS_UART0_Initialize
-0001743e   eBleWaitForSpecificEvent
-000175d8   eGetServerGattReadMulti_Event
-00017660   eBleSrv_SendNotification
-000176e2   eMPInitialise
-00017764   get_mpu_data
-000177e4   ltoa
-00017864   mpu_set_dmp_state
-000178e4   UCS_LFXT1Start
-00017962   __TI_wrt_ok
-00017adc   mpu_set_gyro_fsr
-00017b5a   eBleSrv_ClientMtuExchangeHndlr
-00017bd6   mpu_set_lpf
-00017c52   RunEventHandler
-00017ccc   mpu_read_mem
-00017d46   mpu_write_mem
-00017dc0   eBleDeviceSrv_Init
-00017e38   eMPAddDevIdentService
-00017eb0   mpu_set_accel_fsr
-00017fa0   GPIO_setOutputHighOnPin
-00018016   GPIO_setOutputLowOnPin
-0001808c   eSetSdbGattAddCharacterDecl_Req
-00018102   HOSTrename
-00018176   dmp_set_fifo_rate
-0001825e   tcu_MNG_INIT_REQ
-000182d0   __TI_closefile
-00018340   HOSTopen
-000183ae   _auto_init_hold_wdt
-0001841c   eGetServerGattExgMtuAccept_Resp
-0001848a   CYC_SYS_UART_TransmitData
-000184f6   GPIO_getInputPinValue
-00018562   eSetServerGattCharValNotification_Req
-000185ce   HOSTwrite
-00018638   eSetSdbGattAddInclSvc_Req
-000186a2   eSetSdbGattUpdateCharacterEle_Req
-0001870c   fseek
-00018776   HOSTread
-000187de   __mspabi_fixdul
-00018846   __mspabi_fixdli
-000188ac   eBleExtractDataEventMng
-00018912   eSetServerGattReadMultiAccept_Req
-00018978   mpu_configure_fifo
-000189de   __TI_doflush
-00018a42   eGetServerGattExgMtu_Event
-00018aa6   msp430_int_enable
-00018b6c   atoi
-00018bce   CYC_SYS_PWM_InitPWMTimer
-00018c2e   mpu_set_int_latched
-00018c8e   eGetServerGattReadCharDescriptor_Event
-00018cec   eGetServerGattReadCharVal_Event
-00018d4a   eSetServerGattReadCharValAccept_Resp
-00018da8   eBleSrv_AddPrimServiceAttributes
-00018e04   __mspabi_mpyll_f5hw
-00018e5e   close
-00018eb8   eGetLeDisconnect_Event
-00018f12   eSetLeMngInit_Req
-00018f6c   eSetSdbGattAddPrimaryService_Req
-00019020   mpu_set_compass_sample_rate
-0001907a   ADC12_A_init
-000190d2   __mspabi_divul
-000190d2   __mspabi_remul
-0001912a   GPIO_interruptEdgeSelect
-00019180   dmp_set_shake_reject_thresh
-000191d6   eBlePerif_StartAdv
-00019228   _Dclass
-00019316   eGetSdbGattAddCharacterDecl_Resp
-00019364   eGetSdbGattAddCharacterEle_Resp
-000193b2   hci_Get_Version
-00019400   init_bluetooth
-0001944e   HOSTclose
-0001949a   eBleSrv_GetEndGroupHandle
-000194e6   eGetSdbGattAddInclSvc_Resp
-00019532   eGetSdbGattAddPrimaryService_Resp
-0001957e   eGetSdbGattReturnEndGroupHandle_Resp
-000195ca   eGetServerGattReadCharDescriptorAccept_Resp
-00019616   eGetServerGattReadMultiAccept_Resp
-00019662   eGetServerGattWriteCharDespAccept_Resp
-000196ae   eGetServerGattWriteCharValAccept_Resp
-000196fa   CYC_IO_KEYS_InitializeUserButtons
-00019744   printf
-0001978e   dmp_enable_gyro_cal
-000197d6   eGetServerGattExgMtuAccept_Req
-0001981e   eSetServerGattReadCharDescriptorAccept_Req
-00019866   eSetServerGattReadCharValAccept_Req
-000198ae   eSetServerGattWriteCharDescAccept_Req
-000198f6   eSetServerGattWriteCharValAccept_Req
-0001993e   CYC_IO_KEYS_ReadUserButtonsStatus
-00019984   HOSTunlink
-00019a10   eGetServerGattValIndication_Event
-00019a56   __mspabi_fixfu
-00019a9c   GPIO_clearInterruptFlag
-00019ae0   GPIO_enableInterrupt
-00019b24   GetEventFromQueue
-00019b68   dmp_enable_6x_lp_quat
-00019bac   dmp_enable_lp_quat
-00019bf0   eGetLeAccept_Ack
-00019c34   CYC_SYS_TMR_EnableTimer1
-00019c76   minit
-00019cb8   ADC12_A_disableInterrupt
-00019cf8   ADC12_A_enableInterrupt
-00019d38   CYC_SYS_InitializeTarget
-00019d78   mpu_get_accel_fsr
-00019db8   __mspabi_divli
-00019db8   __mspabi_remli
-00019df8   CYC_SYS_TMR_DelayInMilliSeconds
-00019e36   eBleSrv_UpdateCharacteristic
-00019e74   hci_Write_BD_ADDR
-00019eb2   __mspabi_sral_15
-00019eb6   __mspabi_sral_14
-00019eba   __mspabi_sral_13
-00019ebe   __mspabi_sral_12
-00019ec2   __mspabi_sral_11
-00019ec6   __mspabi_sral_10
-00019eca   __mspabi_sral_9
-00019ece   __mspabi_sral_8
-00019ed2   __mspabi_sral_7
-00019ed6   __mspabi_sral_6
-00019eda   __mspabi_sral_5
-00019ede   __mspabi_sral_4
-00019ee2   __mspabi_sral_3
-00019ee6   __mspabi_sral_2
-00019eea   __mspabi_sral_1
-00019ef0   __mspabi_slll_15
-00019ef4   __mspabi_slll_14
-00019ef8   __mspabi_slll_13
-00019efc   __mspabi_slll_12
-00019f00   __mspabi_slll_11
-00019f04   __mspabi_slll_10
-00019f08   __mspabi_slll_9
-00019f0c   __mspabi_slll_8
-00019f10   __mspabi_slll_7
-00019f14   __mspabi_slll_6
-00019f18   __mspabi_slll_5
-00019f1c   __mspabi_slll_4
-00019f20   __mspabi_slll_3
-00019f24   __mspabi_slll_2
-00019f28   __mspabi_slll_1
-00019f2e   __mspabi_srll_15
-00019f32   __mspabi_srll_14
-00019f36   __mspabi_srll_13
-00019f3a   __mspabi_srll_12
-00019f3e   __mspabi_srll_11
-00019f42   __mspabi_srll_10
-00019f46   __mspabi_srll_9
-00019f4a   __mspabi_srll_8
-00019f4e   __mspabi_srll_7
-00019f52   __mspabi_srll_6
-00019f56   __mspabi_srll_5
-00019f5a   __mspabi_srll_4
-00019f5e   __mspabi_srll_3
-00019f62   __mspabi_srll_2
-00019f66   __mspabi_srll_1
-00019f6c   lseek
-00019faa   write
-00019fe6   PMM_setVCore
-0001a020   ReadAllButtons
-0001a05a   __mspabi_sllll
-0001a094   __mspabi_srlll
-0001a0ce   eGetLeMngInit_Resp
-0001a108   transmit_bluetooth_packet
-0001a142   AddEventToQueue
-0001a17a   eBleExtractData
-0001a1b2   eGetServerGattValNotify_Event
-0001a1ea   UCS_initFLLSettle
-0001a220   __TI_cleanup
-0001a256   __TI_writemsg
-0001a288   C$$IO$$
-0001a28c   dmp_set_tap_axes
-0001a2c0   eSetSdbGattReturnEndGroupHandle_Req
-0001a2f4   ADC12_A_startConversion
-0001a326   CYC_SYS_TMR_InitTimer1
-0001a358   __TI_readmsg
-0001a38a   __mspabi_subd
-0001a3bc   hci_SET_MODE
-0001a3ee   strncpy
-0001a420   remove
-0001a420   unlink
-0001a450   InitTimer
-0001a47e   __mspabi_negd
-0001a4ac   exit
-0001a508   vCopyArrayParams
-0001a536   eBleApiInit
-0001a562   eSendData
-0001a58e   __mspabi_divi
-0001a58e   __mspabi_remi
-0001a5ba   ADC12_A_memoryConfigure
-0001a5e4   ADC12_A_setupSamplingTimer
-0001a60c   UCS_clearAllOscFlagsWithTimeout
-0001a634   dmp_set_tap_count
-0001a65c   main
-0001a684   USCI_UART_enableInterrupt
-0001a6aa   dmp_set_shake_reject_time
-0001a6d0   dmp_set_shake_reject_timeout
-0001a6f6   dmp_set_tap_time
-0001a71c   dmp_set_tap_time_multi
-0001a742   eGetSdbGattUpdateCharacterEle_Resp
-0001a768   eGetServerGattInit_Resp
-0001a78e   memcmp
-0001a7b4   u16SetCmdHeaderUserLen
-0001a7da   UCS_getACLK
-0001a7fe   __TI_zero_init
-0001a822   eGetLeDisableAdvertise_Resp
-0001a846   eGetLeStartAdvertise_Resp
-0001a86a   __mspabi_fltuf
-0001a88e   CYC_SYS_GPIO_GetInputPinStatus
-0001a8b0   CYC_SYS_I2CB0_Disable
-0001a8d2   hci_RESET
-0001a8f4   __mspabi_mpyl_f5hw
-0001a916   u16AutoSetCmdHeader
-0001a938   vAppCallback
-0001a95a   vWrite2Array_16
-0001a97c   CYC_IO_KEYS_ReadNavButtonStatus
-0001a99c   CYC_SYS_TMR_GetClockMs
-0001a9bc   InitSeebrightController
-0001a9dc   UCS_getSMCLK
-0001a9fc   eIsCmdMatching
-0001aa1c   hci_Patch13_RF_LE_param
-0001aa3c   hci_Patch14_RF_LE_param
-0001aa5c   hci_Patch15_RF_LE_param
-0001aa7c   memccpy
-0001aa9c   CYC_IO_KEYS_ReadTriggerButtonStatus
-0001aaba   CYC_IO_LEDS_IntializeLEDs
-0001aad6   UCS_getMCLK
-0001aaf2   eUpdateMulti
-0001ab0e   strcmp
-0001ab2a   UCS_setExternalClockSource
-0001ab44   eSetServerGattInit_Req
-0001ab5e   strchr
-0001ab78   InitQueue
-0001ab90   dmp_load_motion_driver_firmware
-0001aba8   eUpdateCharValue
-0001abc0   ADC12_A_setResolution
-0001abd6   IsTimerExpired
-0001abec   memchr
-0001ac02   memset
-0001ac18   __mspabi_divu
-0001ac18   __mspabi_remu
-0001ac2e   __mspabi_mpyi_f5hw
-0001ac44   ADC12_A_setDataReadBackFormat
-0001ac58   ClearTimerExpiredFlag
-0001ac6c   eBleRegisterCallback_CharDescUpdate
-0001ac80   eBleRegisterCallback_CharValUpdate
-0001ac94   eBleRegisterCallback_MultiUpdate
-0001aca8   eBleRegisterCallback_UnexpEvnt
-0001acbc   memcpy
-0001acd0   vSmartProcessPacket
-0001ace4   __mspabi_fixdu
-0001acf6   __TI_decompress_none
-0001ad08   strcpy
-0001ad1a   toupper
-0001ad2c   vWrite2Array_8
-0001ad3e   ADC12_A_getResults
-0001ad4e   __mspabi_sral
-0001ad5e   __mspabi_slll
-0001ad6e   __mspabi_srll
-0001ad7e   send_tx
-0001ad8c   strlen
-0001ada8   ADC12_A_clearInterrupt
-0001adb4   CYC_IO_KEYS_InitializeNavButton
-0001adc0   InitEventHandler
-0001adcc   USCI_UART_clearInterruptFlag
-0001add8   eBleSrv_ClientConnRequestHndlr
-0001ade4   vSetCmdLength
-0001adf0   CYC_IO_KEYS_InitializeTriggerButton
-0001adfa   CYC_SYS_GPIO_InterruptEdgeSelect
-0001ae04   CYC_SYS_GPIO_SetAsInputPin
-0001ae0e   CYC_SYS_GPIO_SetPeripheralPinAsInput
-0001ae18   CYC_SYS_GPIO_SetPeripheralPinAsOutput
-0001ae22   SFR_clearInterrupt
-0001ae2c   USCI_UART_queryStatusFlags
-0001ae36   USCI_UART_transmitData
-0001ae40   abs
-0001ae54   __mspabi_slli
-0001ae5e   __mspabi_srli
-0001ae68   ADC12_A_enable
-0001ae70   CYC_SYS_RST_StopWatchdog
-0001ae78   USCI_UART_receiveData
-0001ae80   dmp_register_android_orient_cb
-0001ae88   dmp_register_tap_cb
-0001ae90   ClearMPU_9250InterruptFlag
-0001ae96   GetMPU_9250FlagStatus
-0001ae9c   SFR_enableInterrupt
-0001aea2   USCI_UART_enable
-0001aea8   __TI_ISR_TRAP
-0001aeb4   __TI_decompress_rle24
-0001aeba   eBleExtractDataEventGattCli
-0001aec4   _system_pre_init
-0001aec8   C$$EXIT
-0001aec8   abort
-0001aecc   eUpdateCharDescriptor
-0001aed0   _nop
-0001aed4   vPrintUnexpectedCMD
+00012bb6   led_color_changer
+00012fb0   mpu_reset_fifo
+0001332e   dmp_set_tap_thresh
+000134cc   CYC_IO_MOTS_Init
+00013668   dmp_set_orientation
+0001398a   eMPStartAdvertising
+00013b12   PMM_setVCoreUp
+00013c94   RunControllerFSM
+00013e16   BT_hci_init
+00013f8e   mpu_init
+000140e2   mpu_set_sensors
+00014382   eBleSrv_RegisterPrimaryService
+000144c0   mpu_set_bypass
+00014738   eBleExtractDataEventGattSer
+00014870   eBleSrv_AddCharacteristic
+000149a4   my_profile_DEMO
+00014ad4   UCS_initFLL
+00014d1a   eSetLeStartAdvertise_Req
+00014e2e   MPMainRoutine
+00014f3c   eGetLeMngConnComplete_Event
+0001504a   UCS_clockSignalInit
+00015262   mpu_lp_accel_mode
+0001546e   errorCode
+0001556c   PMM_setVCoreDown
+00015760   CYC_SYS_ADC_Init
+00015858   bt_uart_manager
+0001594e   CYC_SYS_CLK_SetSystemClock
+00015a42   fputs
+00015b32   USCI_UART_initAdvance
+00015c16   eMPAddGAPDevName_Appearance_Service
+00015cfa   eMPAdd_controller_Service
+00015dda   setvbuf
+00015eba   __mspabi_cmpd
+00015f92   msp430_reg_int_cb
+0001606a   mpu_load_firmware
+0001612c   mpu_read_fifo_stream
+000161ee   eSetSdbGattAddCharacterEle_Req
+000162ae   GPIO_setAsInputPin
+0001636c   eBleSrv_ReadMultiEventHndlr
+00016426   eBleSrv_WriteCharDescriptorHndlr
+000164e0   eBleSrv_WriteCharValueHndlr
+0001659a   malloc
+00016654   CYC_SYS_I2CB0_Enable
+0001670c   __mspabi_mpyf
+000167c2   __TI_renormd
+00016874   mpu_set_sample_rate
+00016926   CYC_SYS_I2CB0_Read
+000169d6   CYC_SYS_I2CB0_Write
+00016a86   Read_ADC_Voltage
+00016bdc   eBleSrv_ReadCharDescriptorHndlr
+00016c84   eBleSrv_ReadCharValHndlr
+00016d2c   hci_M2_SET_DeepSleep
+00016dd2   CYC_SYS_UART1_Initialize
+00016e72   HOSTlseek
+00016f10   GPIO_setAsOutputPin
+00016faa   GPIO_setAsPeripheralModuleFunctionInputPin
+00017044   GPIO_setAsPeripheralModuleFunctionOutputPin
+000170de   CYC_IO_JSTK_ReadJoystickData
+00017176   __mspabi_fltlid
+0001720a   eGetServerGattWriteCharDesc_Event
+0001729c   eGetServerGattWriteCharVal_Event
+0001732e   eGetServerGattWriteWithoutRespCmd_Event
+000173c0   fputc
+00017450   eBleSrv_AddIncludeToSvc
+000174de   free
+0001756c   __mspabi_divf
+000175fa   CYC_SYS_UART0_Initialize
+00017684   eBleWaitForSpecificEvent
+0001781e   eGetServerGattReadMulti_Event
+000178a6   eBleSrv_SendNotification
+00017928   eMPInitialise
+000179aa   get_mpu_data
+00017a2a   ltoa
+00017aaa   mpu_set_dmp_state
+00017b2a   UCS_LFXT1Start
+00017ba8   __TI_wrt_ok
+00017d22   mpu_set_gyro_fsr
+00017da0   eBleSrv_ClientMtuExchangeHndlr
+00017e1c   mpu_set_lpf
+00017e98   RunEventHandler
+00017f12   mpu_read_mem
+00017f8c   mpu_write_mem
+00018006   eBleDeviceSrv_Init
+0001807e   eMPAddDevIdentService
+000180f6   mpu_set_accel_fsr
+000181e6   GPIO_setOutputHighOnPin
+0001825c   GPIO_setOutputLowOnPin
+000182d2   eSetSdbGattAddCharacterDecl_Req
+00018348   HOSTrename
+000183bc   dmp_set_fifo_rate
+000184a4   tcu_MNG_INIT_REQ
+00018516   __TI_closefile
+00018586   HOSTopen
+000185f4   _auto_init_hold_wdt
+00018662   eGetServerGattExgMtuAccept_Resp
+000186d0   CYC_SYS_UART_TransmitData
+0001873c   GPIO_getInputPinValue
+000187a8   eSetServerGattCharValNotification_Req
+00018814   HOSTwrite
+0001887e   eSetSdbGattAddInclSvc_Req
+000188e8   eSetSdbGattUpdateCharacterEle_Req
+00018952   fseek
+000189bc   HOSTread
+00018a24   __mspabi_fixdul
+00018a8c   __mspabi_fixdli
+00018af2   eBleExtractDataEventMng
+00018b58   eSetServerGattReadMultiAccept_Req
+00018bbe   mpu_configure_fifo
+00018c24   __TI_doflush
+00018c88   eGetServerGattExgMtu_Event
+00018cec   msp430_int_enable
+00018db2   atoi
+00018e14   CYC_SYS_PWM_InitPWMTimer
+00018e74   mpu_set_int_latched
+00018ed4   eGetServerGattReadCharDescriptor_Event
+00018f32   eGetServerGattReadCharVal_Event
+00018f90   eSetServerGattReadCharValAccept_Resp
+00018fee   eBleSrv_AddPrimServiceAttributes
+0001904a   __mspabi_mpyll_f5hw
+000190a4   close
+000190fe   eGetLeDisconnect_Event
+00019158   eSetLeMngInit_Req
+000191b2   eSetSdbGattAddPrimaryService_Req
+00019266   mpu_set_compass_sample_rate
+000192c0   ADC12_A_init
+00019318   __mspabi_divul
+00019318   __mspabi_remul
+00019370   GPIO_interruptEdgeSelect
+000193c6   dmp_set_shake_reject_thresh
+0001941c   CYC_SYS_PWM_SetDutyCycle
+0001946e   eBlePerif_StartAdv
+000194c0   _Dclass
+000195ae   eGetSdbGattAddCharacterDecl_Resp
+000195fc   eGetSdbGattAddCharacterEle_Resp
+0001964a   hci_Get_Version
+00019698   init_bluetooth
+000196e6   HOSTclose
+00019732   eBleSrv_GetEndGroupHandle
+0001977e   eGetSdbGattAddInclSvc_Resp
+000197ca   eGetSdbGattAddPrimaryService_Resp
+00019816   eGetSdbGattReturnEndGroupHandle_Resp
+00019862   eGetServerGattReadCharDescriptorAccept_Resp
+000198ae   eGetServerGattReadMultiAccept_Resp
+000198fa   eGetServerGattWriteCharDespAccept_Resp
+00019946   eGetServerGattWriteCharValAccept_Resp
+00019992   CYC_IO_KEYS_InitializeUserButtons
+000199dc   printf
+00019a26   dmp_enable_gyro_cal
+00019a6e   eGetServerGattExgMtuAccept_Req
+00019ab6   eSetServerGattReadCharDescriptorAccept_Req
+00019afe   eSetServerGattReadCharValAccept_Req
+00019b46   eSetServerGattWriteCharDescAccept_Req
+00019b8e   eSetServerGattWriteCharValAccept_Req
+00019bd6   CYC_IO_KEYS_ReadUserButtonsStatus
+00019c1c   HOSTunlink
+00019ca8   eGetServerGattValIndication_Event
+00019cee   __mspabi_fixfu
+00019d34   GPIO_clearInterruptFlag
+00019d78   GPIO_enableInterrupt
+00019dbc   GetEventFromQueue
+00019e00   dmp_enable_6x_lp_quat
+00019e44   dmp_enable_lp_quat
+00019e88   eGetLeAccept_Ack
+00019ecc   CYC_SYS_TMR_EnableTimer1
+00019f0e   minit
+00019f50   ADC12_A_disableInterrupt
+00019f90   ADC12_A_enableInterrupt
+00019fd0   CYC_SYS_InitializeTarget
+0001a010   mpu_get_accel_fsr
+0001a050   __mspabi_divli
+0001a050   __mspabi_remli
+0001a090   CYC_SYS_TMR_DelayInMilliSeconds
+0001a0ce   eBleSrv_UpdateCharacteristic
+0001a10c   hci_Write_BD_ADDR
+0001a14a   __mspabi_sral_15
+0001a14e   __mspabi_sral_14
+0001a152   __mspabi_sral_13
+0001a156   __mspabi_sral_12
+0001a15a   __mspabi_sral_11
+0001a15e   __mspabi_sral_10
+0001a162   __mspabi_sral_9
+0001a166   __mspabi_sral_8
+0001a16a   __mspabi_sral_7
+0001a16e   __mspabi_sral_6
+0001a172   __mspabi_sral_5
+0001a176   __mspabi_sral_4
+0001a17a   __mspabi_sral_3
+0001a17e   __mspabi_sral_2
+0001a182   __mspabi_sral_1
+0001a188   __mspabi_slll_15
+0001a18c   __mspabi_slll_14
+0001a190   __mspabi_slll_13
+0001a194   __mspabi_slll_12
+0001a198   __mspabi_slll_11
+0001a19c   __mspabi_slll_10
+0001a1a0   __mspabi_slll_9
+0001a1a4   __mspabi_slll_8
+0001a1a8   __mspabi_slll_7
+0001a1ac   __mspabi_slll_6
+0001a1b0   __mspabi_slll_5
+0001a1b4   __mspabi_slll_4
+0001a1b8   __mspabi_slll_3
+0001a1bc   __mspabi_slll_2
+0001a1c0   __mspabi_slll_1
+0001a1c6   __mspabi_srll_15
+0001a1ca   __mspabi_srll_14
+0001a1ce   __mspabi_srll_13
+0001a1d2   __mspabi_srll_12
+0001a1d6   __mspabi_srll_11
+0001a1da   __mspabi_srll_10
+0001a1de   __mspabi_srll_9
+0001a1e2   __mspabi_srll_8
+0001a1e6   __mspabi_srll_7
+0001a1ea   __mspabi_srll_6
+0001a1ee   __mspabi_srll_5
+0001a1f2   __mspabi_srll_4
+0001a1f6   __mspabi_srll_3
+0001a1fa   __mspabi_srll_2
+0001a1fe   __mspabi_srll_1
+0001a204   lseek
+0001a242   write
+0001a27e   PMM_setVCore
+0001a2b8   ReadAllButtons
+0001a2f2   __mspabi_sllll
+0001a32c   __mspabi_srlll
+0001a366   eGetLeMngInit_Resp
+0001a3a0   transmit_bluetooth_packet
+0001a3da   AddEventToQueue
+0001a412   eBleExtractData
+0001a44a   eGetServerGattValNotify_Event
+0001a482   UCS_initFLLSettle
+0001a4b8   __TI_cleanup
+0001a4ee   __TI_writemsg
+0001a520   C$$IO$$
+0001a524   dmp_set_tap_axes
+0001a558   eSetSdbGattReturnEndGroupHandle_Req
+0001a58c   ADC12_A_startConversion
+0001a5be   CYC_SYS_TMR_InitTimer1
+0001a5f0   __TI_readmsg
+0001a622   __mspabi_subd
+0001a654   hci_SET_MODE
+0001a686   strncpy
+0001a6b8   remove
+0001a6b8   unlink
+0001a6e8   InitTimer
+0001a716   __mspabi_negd
+0001a744   exit
+0001a7a0   vCopyArrayParams
+0001a7ce   eBleApiInit
+0001a7fa   eSendData
+0001a826   __mspabi_divi
+0001a826   __mspabi_remi
+0001a852   ADC12_A_memoryConfigure
+0001a87c   ADC12_A_setupSamplingTimer
+0001a8a4   UCS_clearAllOscFlagsWithTimeout
+0001a8cc   dmp_set_tap_count
+0001a8f4   main
+0001a91c   USCI_UART_enableInterrupt
+0001a942   dmp_set_shake_reject_time
+0001a968   dmp_set_shake_reject_timeout
+0001a98e   dmp_set_tap_time
+0001a9b4   dmp_set_tap_time_multi
+0001a9da   eGetSdbGattUpdateCharacterEle_Resp
+0001aa00   eGetServerGattInit_Resp
+0001aa26   memcmp
+0001aa4c   u16SetCmdHeaderUserLen
+0001aa72   UCS_getACLK
+0001aa96   __TI_zero_init
+0001aaba   eGetLeDisableAdvertise_Resp
+0001aade   eGetLeStartAdvertise_Resp
+0001ab02   __mspabi_fltuf
+0001ab26   CYC_SYS_GPIO_GetInputPinStatus
+0001ab48   CYC_SYS_I2CB0_Disable
+0001ab6a   hci_RESET
+0001ab8c   __mspabi_mpyl_f5hw
+0001abae   u16AutoSetCmdHeader
+0001abd0   vAppCallback
+0001abf2   vWrite2Array_16
+0001ac14   CYC_IO_KEYS_ReadNavButtonStatus
+0001ac34   CYC_SYS_TMR_GetClockMs
+0001ac54   InitSeebrightController
+0001ac74   UCS_getSMCLK
+0001ac94   eIsCmdMatching
+0001acb4   hci_Patch13_RF_LE_param
+0001acd4   hci_Patch14_RF_LE_param
+0001acf4   hci_Patch15_RF_LE_param
+0001ad14   memccpy
+0001ad34   CYC_IO_KEYS_ReadTriggerButtonStatus
+0001ad52   CYC_IO_LEDS_IntializeLEDs
+0001ad6e   UCS_getMCLK
+0001ad8a   eUpdateMulti
+0001ada6   strcmp
+0001adc2   UCS_setExternalClockSource
+0001addc   eSetServerGattInit_Req
+0001adf6   strchr
+0001ae10   InitQueue
+0001ae28   dmp_load_motion_driver_firmware
+0001ae40   eUpdateCharValue
+0001ae58   ADC12_A_setResolution
+0001ae6e   IsTimerExpired
+0001ae84   memchr
+0001ae9a   memset
+0001aeb0   __mspabi_divu
+0001aeb0   __mspabi_remu
+0001aec6   __mspabi_mpyi_f5hw
+0001aedc   ADC12_A_setDataReadBackFormat
+0001aef0   ClearTimerExpiredFlag
+0001af04   eBleRegisterCallback_CharDescUpdate
+0001af18   eBleRegisterCallback_CharValUpdate
+0001af2c   eBleRegisterCallback_MultiUpdate
+0001af40   eBleRegisterCallback_UnexpEvnt
+0001af54   memcpy
+0001af68   vSmartProcessPacket
+0001af7c   __mspabi_fixdu
+0001af8e   __TI_decompress_none
+0001afa0   strcpy
+0001afb2   toupper
+0001afc4   vWrite2Array_8
+0001afd6   ADC12_A_getResults
+0001afe6   __mspabi_sral
+0001aff6   __mspabi_slll
+0001b006   __mspabi_srll
+0001b016   send_tx
+0001b024   strlen
+0001b040   ADC12_A_clearInterrupt
+0001b04c   CYC_IO_KEYS_InitializeNavButton
+0001b058   InitEventHandler
+0001b064   USCI_UART_clearInterruptFlag
+0001b070   eBleSrv_ClientConnRequestHndlr
+0001b07c   vSetCmdLength
+0001b088   CYC_IO_KEYS_InitializeTriggerButton
+0001b092   CYC_SYS_GPIO_InterruptEdgeSelect
+0001b09c   CYC_SYS_GPIO_SetAsInputPin
+0001b0a6   CYC_SYS_GPIO_SetPeripheralPinAsInput
+0001b0b0   CYC_SYS_GPIO_SetPeripheralPinAsOutput
+0001b0ba   SFR_clearInterrupt
+0001b0c4   USCI_UART_queryStatusFlags
+0001b0ce   USCI_UART_transmitData
+0001b0d8   abs
+0001b0ec   __mspabi_slli
+0001b0f6   __mspabi_srli
+0001b100   ADC12_A_enable
+0001b108   CYC_SYS_RST_StopWatchdog
+0001b110   USCI_UART_receiveData
+0001b118   dmp_register_android_orient_cb
+0001b120   dmp_register_tap_cb
+0001b128   ClearMPU_9250InterruptFlag
+0001b12e   GetMPU_9250FlagStatus
+0001b134   SFR_enableInterrupt
+0001b13a   USCI_UART_enable
+0001b140   __TI_ISR_TRAP
+0001b14c   __TI_decompress_rle24
+0001b152   eBleExtractDataEventGattCli
+0001b15c   _system_pre_init
+0001b160   C$$EXIT
+0001b160   abort
+0001b164   eUpdateCharDescriptor
+0001b168   _nop
+0001b16c   vPrintUnexpectedCMD
 ffffffff   __binit__
 ffffffff   __c_args__
 ffffffff   binit
 UNDEFED    __TI_INITARRAY_Base
 UNDEFED    __TI_INITARRAY_Limit
 
-[1163 symbols]
+[1166 symbols]
